@@ -259,6 +259,20 @@ export type TitleVariant = keyof typeof mobileTypography.title;
 export type BodyVariant = keyof typeof mobileTypography.body;
 export type CaptionVariant = keyof typeof mobileTypography.caption;
 
+// Typography record types for safe access
+type TypographyRecord = Record<
+  string,
+  Record<
+    string,
+    {
+      fontFamily: string;
+      fontWeight: number;
+      fontSize: number;
+      lineHeight: number;
+    }
+  >
+>;
+
 // Utility function to get typography style as CSS string
 export const getTypographyStyle = (
   variant: string,
@@ -273,13 +287,13 @@ export const getTypographyStyle = (
     // English typography에서 찾기
     const [category, name] = variant.split(".");
     if (category && name) {
-      typography = (englishTypography as any)[category]?.[name];
+      typography = (englishTypography as TypographyRecord)[category]?.[name];
     }
   } else {
     // Korean mobile typography에서 찾기
     const [category, name] = variant.split(".");
     if (category && name) {
-      typography = (mobileTypography as any)[category]?.[name];
+      typography = (mobileTypography as TypographyRecord)[category]?.[name];
     }
   }
 
