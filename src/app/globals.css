@@ -96,6 +96,129 @@
   --border-medium: var(--color-gray-30);
   --border-dark: var(--color-gray-50);
 
+  /* Font Families */
+  --font-korean: Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  --font-english: "SUIT Variable", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Web Typography (Desktop) */
+  --typo-web-headline01-font: var(--font-korean);
+  --typo-web-headline01-weight: var(--font-weight-semibold);
+  --typo-web-headline01-size: 48px;
+  --typo-web-headline01-line-height: 60px;
+
+  --typo-web-headline02-font: var(--font-korean);
+  --typo-web-headline02-weight: var(--font-weight-semibold);
+  --typo-web-headline02-size: 36px;
+  --typo-web-headline02-line-height: 48px;
+
+  --typo-web-headline03-font: var(--font-korean);
+  --typo-web-headline03-weight: var(--font-weight-semibold);
+  --typo-web-headline03-size: 28px;
+  --typo-web-headline03-line-height: 36px;
+
+  /* Mobile Typography - Headline */
+  --typo-headline01-font: var(--font-korean);
+  --typo-headline01-weight: var(--font-weight-bold);
+  --typo-headline01-size: 24px;
+  --typo-headline01-line-height: 32px;
+
+  --typo-headline02-font: var(--font-korean);
+  --typo-headline02-weight: var(--font-weight-extrabold);
+  --typo-headline02-size: 22px;
+  --typo-headline02-line-height: 30px;
+
+  --typo-headline03-font: var(--font-korean);
+  --typo-headline03-weight: var(--font-weight-bold);
+  --typo-headline03-size: 20px;
+  --typo-headline03-line-height: 28px;
+
+  /* Mobile Typography - Title */
+  --typo-title01-font: var(--font-korean);
+  --typo-title01-weight: var(--font-weight-bold);
+  --typo-title01-size: 18px;
+  --typo-title01-line-height: 24px;
+
+  --typo-title02-font: var(--font-korean);
+  --typo-title02-weight: var(--font-weight-bold);
+  --typo-title02-size: 16px;
+  --typo-title02-line-height: 22px;
+
+  --typo-title03-font: var(--font-korean);
+  --typo-title03-weight: var(--font-weight-bold);
+  --typo-title03-size: 14px;
+  --typo-title03-line-height: 20px;
+
+  --typo-subtitle01-font: var(--font-korean);
+  --typo-subtitle01-weight: var(--font-weight-semibold);
+  --typo-subtitle01-size: 14px;
+  --typo-subtitle01-line-height: 22px;
+
+  --typo-subtitle02-font: var(--font-korean);
+  --typo-subtitle02-weight: var(--font-weight-semibold);
+  --typo-subtitle02-size: 12px;
+  --typo-subtitle02-line-height: 18px;
+
+  /* Mobile Typography - Body */
+  --typo-body01-medium-font: var(--font-korean);
+  --typo-body01-medium-weight: var(--font-weight-medium);
+  --typo-body01-medium-size: 16px;
+  --typo-body01-medium-line-height: 24px;
+
+  --typo-body02-medium-font: var(--font-korean);
+  --typo-body02-medium-weight: var(--font-weight-medium);
+  --typo-body02-medium-size: 14px;
+  --typo-body02-medium-line-height: 22px;
+
+  --typo-body03-medium-font: var(--font-korean);
+  --typo-body03-medium-weight: var(--font-weight-medium);
+  --typo-body03-medium-size: 12px;
+  --typo-body03-medium-line-height: 18px;
+
+  --typo-body01-regular-font: var(--font-korean);
+  --typo-body01-regular-weight: var(--font-weight-regular);
+  --typo-body01-regular-size: 16px;
+  --typo-body01-regular-line-height: 22px;
+
+  --typo-body02-regular-font: var(--font-korean);
+  --typo-body02-regular-weight: var(--font-weight-regular);
+  --typo-body02-regular-size: 14px;
+  --typo-body02-regular-line-height: 20px;
+
+  --typo-body03-regular-font: var(--font-korean);
+  --typo-body03-regular-weight: var(--font-weight-regular);
+  --typo-body03-regular-size: 12px;
+  --typo-body03-regular-line-height: 16px;
+
+  /* Mobile Typography - Caption */
+  --typo-caption01-font: var(--font-korean);
+  --typo-caption01-weight: var(--font-weight-semibold);
+  --typo-caption01-size: 12px;
+  --typo-caption01-line-height: 14px;
+
+  --typo-caption02-medium-font: var(--font-korean);
+  --typo-caption02-medium-weight: var(--font-weight-semibold);
+  --typo-caption02-medium-size: 10px;
+  --typo-caption02-medium-line-height: 12px;
+
+  --typo-caption02-regular-font: var(--font-korean);
+  --typo-caption02-regular-weight: var(--font-weight-medium);
+  --typo-caption02-regular-size: 10px;
+  --typo-caption02-regular-line-height: 12px;
+
+  --typo-caption03-font: var(--font-korean);
+  --typo-caption03-weight: var(--font-weight-semibold);
+  --typo-caption03-size: 8px;
+  --typo-caption03-line-height: 10px;
+
   /* Legacy Variables */
   --background: var(--background-primary);
   --foreground: var(--text-primary);
@@ -127,11 +250,168 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-korean);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Web Typography (Desktop) Utilities */
+  .typo-web-headline01 {
+    font-family: var(--typo-web-headline01-font);
+    font-weight: var(--typo-web-headline01-weight);
+    font-size: var(--typo-web-headline01-size);
+    line-height: var(--typo-web-headline01-line-height);
+  }
+
+  .typo-web-headline02 {
+    font-family: var(--typo-web-headline02-font);
+    font-weight: var(--typo-web-headline02-weight);
+    font-size: var(--typo-web-headline02-size);
+    line-height: var(--typo-web-headline02-line-height);
+  }
+
+  .typo-web-headline03 {
+    font-family: var(--typo-web-headline03-font);
+    font-weight: var(--typo-web-headline03-weight);
+    font-size: var(--typo-web-headline03-size);
+    line-height: var(--typo-web-headline03-line-height);
+  }
+
+  /* Mobile Typography - Headline Utilities */
+  .typo-headline01 {
+    font-family: var(--typo-headline01-font);
+    font-weight: var(--typo-headline01-weight);
+    font-size: var(--typo-headline01-size);
+    line-height: var(--typo-headline01-line-height);
+  }
+
+  .typo-headline02 {
+    font-family: var(--typo-headline02-font);
+    font-weight: var(--typo-headline02-weight);
+    font-size: var(--typo-headline02-size);
+    line-height: var(--typo-headline02-line-height);
+  }
+
+  .typo-headline03 {
+    font-family: var(--typo-headline03-font);
+    font-weight: var(--typo-headline03-weight);
+    font-size: var(--typo-headline03-size);
+    line-height: var(--typo-headline03-line-height);
+  }
+
+  /* Mobile Typography - Title Utilities */
+  .typo-title01 {
+    font-family: var(--typo-title01-font);
+    font-weight: var(--typo-title01-weight);
+    font-size: var(--typo-title01-size);
+    line-height: var(--typo-title01-line-height);
+  }
+
+  .typo-title02 {
+    font-family: var(--typo-title02-font);
+    font-weight: var(--typo-title02-weight);
+    font-size: var(--typo-title02-size);
+    line-height: var(--typo-title02-line-height);
+  }
+
+  .typo-title03 {
+    font-family: var(--typo-title03-font);
+    font-weight: var(--typo-title03-weight);
+    font-size: var(--typo-title03-size);
+    line-height: var(--typo-title03-line-height);
+  }
+
+  .typo-subtitle01 {
+    font-family: var(--typo-subtitle01-font);
+    font-weight: var(--typo-subtitle01-weight);
+    font-size: var(--typo-subtitle01-size);
+    line-height: var(--typo-subtitle01-line-height);
+  }
+
+  .typo-subtitle02 {
+    font-family: var(--typo-subtitle02-font);
+    font-weight: var(--typo-subtitle02-weight);
+    font-size: var(--typo-subtitle02-size);
+    line-height: var(--typo-subtitle02-line-height);
+  }
+
+  /* Mobile Typography - Body Utilities */
+  .typo-body01-medium {
+    font-family: var(--typo-body01-medium-font);
+    font-weight: var(--typo-body01-medium-weight);
+    font-size: var(--typo-body01-medium-size);
+    line-height: var(--typo-body01-medium-line-height);
+  }
+
+  .typo-body02-medium {
+    font-family: var(--typo-body02-medium-font);
+    font-weight: var(--typo-body02-medium-weight);
+    font-size: var(--typo-body02-medium-size);
+    line-height: var(--typo-body02-medium-line-height);
+  }
+
+  .typo-body03-medium {
+    font-family: var(--typo-body03-medium-font);
+    font-weight: var(--typo-body03-medium-weight);
+    font-size: var(--typo-body03-medium-size);
+    line-height: var(--typo-body03-medium-line-height);
+  }
+
+  .typo-body01-regular {
+    font-family: var(--typo-body01-regular-font);
+    font-weight: var(--typo-body01-regular-weight);
+    font-size: var(--typo-body01-regular-size);
+    line-height: var(--typo-body01-regular-line-height);
+  }
+
+  .typo-body02-regular {
+    font-family: var(--typo-body02-regular-font);
+    font-weight: var(--typo-body02-regular-weight);
+    font-size: var(--typo-body02-regular-size);
+    line-height: var(--typo-body02-regular-line-height);
+  }
+
+  .typo-body03-regular {
+    font-family: var(--typo-body03-regular-font);
+    font-weight: var(--typo-body03-regular-weight);
+    font-size: var(--typo-body03-regular-size);
+    line-height: var(--typo-body03-regular-line-height);
+  }
+
+  /* Mobile Typography - Caption Utilities */
+  .typo-caption01 {
+    font-family: var(--typo-caption01-font);
+    font-weight: var(--typo-caption01-weight);
+    font-size: var(--typo-caption01-size);
+    line-height: var(--typo-caption01-line-height);
+  }
+
+  .typo-caption02-medium {
+    font-family: var(--typo-caption02-medium-font);
+    font-weight: var(--typo-caption02-medium-weight);
+    font-size: var(--typo-caption02-medium-size);
+    line-height: var(--typo-caption02-medium-line-height);
+  }
+
+  .typo-caption02-regular {
+    font-family: var(--typo-caption02-regular-font);
+    font-weight: var(--typo-caption02-regular-weight);
+    font-size: var(--typo-caption02-regular-size);
+    line-height: var(--typo-caption02-regular-line-height);
+  }
+
+  .typo-caption03 {
+    font-family: var(--typo-caption03-font);
+    font-weight: var(--typo-caption03-weight);
+    font-size: var(--typo-caption03-size);
+    line-height: var(--typo-caption03-line-height);
+  }
+
+  /* English Typography Override */
+  .typo-english {
+    font-family: var(--font-english);
   }
 }
