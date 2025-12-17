@@ -6,8 +6,10 @@
 
 // Font Families
 export const fontFamilies = {
-  korean: "Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-  english: "SUIT Variable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+  korean:
+    "Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+  english:
+    "SUIT Variable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
 } as const;
 
 // Font Weights
@@ -280,7 +282,7 @@ export const getTypographyStyle = (
   language: "korean" | "english" = "korean"
 ) => {
   let typography;
-  
+
   if (device === "web" && variant.startsWith("headline")) {
     typography = webTypography.headline[variant as WebHeadlineVariant];
   } else if (language === "english") {
