@@ -36,7 +36,7 @@ export interface UIVisibility {
 
 // URL 메타 정보 타입
 export interface URLMetadata {
-  path: string | ((...args: any[]) => string);
+  path: string | ((...args: string[]) => string);
   accessLevel: AccessLevel;
   ui: UIVisibility;
   description: string;
