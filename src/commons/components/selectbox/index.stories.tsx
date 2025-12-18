@@ -394,7 +394,13 @@ export const Interactive: Story = {
           onChange={setSelectedValue}
           placeholder="카테고리를 선택하세요"
         />
-        <div style={{ padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "8px" }}>
+        <div
+          style={{
+            padding: "16px",
+            backgroundColor: "#f5f5f5",
+            borderRadius: "8px",
+          }}
+        >
           <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
             선택된 값: <strong>{selectedValue || "없음"}</strong>
           </p>
