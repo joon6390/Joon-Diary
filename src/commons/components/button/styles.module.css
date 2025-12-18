@@ -26,7 +26,7 @@
 }
 
 .medium {
-  padding: 12px 24px;
+  padding: 12px 20px;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.16px;
@@ -34,107 +34,107 @@
 }
 
 .large {
-  padding: 16px 32px;
+  padding: 12px 24px;
   font-size: 18px;
   line-height: 24px;
   letter-spacing: -0.18px;
-  height: 56px;
+  height: 48px;
 }
 
 /* Primary Variant - Light Theme */
 .primary.light {
-  background-color: #497cff;
+  background-color: #000000;
   color: #ffffff;
 }
 
 .primary.light:hover:not(.disabled) {
-  background-color: #3a5cf3;
+  background-color: #333333;
 }
 
 .primary.light:active:not(.disabled) {
-  background-color: #274ae1;
+  background-color: #5f5f5f;
 }
 
 /* Primary Variant - Dark Theme */
 .primary.dark {
-  background-color: #6da5fa;
+  background-color: #ffffff;
   color: #000000;
 }
 
 .primary.dark:hover:not(.disabled) {
-  background-color: #93beff;
+  background-color: #e4e4e4;
 }
 
 .primary.dark:active:not(.disabled) {
-  background-color: #bddbff;
+  background-color: #c7c7c7;
 }
 
 /* Secondary Variant - Light Theme */
 .secondary.light {
   background-color: #ffffff;
-  color: #497cff;
-  border: 2px solid #497cff;
+  color: #1c1c1c;
+  border: 1px solid #c7c7c7;
 }
 
 .secondary.light:hover:not(.disabled) {
-  background-color: #f0f7ff;
-  border-color: #3a5cf3;
-  color: #3a5cf3;
+  background-color: #f2f2f2;
+  border-color: #ababab;
+  color: #1c1c1c;
 }
 
 .secondary.light:active:not(.disabled) {
-  background-color: #dbeeff;
-  border-color: #274ae1;
-  color: #274ae1;
+  background-color: #e4e4e4;
+  border-color: #919191;
+  color: #1c1c1c;
 }
 
 /* Secondary Variant - Dark Theme */
 .secondary.dark {
-  background-color: #1c1c1c;
-  color: #6da5fa;
-  border: 2px solid #6da5fa;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #5f5f5f;
 }
 
 .secondary.dark:hover:not(.disabled) {
-  background-color: #333333;
-  border-color: #93beff;
-  color: #93beff;
+  background-color: #1c1c1c;
+  border-color: #919191;
+  color: #ffffff;
 }
 
 .secondary.dark:active:not(.disabled) {
-  background-color: #5f5f5f;
-  border-color: #bddbff;
-  color: #bddbff;
+  background-color: #333333;
+  border-color: #ababab;
+  color: #ffffff;
 }
 
 /* Tertiary Variant - Light Theme */
 .tertiary.light {
   background-color: transparent;
-  color: #497cff;
+  color: #1c1c1c;
 }
 
 .tertiary.light:hover:not(.disabled) {
-  background-color: #f0f7ff;
-  color: #3a5cf3;
+  background-color: #f2f2f2;
+  color: #1c1c1c;
 }
 
 .tertiary.light:active:not(.disabled) {
-  background-color: #dbeeff;
-  color: #274ae1;
+  background-color: #e4e4e4;
+  color: #1c1c1c;
 }
 
 /* Tertiary Variant - Dark Theme */
 .tertiary.dark {
   background-color: transparent;
-  color: #6da5fa;
+  color: #ffffff;
 }
 
 .tertiary.dark:hover:not(.disabled) {
   background-color: #1c1c1c;
-  color: #93beff;
+  color: #ffffff;
 }
 
 .tertiary.dark:active:not(.disabled) {
   background-color: #333333;
-  color: #bddbff;
+  color: #ffffff;
 }
