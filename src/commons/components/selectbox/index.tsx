@@ -112,7 +112,14 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
               }`}
               onClick={() => handleSelect(option.value)}
             >
-              {option.label}
+              <span className={styles.optionText}>{option.label}</span>
+              {value === option.value && (
+                <img
+                  src="/icons/check_outline_light_xs.svg"
+                  alt="selected"
+                  className={styles.checkIcon}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -122,3 +129,4 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 };
 
 export default SelectBox;
+
