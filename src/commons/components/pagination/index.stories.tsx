@@ -74,16 +74,31 @@ const PaginationWrapper = ({
 
 // 기본 스토리
 export const Default: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper />,
 };
 
 // Primary 페이지네이션 - Light Theme
 export const PrimaryLight: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper variant="primary" theme="light" />,
 };
 
 // Primary 페이지네이션 - Dark Theme
 export const PrimaryDark: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper variant="primary" theme="dark" />,
   parameters: {
     backgrounds: { default: "dark" },
@@ -92,11 +107,21 @@ export const PrimaryDark: Story = {
 
 // Secondary 페이지네이션 - Light Theme
 export const SecondaryLight: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper variant="secondary" theme="light" />,
 };
 
 // Secondary 페이지네이션 - Dark Theme
 export const SecondaryDark: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper variant="secondary" theme="dark" />,
   parameters: {
     backgrounds: { default: "dark" },
@@ -105,11 +130,21 @@ export const SecondaryDark: Story = {
 
 // Tertiary 페이지네이션 - Light Theme
 export const TertiaryLight: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper variant="tertiary" theme="light" />,
 };
 
 // Tertiary 페이지네이션 - Dark Theme
 export const TertiaryDark: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper variant="tertiary" theme="dark" />,
   parameters: {
     backgrounds: { default: "dark" },
@@ -118,36 +153,71 @@ export const TertiaryDark: Story = {
 
 // Small 크기
 export const SizeSmall: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper size="small" />,
 };
 
 // Medium 크기
 export const SizeMedium: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper size="medium" />,
 };
 
 // Large 크기
 export const SizeLarge: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper size="large" />,
 };
 
 // 적은 페이지 수
 export const FewPages: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper totalPages={3} />,
 };
 
 // 많은 페이지 수
 export const ManyPages: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper totalPages={50} />,
 };
 
 // 커스텀 최대 표시 페이지 수
 export const CustomMaxVisiblePages: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => <PaginationWrapper totalPages={20} maxVisiblePages={7} />,
 };
 
 // 모든 사이즈 비교
 export const AllSizes: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => (
     <div style={{ display: "flex", gap: "32px", flexDirection: "column" }}>
       <div>
@@ -168,6 +238,11 @@ export const AllSizes: Story = {
 
 // 모든 Variant - Light Theme
 export const AllVariantsLight: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => (
     <div style={{ display: "flex", gap: "32px", flexDirection: "column" }}>
       <div>
@@ -188,28 +263,27 @@ export const AllVariantsLight: Story = {
 
 // 모든 Variant - Dark Theme
 export const AllVariantsDark: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => (
     <div style={{ display: "flex", gap: "32px", flexDirection: "column" }}>
       <div>
-        <h4
-          style={{ marginBottom: "12px", fontSize: "14px", color: "white" }}
-        >
+        <h4 style={{ marginBottom: "12px", fontSize: "14px", color: "white" }}>
           Primary
         </h4>
         <PaginationWrapper variant="primary" theme="dark" />
       </div>
       <div>
-        <h4
-          style={{ marginBottom: "12px", fontSize: "14px", color: "white" }}
-        >
+        <h4 style={{ marginBottom: "12px", fontSize: "14px", color: "white" }}>
           Secondary
         </h4>
         <PaginationWrapper variant="secondary" theme="dark" />
       </div>
       <div>
-        <h4
-          style={{ marginBottom: "12px", fontSize: "14px", color: "white" }}
-        >
+        <h4 style={{ marginBottom: "12px", fontSize: "14px", color: "white" }}>
           Tertiary
         </h4>
         <PaginationWrapper variant="tertiary" theme="dark" />
@@ -223,6 +297,11 @@ export const AllVariantsDark: Story = {
 
 // 모든 상태 종합
 export const AllStates: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => (
     <div style={{ display: "flex", gap: "32px", flexDirection: "column" }}>
       <div>
@@ -247,11 +326,7 @@ export const AllStates: Story = {
         <div style={{ display: "flex", gap: "24px", flexDirection: "column" }}>
           <div>
             <h4 style={{ marginBottom: "8px", fontSize: "12px" }}>Small</h4>
-            <PaginationWrapper
-              variant="secondary"
-              theme="light"
-              size="small"
-            />
+            <PaginationWrapper variant="secondary" theme="light" size="small" />
           </div>
           <div>
             <h4 style={{ marginBottom: "8px", fontSize: "12px" }}>Medium</h4>
@@ -263,11 +338,7 @@ export const AllStates: Story = {
           </div>
           <div>
             <h4 style={{ marginBottom: "8px", fontSize: "12px" }}>Large</h4>
-            <PaginationWrapper
-              variant="secondary"
-              theme="light"
-              size="large"
-            />
+            <PaginationWrapper variant="secondary" theme="light" size="large" />
           </div>
         </div>
       </div>
@@ -294,6 +365,11 @@ export const AllStates: Story = {
 
 // 다양한 페이지 수 종합
 export const AllPageCounts: Story = {
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    onPageChange: () => {},
+  },
   render: () => (
     <div style={{ display: "flex", gap: "32px", flexDirection: "column" }}>
       <div>
