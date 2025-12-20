@@ -38,7 +38,7 @@ export default function Diaries() {
             value={selectedFilter}
             onChange={handleFilterChange}
             placeholder="전체"
-            variant="secondary"
+            variant="primary"
             size="medium"
             theme="light"
             className={styles.selectbox}
@@ -54,13 +54,13 @@ export default function Diaries() {
         </div>
         <Button
           variant="primary"
-          size="medium"
+          size="large"
           theme="light"
           onClick={handleWriteDiary}
           className={styles.writeButton}
         >
           <Image
-            src="/icons/add_outline_light_m.svg"
+            src="/icons/plus_outline_light_m.svg"
             alt="add"
             width={24}
             height={24}
