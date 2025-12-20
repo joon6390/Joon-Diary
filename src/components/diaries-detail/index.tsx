@@ -145,7 +145,7 @@ export default function DiariesDetail() {
           <Button
             variant="primary"
             theme="light"
-            size="medium"
+            size="large"
             onClick={handleRetrospectSubmit}
             className={styles.retrospectButton}
           >
@@ -163,9 +163,7 @@ export default function DiariesDetail() {
             {index > 0 && <div className={styles.retrospectDivider}></div>}
             <div className={styles.retrospectItem}>
               <span className={styles.retrospectText}>{retrospect.text}</span>
-              <span className={styles.retrospectDate}>
-                [{retrospect.date}]
-              </span>
+              <span className={styles.retrospectDate}>[{retrospect.date}]</span>
             </div>
           </div>
         ))}
