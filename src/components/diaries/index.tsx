@@ -112,10 +112,10 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
             aria-label="삭제"
           >
             <Image
-              src="/icons/close_outline_light_s.svg"
+              src="/icons/close_outline_light_m.svg"
               alt="close"
-              width={24}
-              height={24}
+              width={40}
+              height={40}
               className={styles.deleteIcon}
             />
           </button>
