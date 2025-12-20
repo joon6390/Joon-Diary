@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { SelectBox } from "@/commons/components/selectbox";
 import { SearchBar } from "@/commons/components/searchbar";
 import { Button } from "@/commons/components/button";
+import { Pagination } from "@/commons/components/pagination";
 import Image from "next/image";
 import { EmotionType, getEmotionData } from "@/commons/constants/enum";
 
@@ -146,6 +147,8 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
 export default function Diaries() {
   const [selectedFilter, setSelectedFilter] = useState<string>("");
   const [diaries, setDiaries] = useState<DiaryData[]>(mockDiaries);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = 5;
 
   const filterOptions = [
     { value: "all", label: "전체" },
@@ -167,6 +170,10 @@ export default function Diaries() {
 
   const handleDeleteDiary = (id: number) => {
     setDiaries((prev) => prev.filter((diary) => diary.id !== id));
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -221,7 +228,17 @@ export default function Diaries() {
         ))}
       </div>
       <div className={styles.gap3} />
-      <div className={styles.pagination} />
+      <div className={styles.pagination}>
+        <Pagination
+          variant="primary"
+          size="medium"
+          theme="light"
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          maxVisiblePages={5}
+        />
+      </div>
       <div className={styles.gap4} />
     </div>
   );
