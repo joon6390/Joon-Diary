@@ -54,8 +54,120 @@
 /* Main: 1168 * 936 */
 .main {
   width: 1168px;
-  height: 936px;
-  background-color: var(--color-gray-20);
+  min-height: 936px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+/* DiaryCard */
+.diaryCard {
+  width: 274px;
+  height: 296px;
+  background-color: var(--color-gray-white);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  width: 274px;
+  height: 208px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.imageButtonRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 12px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.deleteButton {
+  width: 24px;
+  height: 24px;
+  border-radius: 100px;
+  background-color: var(--color-gray-white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.deleteButton:hover {
+  opacity: 0.8;
+}
+
+.imageContainer {
+  width: 274px;
+  height: 160px;
+  flex: 1;
+  display: flex;
+}
+
+.diaryImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.cardContent {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 88px;
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 24px;
+}
+
+.emotionText {
+  font-family: var(--typo-subtitle01-font);
+  font-weight: var(--typo-subtitle01-weight);
+  font-size: var(--typo-subtitle01-size);
+  line-height: 20px;
+  letter-spacing: -0.14px;
+}
+
+.dateText {
+  font-family: var(--typo-body02-regular-font);
+  font-weight: var(--typo-body02-regular-weight);
+  font-size: var(--typo-body02-regular-size);
+  line-height: 24px;
+  letter-spacing: -0.14px;
+  color: var(--color-gray-50);
+}
+
+.cardTitle {
+  font-family: var(--typo-title01-font);
+  font-weight: var(--typo-title01-weight);
+  font-size: var(--typo-title01-size);
+  line-height: 24px;
+  letter-spacing: -0.18px;
+  color: var(--color-gray-black);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 24px;
 }
 
 /* Gap 3: 1168 * 40 */

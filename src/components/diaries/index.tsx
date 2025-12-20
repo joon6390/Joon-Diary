@@ -6,9 +6,157 @@ import { SelectBox } from "@/commons/components/selectbox";
 import { SearchBar } from "@/commons/components/searchbar";
 import { Button } from "@/commons/components/button";
 import Image from "next/image";
+import { EmotionType, getEmotionData } from "@/commons/constants/enum";
+
+// Mock 일기 데이터 인터페이스
+interface DiaryData {
+  id: number;
+  emotion: EmotionType;
+  date: string;
+  title: string;
+  imageUrl: string;
+}
+
+// Mock 데이터 (emotion enum 이미지 사용)
+const mockDiaries: DiaryData[] = [
+  {
+    id: 1,
+    emotion: EmotionType.Sad,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
+    imageUrl: "/images/emotion-sad-m.png",
+  },
+  {
+    id: 2,
+    emotion: EmotionType.Surprise,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-surprise-m.png",
+  },
+  {
+    id: 3,
+    emotion: EmotionType.Angry,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-angry-m.png",
+  },
+  {
+    id: 4,
+    emotion: EmotionType.Happy,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-happy-m.png",
+  },
+  {
+    id: 5,
+    emotion: EmotionType.Etc,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
+    imageUrl: "/images/emotion-etc-m.png",
+  },
+  {
+    id: 6,
+    emotion: EmotionType.Surprise,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-surprise-m.png",
+  },
+  {
+    id: 7,
+    emotion: EmotionType.Angry,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-angry-m.png",
+  },
+  {
+    id: 8,
+    emotion: EmotionType.Happy,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-happy-m.png",
+  },
+  {
+    id: 9,
+    emotion: EmotionType.Sad,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
+    imageUrl: "/images/emotion-sad-m.png",
+  },
+  {
+    id: 10,
+    emotion: EmotionType.Surprise,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-surprise-m.png",
+  },
+  {
+    id: 11,
+    emotion: EmotionType.Angry,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-angry-m.png",
+  },
+  {
+    id: 12,
+    emotion: EmotionType.Happy,
+    date: "2024. 03. 12",
+    title: "타이틀 영역 입니다.",
+    imageUrl: "/images/emotion-happy-m.png",
+  },
+];
+
+// 일기 카드 컴포넌트
+interface DiaryCardProps {
+  diary: DiaryData;
+  onDelete: (id: number) => void;
+}
+
+function DiaryCard({ diary, onDelete }: DiaryCardProps) {
+  const emotionData = getEmotionData(diary.emotion);
+
+  return (
+    <div className={styles.diaryCard}>
+      <div className={styles.imageWrapper}>
+        <div className={styles.imageButtonRow}>
+          <button
+            className={styles.deleteButton}
+            onClick={() => onDelete(diary.id)}
+            aria-label="삭제"
+          >
+            <Image
+              src="/icons/close_outline_light_s.svg"
+              alt="close"
+              width={24}
+              height={24}
+            />
+          </button>
+        </div>
+        <div className={styles.imageContainer}>
+          <Image
+            src={diary.imageUrl}
+            alt={diary.title}
+            width={274}
+            height={208}
+            className={styles.diaryImage}
+          />
+        </div>
+      </div>
+      <div className={styles.cardContent}>
+        <div className={styles.cardHeader}>
+          <span className={styles.emotionText} style={{ color: emotionData.color }}>
+            {emotionData.label}
+          </span>
+          <span className={styles.dateText}>{diary.date}</span>
+        </div>
+        <div className={styles.cardTitle}>{diary.title}</div>
+      </div>
+    </div>
+  );
+}
 
 export default function Diaries() {
   const [selectedFilter, setSelectedFilter] = useState<string>("");
+  const [diaries, setDiaries] = useState<DiaryData[]>(mockDiaries);
 
   const filterOptions = [
     { value: "all", label: "전체" },
@@ -26,6 +174,10 @@ export default function Diaries() {
 
   const handleWriteDiary = () => {
     console.log("일기쓰기 클릭");
+  };
+
+  const handleDeleteDiary = (id: number) => {
+    setDiaries((prev) => prev.filter((diary) => diary.id !== id));
   };
 
   return (
@@ -70,7 +222,15 @@ export default function Diaries() {
         </Button>
       </div>
       <div className={styles.gap2} />
-      <div className={styles.main} />
+      <div className={styles.main}>
+        {diaries.map((diary) => (
+          <DiaryCard
+            key={diary.id}
+            diary={diary}
+            onDelete={handleDeleteDiary}
+          />
+        ))}
+      </div>
       <div className={styles.gap3} />
       <div className={styles.pagination} />
       <div className={styles.gap4} />
