@@ -168,6 +168,8 @@ export default function DiariesDetail() {
           </div>
         ))}
       </div>
+
+      <div className={styles.gap40}></div>
     </div>
   );
 }
