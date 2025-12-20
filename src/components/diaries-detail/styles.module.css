@@ -25,37 +25,155 @@
   border: 1px solid #e0e0e0;
 }
 
-/* Detail Title */
+/* ========================================
+   Detail Title
+   ======================================== */
 .detailTitle {
+  display: flex;
+  flex-direction: column;
+  width: 1168px;
   height: 84px;
-  background-color: #e3f2fd;
-  border: 1px solid #90caf9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
 }
 
-/* Detail Content */
+.titleSection {
+  display: flex;
+  width: 100%;
+  height: 36px;
+  align-items: center;
+}
+
+.title {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-bold);
+  font-size: 22px;
+  line-height: 24px;
+  letter-spacing: -0.22px;
+  color: var(--color-gray-black);
+  margin: 0;
+}
+
+.emotionDateSection {
+  display: flex;
+  width: 100%;
+  height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.emotionWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.emotionIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.emotionText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-semibold);
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+}
+
+.dateWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dateText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-regular);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  color: var(--color-gray-50);
+}
+
+/* ========================================
+   Detail Content
+   ======================================== */
 .detailContent {
-  height: 169px;
-  background-color: #f3e5f5;
-  border: 1px solid #ce93d8;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+  flex-direction: column;
+  width: 1168px;
+  min-height: 169px;
 }
 
-/* Detail Footer */
-.detailFooter {
-  height: 56px;
-  background-color: #e8f5e9;
-  border: 1px solid #81c784;
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 13px;
+}
+
+.contentLabel {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-semibold);
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.16px;
+  color: var(--color-gray-black);
+  margin: 0;
+}
+
+.contentText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-medium);
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.16px;
+  color: var(--color-gray-80);
+  margin: 0;
+  word-break: break-all;
+}
+
+.copySection {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.copyButton {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: bold;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.copyText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  color: var(--color-gray-90);
+}
+
+/* ========================================
+   Detail Footer
+   ======================================== */
+.detailFooter {
+  display: flex;
+  width: 1168px;
+  height: 40px;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+.footerButton {
+  width: 51px;
+  height: 40px;
 }
 
 /* Retrospect Input */
