@@ -29,13 +29,12 @@
   display: flex;
   align-items: center;
   font-family: var(--font-korean);
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   font-size: 18px;
   line-height: 16px;
   letter-spacing: -0.18px;
   color: var(--color-gray-black);
 }
-
 
 /* Gap */
 .gap {
@@ -83,18 +82,18 @@
   display: flex;
   align-items: center;
   font-family: var(--font-korean);
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   font-size: 24px;
   line-height: 24px;
   letter-spacing: -0.24px;
-  color: var(--color-gray-40);
+  color: #ababab;
   cursor: pointer;
   box-sizing: border-box;
 }
 
 .tabActive {
   color: var(--color-gray-black);
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   border-bottom: 2px solid var(--color-gray-black);
 }
 
@@ -127,7 +126,7 @@
 
 .footerTitle {
   font-family: var(--font-korean);
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   font-size: 20px;
   line-height: 16px;
   letter-spacing: -0.2px;
@@ -136,11 +135,11 @@
 
 .footerInfo {
   font-family: var(--font-korean);
-  font-weight: var(--font-weight-regular);
+  font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   letter-spacing: -0.14px;
-  color: var(--color-gray-70);
+  color: #5f5f5f;
 }
 
 .footerCopyright {
@@ -149,5 +148,5 @@
   font-size: 14px;
   line-height: 16px;
   letter-spacing: -0.14px;
-  color: var(--color-gray-50);
+  color: #919191;
 }
