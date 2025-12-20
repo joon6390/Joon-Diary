@@ -28,26 +28,14 @@
   height: 40px;
   display: flex;
   align-items: center;
-  font-family: var(--typo-title01-font);
-  font-weight: var(--typo-title01-weight);
-  font-size: var(--typo-title01-size);
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-bold);
+  font-size: 18px;
   line-height: 16px;
   letter-spacing: -0.18px;
   color: var(--color-gray-black);
 }
 
-.darkMode {
-  width: 55px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  font-family: var(--typo-body01-regular-font);
-  font-weight: var(--typo-body01-regular-weight);
-  font-size: var(--typo-body01-regular-size);
-  line-height: var(--typo-body01-regular-line-height);
-  letter-spacing: -0.16px;
-  color: var(--color-gray-90);
-}
 
 /* Gap */
 .gap {
@@ -94,9 +82,9 @@
   padding: 0 8px;
   display: flex;
   align-items: center;
-  font-family: var(--typo-headline01-font);
+  font-family: var(--font-korean);
   font-weight: var(--font-weight-medium);
-  font-size: var(--typo-headline01-size);
+  font-size: 24px;
   line-height: 24px;
   letter-spacing: -0.24px;
   color: var(--color-gray-40);
@@ -106,7 +94,7 @@
 
 .tabActive {
   color: var(--color-gray-black);
-  font-weight: var(--typo-headline01-weight);
+  font-weight: var(--font-weight-bold);
   border-bottom: 2px solid var(--color-gray-black);
 }
 
@@ -138,27 +126,27 @@
 }
 
 .footerTitle {
-  font-family: var(--typo-headline03-font);
-  font-weight: var(--typo-headline03-weight);
-  font-size: var(--typo-headline03-size);
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-bold);
+  font-size: 20px;
   line-height: 16px;
   letter-spacing: -0.2px;
   color: var(--color-gray-black);
 }
 
 .footerInfo {
-  font-family: var(--typo-body02-regular-font);
-  font-weight: var(--typo-body02-regular-weight);
-  font-size: var(--typo-body02-regular-size);
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-regular);
+  font-size: 14px;
   line-height: 16px;
   letter-spacing: -0.14px;
   color: var(--color-gray-70);
 }
 
 .footerCopyright {
-  font-family: var(--typo-body02-regular-font);
+  font-family: var(--font-korean);
   font-weight: 300;
-  font-size: var(--typo-body02-regular-size);
+  font-size: 14px;
   line-height: 16px;
   letter-spacing: -0.14px;
   color: var(--color-gray-50);

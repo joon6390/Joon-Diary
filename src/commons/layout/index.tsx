@@ -11,7 +11,6 @@ export default function Layout({ children }: LayoutProps) {
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.logo}>민지의 다이어리</div>
-          <div className={styles.darkMode}>다크모드</div>
         </div>
       </header>
       <div className={styles.gap} />
@@ -38,4 +37,3 @@ export default function Layout({ children }: LayoutProps) {
     </div>
   );
 }
-
