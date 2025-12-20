@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Gap 1: 1168 * 32 */
+.gap1 {
+  width: 1168px;
+  height: 32px;
+}
+
+/* Search: 1168 * 48 */
+.search {
+  width: 1168px;
+  height: 48px;
+  background-color: var(--color-gray-20);
+}
+
+/* Gap 2: 1168 * 42 */
+.gap2 {
+  width: 1168px;
+  height: 42px;
+}
+
+/* Main: 1168 * 936 */
+.main {
+  width: 1168px;
+  height: 936px;
+  background-color: var(--color-gray-20);
+}
+
+/* Gap 3: 1168 * 40 */
+.gap3 {
+  width: 1168px;
+  height: 40px;
+}
+
+/* Pagination: 1168 * 32 */
+.pagination {
+  width: 1168px;
+  height: 32px;
+  background-color: var(--color-gray-20);
+}
+
+/* Gap 4: 1168 * 40 */
+.gap4 {
+  width: 1168px;
+  height: 40px;
+}
+
