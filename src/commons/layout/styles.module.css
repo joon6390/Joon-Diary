@@ -35,6 +35,9 @@
   letter-spacing: -0.18px;
   color: var(--color-gray-black);
   white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
 }
 
 /* Gap */
@@ -87,15 +90,21 @@
   font-size: 24px;
   line-height: 24px;
   letter-spacing: -0.24px;
-  color: var(--color-gray-40);
+  color: var(--color-gray-60);
   cursor: pointer;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
 }
 
 .tabActive {
   color: var(--color-gray-black);
   font-weight: 700;
   border-bottom: 2px solid var(--color-gray-black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
 }
 
 /* Main */
