@@ -39,16 +39,6 @@
 
 .writeButton {
   width: 110px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-family: var(--font-korean);
-  font-weight: var(--font-weight-semibold);
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: -0.18px;
 }
 
 .addIcon {
