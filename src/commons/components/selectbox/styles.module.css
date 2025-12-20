@@ -41,8 +41,8 @@
 }
 
 .arrow {
-  width: 24px;
-  height: 24px;
+  width: 8.6px;
+  height: 4.7px;
 }
 
 .selectbox.open .arrow {
@@ -62,13 +62,13 @@
 }
 
 .small .icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .small .arrow {
-  width: 20px;
-  height: 20px;
+  width: 8.6px;
+  height: 4.7px;
 }
 
 .medium {
@@ -97,13 +97,13 @@
 }
 
 .large .icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 
 .large .arrow {
-  width: 28px;
-  height: 28px;
+  width: 8.6px;
+  height: 4.7px;
 }
 
 /* Primary variant */
@@ -344,3 +344,5 @@
   line-height: 26px;
   height: 56px;
 }
+
+

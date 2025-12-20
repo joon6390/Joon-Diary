@@ -91,5 +91,3 @@ export const emotionList: EmotionData[] = Object.values(emotionDataMap);
 export const getEmotionData = (type: EmotionType): EmotionData => {
   return emotionDataMap[type];
 };
-
-

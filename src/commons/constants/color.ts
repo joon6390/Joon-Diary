@@ -152,3 +152,6 @@ export type ColorShade<T extends ColorScale> = keyof (typeof colors)[T];
 export type SemanticColorCategory = keyof typeof semanticColors;
 export type SemanticColorShade<T extends SemanticColorCategory> =
   keyof (typeof semanticColors)[T];
+
+
+

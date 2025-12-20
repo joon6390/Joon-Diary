@@ -1,4 +1,4 @@
-import DiariesDetail from '@/components/diaries-detail';
+import DiariesDetail from "@/components/diaries-detail";
 
 export default function DiaryDetailPage() {
   return (
@@ -7,4 +7,3 @@ export default function DiaryDetailPage() {
     </main>
   );
 }
-

@@ -199,3 +199,6 @@ export type PathCategory = keyof typeof paths;
 export type AuthPath = keyof typeof paths.auth;
 export type DiaryPath = keyof typeof paths.diaries;
 export type PicturePath = keyof typeof paths.pictures;
+
+
+

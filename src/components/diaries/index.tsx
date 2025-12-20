@@ -133,7 +133,10 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
       </div>
       <div className={styles.cardContent}>
         <div className={styles.cardHeader}>
-          <span className={styles.emotionText} style={{ color: emotionData.color }}>
+          <span
+            className={styles.emotionText}
+            style={{ color: emotionData.color }}
+          >
             {emotionData.label}
           </span>
           <span className={styles.dateText}>{diary.date}</span>
