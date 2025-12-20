@@ -7,22 +7,16 @@
 /* Gap 64px */
 .gap64 {
   height: 64px;
-  background-color: #f0f0f0;
-  border: 1px solid #e0e0e0;
 }
 
 /* Gap 24px */
 .gap24 {
   height: 24px;
-  background-color: #f0f0f0;
-  border: 1px solid #e0e0e0;
 }
 
 /* Gap 16px */
 .gap16 {
   height: 16px;
-  background-color: #f0f0f0;
-  border: 1px solid #e0e0e0;
 }
 
 /* ========================================
@@ -168,13 +162,15 @@
   width: 1168px;
   height: 56px;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
   border-bottom: 1px solid black;
 }
 
 .footerButton {
   width: 51px;
+  height: 40px;
+  padding: 8px 10px;
 }
 
 /* Retrospect Input */
