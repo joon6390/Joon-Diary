@@ -76,7 +76,7 @@
   width: 274px;
   height: 208px;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
@@ -90,6 +90,8 @@
   padding: 12px;
   height: 48px;
   flex-shrink: 0;
+  margin-bottom: -48px;
+  z-index: 1;
 }
 
 .deleteButton {
@@ -113,8 +115,9 @@
 
 .imageContainer {
   width: 274px;
-  height: 160px;
-  flex: 1;
+  height: 208px;
+  border-radius: 16px;
+  overflow: hidden;
   display: flex;
 }
 
