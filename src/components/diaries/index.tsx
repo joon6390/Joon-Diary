@@ -14,94 +14,81 @@ interface DiaryData {
   emotion: EmotionType;
   date: string;
   title: string;
-  imageUrl: string;
 }
 
-// Mock 데이터 (emotion enum 이미지 사용)
+// Mock 데이터 (emotion enum 타입 활용)
 const mockDiaries: DiaryData[] = [
   {
     id: 1,
     emotion: EmotionType.Sad,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
-    imageUrl: "/images/emotion-sad-m.svg",
   },
   {
     id: 2,
     emotion: EmotionType.Surprise,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-surprise-m.svg",
   },
   {
     id: 3,
     emotion: EmotionType.Angry,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-angry-m.svg",
   },
   {
     id: 4,
     emotion: EmotionType.Happy,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-happy-m.svg",
   },
   {
     id: 5,
     emotion: EmotionType.Etc,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
-    imageUrl: "/images/emotion-etc-m.svg",
   },
   {
     id: 6,
     emotion: EmotionType.Surprise,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-surprise-m.svg",
   },
   {
     id: 7,
     emotion: EmotionType.Angry,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-angry-m.svg",
   },
   {
     id: 8,
     emotion: EmotionType.Happy,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-happy-m.svg",
   },
   {
     id: 9,
     emotion: EmotionType.Sad,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
-    imageUrl: "/images/emotion-sad-m.svg",
   },
   {
     id: 10,
     emotion: EmotionType.Surprise,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-surprise-m.svg",
   },
   {
     id: 11,
     emotion: EmotionType.Angry,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-angry-m.svg",
   },
   {
     id: 12,
     emotion: EmotionType.Happy,
     date: "2024. 03. 12",
     title: "타이틀 영역 입니다.",
-    imageUrl: "/images/emotion-happy-m.svg",
   },
 ];
 
@@ -113,6 +100,7 @@ interface DiaryCardProps {
 
 function DiaryCard({ diary, onDelete }: DiaryCardProps) {
   const emotionData = getEmotionData(diary.emotion);
+  const imageUrl = `/images/${emotionData.images.medium}`;
 
   return (
     <div className={styles.diaryCard}>
@@ -133,7 +121,7 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
         </div>
         <div className={styles.imageContainer}>
           <Image
-            src={diary.imageUrl}
+            src={imageUrl}
             alt={diary.title}
             width={274}
             height={208}
