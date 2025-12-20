@@ -114,8 +114,8 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
             <Image
               src="/icons/close_outline_light_s.svg"
               alt="close"
-              width={36}
-              height={36}
+              width={24}
+              height={24}
               className={styles.deleteIcon}
             />
           </button>
