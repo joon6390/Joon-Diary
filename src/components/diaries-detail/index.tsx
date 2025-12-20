@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/commons/components/button";
 import { EmotionType, getEmotionData } from "@/commons/constants/enum";
@@ -69,7 +71,7 @@ export default function DiariesDetail() {
         <div className={styles.copySection}>
           <button className={styles.copyButton} onClick={handleCopyContent}>
             <Image
-              src="/icons/content_copy_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg"
+              src="/icons/copy_outline_light_m.svg"
               alt="복사"
               width={24}
               height={24}
