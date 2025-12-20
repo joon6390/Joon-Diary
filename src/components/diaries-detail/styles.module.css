@@ -1,45 +1,32 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 1168px;
 }
 
 /* Gap 64px */
 .gap64 {
-  width: 1168px;
   height: 64px;
   background-color: #f0f0f0;
   border: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Gap 24px */
 .gap24 {
-  width: 1168px;
   height: 24px;
   background-color: #f0f0f0;
   border: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Gap 16px */
 .gap16 {
-  width: 1168px;
   height: 16px;
   background-color: #f0f0f0;
   border: 1px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Detail Title */
 .detailTitle {
-  width: 1168px;
   height: 84px;
   background-color: #e3f2fd;
   border: 1px solid #90caf9;
@@ -51,7 +38,6 @@
 
 /* Detail Content */
 .detailContent {
-  width: 1168px;
   height: 169px;
   background-color: #f3e5f5;
   border: 1px solid #ce93d8;
@@ -63,7 +49,6 @@
 
 /* Detail Footer */
 .detailFooter {
-  width: 1168px;
   height: 56px;
   background-color: #e8f5e9;
   border: 1px solid #81c784;
@@ -75,7 +60,6 @@
 
 /* Retrospect Input */
 .retrospectInput {
-  width: 1168px;
   height: 85px;
   background-color: #fff3e0;
   border: 1px solid #ffb74d;
@@ -87,7 +71,6 @@
 
 /* Retrospect List */
 .retrospectList {
-  width: 1168px;
   height: 72px;
   background-color: #fce4ec;
   border: 1px solid #f06292;
