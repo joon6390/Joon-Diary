@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { Button } from "@/commons/components/button";
+import { Input } from "@/commons/components/input";
 import { EmotionType, getEmotionData } from "@/commons/constants/enum";
 import styles from "./styles.module.css";
 
@@ -13,8 +15,23 @@ const mockDiaryDetail = {
   content: "내용이 들어갑니다".repeat(45),
 };
 
+// Mock 회고 데이터
+const mockRetrospects = [
+  {
+    id: 1,
+    text: "3년이 지나고 다시 보니 이때가 그립다.",
+    date: "2024. 09. 24",
+  },
+  {
+    id: 2,
+    text: "3년이 지나고 다시 보니 이때가 그립다.",
+    date: "2024. 09. 24",
+  },
+];
+
 export default function DiariesDetail() {
   const emotionData = getEmotionData(mockDiaryDetail.emotion);
+  const [retrospectInput, setRetrospectInput] = useState("");
 
   const handleCopyContent = () => {
     navigator.clipboard.writeText(mockDiaryDetail.content);
@@ -26,6 +43,11 @@ export default function DiariesDetail() {
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
+  };
+
+  const handleRetrospectSubmit = () => {
+    console.log("회고 입력:", retrospectInput);
+    setRetrospectInput("");
   };
 
   return (
@@ -88,7 +110,7 @@ export default function DiariesDetail() {
         <Button
           variant="secondary"
           theme="light"
-          size="large"
+          size="medium"
           onClick={handleEdit}
           className={styles.footerButton}
         >
@@ -97,7 +119,7 @@ export default function DiariesDetail() {
         <Button
           variant="secondary"
           theme="light"
-          size="large"
+          size="medium"
           onClick={handleDelete}
           className={styles.footerButton}
         >
@@ -106,9 +128,48 @@ export default function DiariesDetail() {
       </div>
 
       <div className={styles.gap24}></div>
-      <div className={styles.retrospectInput}>retrospect-input</div>
+
+      {/* retrospect-input */}
+      <div className={styles.retrospectInput}>
+        <h2 className={styles.retrospectLabel}>회고</h2>
+        <div className={styles.retrospectInputWrapper}>
+          <Input
+            variant="primary"
+            theme="light"
+            size="medium"
+            placeholder="회고를 남겨보세요."
+            value={retrospectInput}
+            onChange={(e) => setRetrospectInput(e.target.value)}
+            className={styles.retrospectInputField}
+          />
+          <Button
+            variant="primary"
+            theme="light"
+            size="medium"
+            onClick={handleRetrospectSubmit}
+            className={styles.retrospectButton}
+          >
+            입력
+          </Button>
+        </div>
+      </div>
+
       <div className={styles.gap16}></div>
-      <div className={styles.retrospectList}>retrospect-list</div>
+
+      {/* retrospect-list */}
+      <div className={styles.retrospectList}>
+        {mockRetrospects.map((retrospect, index) => (
+          <div key={retrospect.id}>
+            {index > 0 && <div className={styles.retrospectDivider}></div>}
+            <div className={styles.retrospectItem}>
+              <span className={styles.retrospectText}>{retrospect.text}</span>
+              <span className={styles.retrospectDate}>
+                [{retrospect.date}]
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
