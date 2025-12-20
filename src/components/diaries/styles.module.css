@@ -87,17 +87,17 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-start;
-  padding: 12px;
+  padding: 6px;
   height: 48px;
   flex-shrink: 0;
   margin-bottom: -48px;
 }
 
 .deleteButton {
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   border-radius: 100px;
-  background-color: var(--color-gray-white);
+  background-color: transparent;
   border: none;
   cursor: pointer;
   display: flex;
@@ -110,6 +110,11 @@
 
 .deleteButton:hover {
   opacity: 0.8;
+}
+
+.deleteIcon {
+  width: 36px;
+  height: 36px;
 }
 
 .imageContainer {
