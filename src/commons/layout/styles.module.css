@@ -28,10 +28,11 @@
   height: 40px;
   display: flex;
   align-items: center;
-  font-family: var(--typo-headline01-font);
-  font-weight: var(--typo-headline01-weight);
-  font-size: var(--typo-headline01-size);
-  line-height: var(--typo-headline01-line-height);
+  font-family: var(--font-korean);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 16px;
+  letter-spacing: -0.18px;
   color: var(--color-gray-black);
   white-space: nowrap;
 }
@@ -81,18 +82,19 @@
   padding: 0 8px;
   display: flex;
   align-items: center;
-  font-family: var(--typo-headline01-font);
-  font-weight: var(--typo-headline01-weight);
-  font-size: var(--typo-headline01-size);
-  line-height: var(--typo-headline01-line-height);
-  color: var(--color-gray-60);
+  font-family: var(--font-korean);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: -0.24px;
+  color: var(--color-gray-40);
   cursor: pointer;
   box-sizing: border-box;
 }
 
 .tabActive {
   color: var(--color-gray-black);
-  font-weight: var(--typo-headline01-weight);
+  font-weight: 700;
   border-bottom: 2px solid var(--color-gray-black);
 }
 
