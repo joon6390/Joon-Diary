@@ -37,8 +37,8 @@ export const emotionDataMap: Record<EmotionType, EmotionData> = {
     type: EmotionType.Happy,
     label: "행복해요",
     images: {
-      medium: "emotion-happy-m.svg",
-      small: "emotion-happy-s.svg",
+      medium: "emotion-happy-m.png",
+      small: "emotion-happy-s.png",
     },
     color: colors.red[60],
   },
@@ -46,8 +46,8 @@ export const emotionDataMap: Record<EmotionType, EmotionData> = {
     type: EmotionType.Sad,
     label: "슬퍼요",
     images: {
-      medium: "emotion-sad-m.svg",
-      small: "emotion-sad-s.svg",
+      medium: "emotion-sad-m.png",
+      small: "emotion-sad-s.png",
     },
     color: colors.blue[60],
   },
@@ -55,8 +55,8 @@ export const emotionDataMap: Record<EmotionType, EmotionData> = {
     type: EmotionType.Angry,
     label: "화나요",
     images: {
-      medium: "emotion-angry-m.svg",
-      small: "emotion-angry-s.svg",
+      medium: "emotion-angry-m.png",
+      small: "emotion-angry-s.png",
     },
     color: colors.gray[60],
   },
@@ -64,8 +64,8 @@ export const emotionDataMap: Record<EmotionType, EmotionData> = {
     type: EmotionType.Surprise,
     label: "놀랐어요",
     images: {
-      medium: "emotion-surprise-m.svg",
-      small: "emotion-surprise-s.svg",
+      medium: "emotion-surprise-m.png",
+      small: "emotion-surprise-s.png",
     },
     color: colors.yellow[60],
   },
@@ -73,8 +73,8 @@ export const emotionDataMap: Record<EmotionType, EmotionData> = {
     type: EmotionType.Etc,
     label: "기타",
     images: {
-      medium: "emotion-etc-m.svg",
-      small: "emotion-etc-s.svg",
+      medium: "emotion-etc-m.png",
+      small: "emotion-etc-s.png",
     },
     color: colors.green[60],
   },
@@ -91,3 +91,5 @@ export const emotionList: EmotionData[] = Object.values(emotionDataMap);
 export const getEmotionData = (type: EmotionType): EmotionData => {
   return emotionDataMap[type];
 };
+
+
