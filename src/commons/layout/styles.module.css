@@ -4,6 +4,7 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  background-color: var(--color-gray-white);
 }
 
 /* Header */
@@ -24,16 +25,15 @@
 }
 
 .logo {
-  width: 120px;
   height: 40px;
   display: flex;
   align-items: center;
-  font-family: var(--font-korean);
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 16px;
-  letter-spacing: -0.18px;
+  font-family: var(--typo-headline01-font);
+  font-weight: var(--typo-headline01-weight);
+  font-size: var(--typo-headline01-size);
+  line-height: var(--typo-headline01-line-height);
   color: var(--color-gray-black);
+  white-space: nowrap;
 }
 
 /* Gap */
@@ -81,11 +81,10 @@
   padding: 0 8px;
   display: flex;
   align-items: center;
-  font-family: var(--font-korean);
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  letter-spacing: -0.24px;
+  font-family: var(--typo-headline01-font);
+  font-weight: var(--typo-headline01-weight);
+  font-size: var(--typo-headline01-size);
+  line-height: var(--typo-headline01-line-height);
   color: var(--color-gray-60);
   cursor: pointer;
   box-sizing: border-box;
@@ -93,7 +92,7 @@
 
 .tabActive {
   color: var(--color-gray-black);
-  font-weight: 700;
+  font-weight: var(--typo-headline01-weight);
   border-bottom: 2px solid var(--color-gray-black);
 }
 
