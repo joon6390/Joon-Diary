@@ -1,18 +1,95 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import styles from './styles.module.css';
+import { Input } from '@/commons/components/input';
+import { Button } from '@/commons/components/button';
+import { EmotionType, emotionList } from '@/commons/constants/enum';
 
 export default function DiariesNew() {
+  const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(null);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.header}>header</div>
+      {/* Header */}
+      <div className={styles.header}>
+        <h1 className={styles.headerTitle}>일기 쓰기</h1>
+      </div>
+
       <div className={styles.gap}></div>
-      <div className={styles.emotionBox}>emotion-box</div>
+
+      {/* Emotion Box */}
+      <div className={styles.emotionBox}>
+        <p className={styles.emotionQuestion}>오늘 기분은 어땟나요?</p>
+        <div className={styles.emotionRadioGroup}>
+          {emotionList.map((emotion) => (
+            <label key={emotion.type} className={styles.radioLabel}>
+              <input
+                type="radio"
+                name="emotion"
+                value={emotion.type}
+                checked={selectedEmotion === emotion.type}
+                onChange={(e) => setSelectedEmotion(e.target.value as EmotionType)}
+                className={styles.radioInput}
+              />
+              <span className={styles.radioText}>{emotion.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
       <div className={styles.gap}></div>
-      <div className={styles.inputTitle}>input-title</div>
+
+      {/* Input Title */}
+      <div className={styles.inputTitle}>
+        <label className={styles.inputLabel}>제목</label>
+        <Input
+          variant="primary"
+          size="large"
+          theme="light"
+          placeholder="제목을 입력합니다."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className={styles.inputField}
+        />
+      </div>
+
       <div className={styles.gapSmall}></div>
-      <div className={styles.inputContent}>input-content</div>
+
+      {/* Input Content */}
+      <div className={styles.inputContent}>
+        <label className={styles.inputLabel}>내용</label>
+        <textarea
+          placeholder="내용을 입력합니다."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className={styles.textareaField}
+        />
+      </div>
+
       <div className={styles.gap}></div>
-      <div className={styles.footer}>footer</div>
+
+      {/* Footer */}
+      <div className={styles.footer}>
+        <Button
+          variant="secondary"
+          size="large"
+          theme="light"
+          className={styles.closeButton}
+        >
+          닫기
+        </Button>
+        <Button
+          variant="primary"
+          size="large"
+          theme="light"
+          className={styles.submitButton}
+        >
+          등록하기
+        </Button>
+      </div>
     </div>
   );
 }
