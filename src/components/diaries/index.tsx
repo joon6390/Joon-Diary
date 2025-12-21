@@ -8,6 +8,7 @@ import { Button } from "@/commons/components/button";
 import { Pagination } from "@/commons/components/pagination";
 import Image from "next/image";
 import { EmotionType, getEmotionData } from "@/commons/constants/enum";
+import { useLinkModal } from "./hooks/index.link.modal.hook";
 
 // Mock 일기 데이터 인터페이스
 interface DiaryData {
@@ -153,6 +154,9 @@ export default function Diaries() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const totalPages = 5;
 
+  // 일기쓰기 모달 hook
+  const { handleWriteDiary } = useLinkModal();
+
   const filterOptions = [
     { value: "all", label: "전체" },
     { value: "recent", label: "최신순" },
@@ -167,10 +171,6 @@ export default function Diaries() {
     console.log("검색:", value);
   };
 
-  const handleWriteDiary = () => {
-    console.log("일기쓰기 클릭");
-  };
-
   const handleDeleteDiary = (id: number) => {
     setDiaries((prev) => prev.filter((diary) => diary.id !== id));
   };
@@ -180,7 +180,7 @@ export default function Diaries() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="diaries-container">
       <div className={styles.gap1} />
       <div className={styles.search}>
         <div className={styles.searchLeft}>
@@ -209,6 +209,7 @@ export default function Diaries() {
           theme="light"
           onClick={handleWriteDiary}
           className={styles.writeButton}
+          data-testid="write-diary-button"
         >
           <Image
             src="/icons/plus_outline_light_m.svg"

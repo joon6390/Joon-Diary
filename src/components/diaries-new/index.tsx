@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { Input } from "@/commons/components/input";
 import { Button } from "@/commons/components/button";
 import { EmotionType, emotionList } from "@/commons/constants/enum";
+import { useModal } from "@/commons/providers/modal/modal.provider";
 
 export default function DiariesNew() {
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(
@@ -12,6 +13,7 @@ export default function DiariesNew() {
   );
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const { closeModal } = useModal();
 
   return (
     <div className={styles.wrapper}>
@@ -74,6 +76,7 @@ export default function DiariesNew() {
           size="large"
           theme="light"
           className={styles.closeButton}
+          onClick={closeModal}
         >
           닫기
         </Button>
