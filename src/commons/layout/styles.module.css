@@ -35,6 +35,7 @@
   letter-spacing: -0.18px;
   color: var(--color-gray-black);
   white-space: nowrap;
+  cursor: pointer;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;

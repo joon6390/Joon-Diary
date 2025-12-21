@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { useLayoutLinkRouting } from "./hooks/index.link.routing.hook";
 import styles from "./styles.module.css";
 
 interface LayoutProps {
@@ -6,11 +9,24 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const {
+    navigateToDiaries,
+    navigateToPictures,
+    isDiariesActive,
+    isPicturesActive,
+  } = useLayoutLinkRouting();
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="layout-container">
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <div className={styles.logo}>민지의 다이어리</div>
+          <div
+            className={styles.logo}
+            onClick={navigateToDiaries}
+            data-testid="layout-logo"
+          >
+            민지의 다이어리
+          </div>
         </div>
       </header>
       <div className={styles.gap} />
@@ -20,8 +36,22 @@ export default function Layout({ children }: LayoutProps) {
       <div className={styles.gap} />
       <nav className={styles.navigation}>
         <div className={styles.navContent}>
-          <div className={`${styles.tab} ${styles.tabActive}`}>일기보관함</div>
-          <div className={styles.tab}>사진보관함</div>
+          <div
+            className={`${styles.tab} ${isDiariesActive ? styles.tabActive : ""}`}
+            onClick={navigateToDiaries}
+            data-testid="nav-diaries"
+            data-active={isDiariesActive}
+          >
+            일기보관함
+          </div>
+          <div
+            className={`${styles.tab} ${isPicturesActive ? styles.tabActive : ""}`}
+            onClick={navigateToPictures}
+            data-testid="nav-pictures"
+            data-active={isPicturesActive}
+          >
+            사진보관함
+          </div>
         </div>
       </nav>
       <main className={styles.main}>{children}</main>
