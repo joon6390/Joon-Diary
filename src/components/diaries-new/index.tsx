@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import styles from './styles.module.css';
-import { Input } from '@/commons/components/input';
-import { Button } from '@/commons/components/button';
-import { EmotionType, emotionList } from '@/commons/constants/enum';
+import React, { useState } from "react";
+import styles from "./styles.module.css";
+import { Input } from "@/commons/components/input";
+import { Button } from "@/commons/components/button";
+import { EmotionType, emotionList } from "@/commons/constants/enum";
 
 export default function DiariesNew() {
-  const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(null);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(
+    null
+  );
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   return (
     <div className={styles.wrapper}>
@@ -31,7 +33,9 @@ export default function DiariesNew() {
                 name="emotion"
                 value={emotion.type}
                 checked={selectedEmotion === emotion.type}
-                onChange={(e) => setSelectedEmotion(e.target.value as EmotionType)}
+                onChange={(e) =>
+                  setSelectedEmotion(e.target.value as EmotionType)
+                }
                 className={styles.radioInput}
               />
               <span className={styles.radioText}>{emotion.label}</span>
@@ -47,7 +51,7 @@ export default function DiariesNew() {
         <label className={styles.inputLabel}>제목</label>
         <Input
           variant="primary"
-          size="large"
+          size="medium"
           theme="light"
           placeholder="제목을 입력합니다."
           value={title}
@@ -93,4 +97,3 @@ export default function DiariesNew() {
     </div>
   );
 }
-

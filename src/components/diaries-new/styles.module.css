@@ -97,6 +97,10 @@
   width: 100%;
 }
 
+.inputField::placeholder {
+  color: var(--color-gray-black);
+}
+
 .gapSmall {
   display: flex;
   width: 100%;
@@ -153,4 +157,3 @@
 .submitButton {
   width: 104px;
 }
-
