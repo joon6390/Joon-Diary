@@ -63,6 +63,7 @@
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
+  accent-color: var(--color-gray-black);
 }
 
 .radioText {

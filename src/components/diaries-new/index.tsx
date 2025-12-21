@@ -22,7 +22,7 @@ export default function DiariesNew() {
 
       {/* Emotion Box */}
       <div className={styles.emotionBox}>
-        <p className={styles.emotionQuestion}>오늘 기분은 어땟나요?</p>
+        <p className={styles.emotionQuestion}>오늘 기분은 어땠나요?</p>
         <div className={styles.emotionRadioGroup}>
           {emotionList.map((emotion) => (
             <label key={emotion.type} className={styles.radioLabel}>
