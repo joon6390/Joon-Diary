@@ -4,13 +4,24 @@ import { useModal } from "@/commons/providers/modal/modal.provider";
 import DiariesNew from "@/components/diaries-new";
 
 /**
- * 일기쓰기 모달 연동 Hook
- * 
- * 기능:
- * - 일기쓰기 버튼 클릭시 모달을 열어서 일기 작성 폼을 표시
- * - 기존에 설정된 modal provider 활용
+ * Diaries Link Modal Hook 반환 타입
  */
-export const useLinkModal = () => {
+export interface DiariesLinkModalReturn {
+  handleWriteDiary: () => void;
+  closeModal: () => void;
+}
+
+/**
+ * Diaries Link Modal Hook
+ * 
+ * 일기쓰기 모달 연동을 위한 커스텀 훅
+ * 일기쓰기 버튼 클릭시 모달을 열어서 일기 작성 폼을 표시
+ * 
+ * @returns {DiariesLinkModalReturn} 모달 제어 함수들
+ * - handleWriteDiary: 일기쓰기 모달을 여는 함수
+ * - closeModal: 모달을 닫는 함수
+ */
+export const useLinkModal = (): DiariesLinkModalReturn => {
   const { openModal, closeModal } = useModal();
 
   /**
