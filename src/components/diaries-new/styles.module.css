@@ -6,6 +6,7 @@
   padding: 24px;
   background-color: var(--color-gray-white);
   border-radius: 24px;
+  gap: 40px;
 }
 
 /* Header */
@@ -24,18 +25,11 @@
   margin: 0;
 }
 
-.gap {
-  display: flex;
-  width: 100%;
-  height: 40px;
-}
-
 /* Emotion Box */
 .emotionBox {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 64px;
   gap: 16px;
 }
 
@@ -46,12 +40,14 @@
   line-height: var(--typo-headline03-line-height);
   color: var(--color-gray-black);
   margin: 0;
+  height: 24px;
 }
 
 .emotionRadioGroup {
   display: flex;
   gap: 20px;
   align-items: center;
+  height: 24px;
 }
 
 .radioLabel {
@@ -66,14 +62,16 @@
   height: 24px;
   cursor: pointer;
   margin: 0;
+  flex-shrink: 0;
 }
 
 .radioText {
-  font-family: var(--typo-title01-font);
-  font-weight: var(--typo-title01-weight);
-  font-size: var(--typo-title01-size);
-  line-height: var(--typo-title01-line-height);
-  color: var(--text-primary);
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-medium);
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: -0.18px;
+  color: var(--color-gray-80);
 }
 
 /* Input Title */
@@ -81,7 +79,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 76px;
   gap: 8px;
 }
 
@@ -90,21 +87,12 @@
   font-weight: var(--typo-body02-medium-weight);
   font-size: var(--typo-body02-medium-size);
   line-height: var(--typo-body02-medium-line-height);
-  color: var(--text-primary);
+  color: var(--color-gray-80);
+  height: 20px;
 }
 
 .inputField {
   width: 100%;
-}
-
-.inputField::placeholder {
-  color: var(--color-gray-black);
-}
-
-.gapSmall {
-  display: flex;
-  width: 100%;
-  height: 24px;
 }
 
 /* Input Content */
@@ -112,7 +100,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 156px;
   gap: 8px;
 }
 
@@ -121,7 +108,7 @@
   height: 128px;
   padding: 12px 16px;
   background-color: var(--color-gray-white);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--color-gray-20);
   border-radius: 8px;
   font-family: var(--typo-body01-medium-font);
   font-weight: var(--typo-body01-medium-weight);
@@ -130,6 +117,7 @@
   color: var(--color-gray-black);
   resize: none;
   outline: none;
+  box-sizing: border-box;
 }
 
 .textareaField::placeholder {

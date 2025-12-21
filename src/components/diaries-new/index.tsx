@@ -20,8 +20,6 @@ export default function DiariesNew() {
         <h1 className={styles.headerTitle}>일기 쓰기</h1>
       </div>
 
-      <div className={styles.gap}></div>
-
       {/* Emotion Box */}
       <div className={styles.emotionBox}>
         <p className={styles.emotionQuestion}>오늘 기분은 어땟나요?</p>
@@ -44,8 +42,6 @@ export default function DiariesNew() {
         </div>
       </div>
 
-      <div className={styles.gap}></div>
-
       {/* Input Title */}
       <div className={styles.inputTitle}>
         <label className={styles.inputLabel}>제목</label>
@@ -60,8 +56,6 @@ export default function DiariesNew() {
         />
       </div>
 
-      <div className={styles.gapSmall}></div>
-
       {/* Input Content */}
       <div className={styles.inputContent}>
         <label className={styles.inputLabel}>내용</label>
@@ -72,8 +66,6 @@ export default function DiariesNew() {
           className={styles.textareaField}
         />
       </div>
-
-      <div className={styles.gap}></div>
 
       {/* Footer */}
       <div className={styles.footer}>
