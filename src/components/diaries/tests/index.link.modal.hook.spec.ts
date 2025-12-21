@@ -103,5 +103,74 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     // Then: 모달이 화면에서 사라짐
     await expect(modal).not.toBeVisible();
   });
+
+  test("모달 내부에 일기 작성 폼 요소들이 표시되어야 한다", async ({ page }) => {
+    // Given: 일기쓰기 버튼 클릭하여 모달 열기
+    const writeButton = page.locator('[data-testid="write-diary-button"]');
+    await writeButton.click();
+
+    // And: 모달이 열렸는지 확인
+    const modal = page.locator('[data-testid="diary-modal"]');
+    await expect(modal).toBeVisible();
+
+    // Then: 감정 선택 질문이 표시됨
+    await expect(modal.locator("text=오늘 기분은 어땠나요?")).toBeVisible();
+
+    // And: 감정 라디오 버튼들이 표시됨
+    await expect(modal.locator("text=행복해요")).toBeVisible();
+    await expect(modal.locator("text=슬퍼요")).toBeVisible();
+    await expect(modal.locator("text=화나요")).toBeVisible();
+    await expect(modal.locator("text=놀랐어요")).toBeVisible();
+    await expect(modal.locator("text=기타")).toBeVisible();
+
+    // And: 제목 입력 필드가 표시됨
+    await expect(modal.locator("label", { hasText: "제목" })).toBeVisible();
+    await expect(modal.locator('input[placeholder="제목을 입력합니다."]')).toBeVisible();
+
+    // And: 내용 입력 필드가 표시됨
+    await expect(modal.locator("label", { hasText: "내용" })).toBeVisible();
+    await expect(modal.locator('textarea[placeholder="내용을 입력합니다."]')).toBeVisible();
+
+    // And: 등록하기 버튼이 표시됨
+    await expect(modal.locator("button", { hasText: "등록하기" })).toBeVisible();
+  });
+
+  test("모달이 여러 번 열고 닫혀도 정상 작동해야 한다", async ({ page }) => {
+    // Given: 첫 번째로 모달 열기
+    const writeButton = page.locator('[data-testid="write-diary-button"]');
+    await writeButton.click();
+
+    // And: 모달이 열렸는지 확인
+    const modal = page.locator('[data-testid="diary-modal"]');
+    await expect(modal).toBeVisible();
+
+    // When: 닫기 버튼으로 모달 닫기
+    const closeButton = modal.locator("button", { hasText: "닫기" });
+    await closeButton.click();
+
+    // Then: 모달이 닫힘
+    await expect(modal).not.toBeVisible();
+
+    // When: 두 번째로 모달 열기
+    await writeButton.click();
+
+    // Then: 모달이 다시 정상적으로 열림
+    await expect(modal).toBeVisible();
+    await expect(modal.locator("text=일기 쓰기")).toBeVisible();
+
+    // When: 배경 클릭으로 모달 닫기
+    await page.locator(".fixed.inset-0.z-50.flex.items-center.justify-center").click({
+      position: { x: 10, y: 10 }
+    });
+
+    // Then: 모달이 닫힘
+    await expect(modal).not.toBeVisible();
+
+    // When: 세 번째로 모달 열기
+    await writeButton.click();
+
+    // Then: 모달이 여전히 정상적으로 작동함
+    await expect(modal).toBeVisible();
+  });
 });
 
