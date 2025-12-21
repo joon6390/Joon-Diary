@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useLayoutLinkRouting } from "./hooks/index.link.routing.hook";
+import { useLayoutArea } from "./hooks/index.area.hook";
 import styles from "./styles.module.css";
 
 interface LayoutProps {
@@ -16,54 +17,67 @@ export default function Layout({ children }: LayoutProps) {
     isPicturesActive,
   } = useLayoutLinkRouting();
 
+  const { showHeader, showLogo, showBanner, showNavigation, showFooter } =
+    useLayoutArea();
+
   return (
     <div className={styles.container} data-testid="layout-container">
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <div
-            className={styles.logo}
-            onClick={navigateToDiaries}
-            data-testid="layout-logo"
-          >
-            민지의 다이어리
+      {showHeader && (
+        <header className={styles.header} data-testid="layout-header">
+          <div className={styles.headerContent}>
+            {showLogo && (
+              <div
+                className={styles.logo}
+                onClick={navigateToDiaries}
+                data-testid="layout-logo"
+              >
+                민지의 다이어리
+              </div>
+            )}
           </div>
+        </header>
+      )}
+      {showHeader && <div className={styles.gap} />}
+      {showBanner && (
+        <div className={styles.banner} data-testid="layout-banner">
+          <div className={styles.bannerImage} />
         </div>
-      </header>
-      <div className={styles.gap} />
-      <div className={styles.banner}>
-        <div className={styles.bannerImage} />
-      </div>
-      <div className={styles.gap} />
-      <nav className={styles.navigation}>
-        <div className={styles.navContent}>
-          <div
-            className={`${styles.tab} ${isDiariesActive ? styles.tabActive : ""}`}
-            onClick={navigateToDiaries}
-            data-testid="nav-diaries"
-            data-active={isDiariesActive}
-          >
-            일기보관함
+      )}
+      {showBanner && <div className={styles.gap} />}
+      {showNavigation && (
+        <nav className={styles.navigation} data-testid="layout-navigation">
+          <div className={styles.navContent}>
+            <div
+              className={`${styles.tab} ${isDiariesActive ? styles.tabActive : ""}`}
+              onClick={navigateToDiaries}
+              data-testid="nav-diaries"
+              data-active={isDiariesActive}
+            >
+              일기보관함
+            </div>
+            <div
+              className={`${styles.tab} ${isPicturesActive ? styles.tabActive : ""}`}
+              onClick={navigateToPictures}
+              data-testid="nav-pictures"
+              data-active={isPicturesActive}
+            >
+              사진보관함
+            </div>
           </div>
-          <div
-            className={`${styles.tab} ${isPicturesActive ? styles.tabActive : ""}`}
-            onClick={navigateToPictures}
-            data-testid="nav-pictures"
-            data-active={isPicturesActive}
-          >
-            사진보관함
-          </div>
-        </div>
-      </nav>
+        </nav>
+      )}
       <main className={styles.main}>{children}</main>
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <div className={styles.footerTitle}>민지의 다이어리</div>
-          <div className={styles.footerInfo}>대표 : {"{name}"}</div>
-          <div className={styles.footerCopyright}>
-            Copyright © 2024. {"{name}"} Co., Ltd.
+      {showFooter && (
+        <footer className={styles.footer} data-testid="layout-footer">
+          <div className={styles.footerContent}>
+            <div className={styles.footerTitle}>민지의 다이어리</div>
+            <div className={styles.footerInfo}>대표 : {"{name}"}</div>
+            <div className={styles.footerCopyright}>
+              Copyright © 2024. {"{name}"} Co., Ltd.
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 }
