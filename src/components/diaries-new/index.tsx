@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 import { Input } from "@/commons/components/input";
 import { Button } from "@/commons/components/button";
 import { EmotionType, emotionList } from "@/commons/constants/enum";
-import { useModal } from "@/commons/providers/modal/modal.provider";
+import { useLinkModalClose } from "./hooks/index.link.modal.close.hook";
 
 export default function DiariesNew() {
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(
@@ -13,7 +13,7 @@ export default function DiariesNew() {
   );
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { closeModal } = useModal();
+  const { handleClose } = useLinkModalClose();
 
   return (
     <div className={styles.wrapper}>
@@ -76,7 +76,8 @@ export default function DiariesNew() {
           size="large"
           theme="light"
           className={styles.closeButton}
-          onClick={() => closeModal()}
+          onClick={handleClose}
+          data-testid="diary-close-button"
         >
           닫기
         </Button>
