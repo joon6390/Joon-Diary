@@ -81,9 +81,15 @@ export const emotionDataMap: Record<EmotionType, EmotionData> = {
 } as const;
 
 /**
- * 모든 감정 데이터 배열
+ * 모든 감정 데이터 배열 (피그마 디자인 순서: 행복해요, 슬퍼요, 놀랐어요, 화나요, 기타)
  */
-export const emotionList: EmotionData[] = Object.values(emotionDataMap);
+export const emotionList: EmotionData[] = [
+  emotionDataMap[EmotionType.Happy],
+  emotionDataMap[EmotionType.Sad],
+  emotionDataMap[EmotionType.Surprise],
+  emotionDataMap[EmotionType.Angry],
+  emotionDataMap[EmotionType.Etc],
+];
 
 /**
  * 감정 타입으로 데이터 조회
