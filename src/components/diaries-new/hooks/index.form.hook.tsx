@@ -1,0 +1,136 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/commons/providers/modal/modal.provider";
+import { Modal } from "@/commons/components/modal";
+import { EmotionType } from "@/commons/constants/enum";
+import { paths } from "@/commons/constants/url";
+
+/**
+ * 일기 폼 스키마
+ */
+const diaryFormSchema = z.object({
+  emotion: z.nativeEnum(EmotionType),
+  title: z.string().min(1, "제목을 입력해주세요."),
+  content: z.string().min(1, "내용을 입력해주세요."),
+});
+
+type DiaryFormData = z.infer<typeof diaryFormSchema>;
+
+/**
+ * 로컬스토리지에 저장되는 일기 데이터 타입
+ */
+interface DiaryData {
+  id: number;
+  title: string;
+  content: string;
+  emotion: EmotionType;
+  createdAt: string;
+}
+
+/**
+ * 일기 작성 폼 Hook 반환 타입
+ */
+export interface DiariesNewFormHookReturn {
+  register: ReturnType<typeof useForm<DiaryFormData>>["register"];
+  handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  errors: ReturnType<typeof useForm<DiaryFormData>>["formState"]["errors"];
+  isSubmitDisabled: boolean;
+}
+
+/**
+ * 일기 작성 폼 Hook
+ *
+ * react-hook-form과 zod를 사용한 일기 작성 폼 관리
+ * 로컬스토리지에 일기를 저장하고 등록 완료시 모달을 표시
+ *
+ * @returns {DiariesNewFormHookReturn} 폼 관리 함수 및 상태
+ * - register: 폼 필드 등록 함수
+ * - handleSubmit: 폼 제출 핸들러
+ * - errors: 폼 검증 에러
+ * - isSubmitDisabled: 제출 버튼 비활성화 여부
+ */
+export const useFormHook = (): DiariesNewFormHookReturn => {
+  const router = useRouter();
+  const { openModal, closeAllModals } = useModal();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<DiaryFormData>({
+    resolver: zodResolver(diaryFormSchema),
+    mode: "onChange",
+  });
+
+  // 모든 필드 값 감시
+  const watchedFields = watch();
+  const isAllFieldsFilled =
+    watchedFields.emotion &&
+    watchedFields.title &&
+    watchedFields.content &&
+    isValid;
+
+  /**
+   * 폼 제출 핸들러
+   */
+  const onSubmit = (data: DiaryFormData) => {
+    // 로컬스토리지에서 기존 일기 목록 가져오기
+    const existingDiariesStr = localStorage.getItem("diaries");
+    const existingDiaries: DiaryData[] = existingDiariesStr
+      ? JSON.parse(existingDiariesStr)
+      : [];
+
+    // 새 일기의 ID 계산
+    const maxId =
+      existingDiaries.length > 0
+        ? Math.max(...existingDiaries.map((d) => d.id))
+        : 0;
+    const newId = maxId + 1;
+
+    // 새 일기 데이터 생성
+    const newDiary: DiaryData = {
+      id: newId,
+      title: data.title,
+      content: data.content,
+      emotion: data.emotion,
+      createdAt: new Date().toISOString(),
+    };
+
+    // 로컬스토리지에 저장
+    const updatedDiaries = [...existingDiaries, newDiary];
+    localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
+
+    // 등록완료모달 열기
+    openModal(
+      <div data-testid="success-modal">
+        <Modal
+          variant="info"
+          actions="single"
+          theme="light"
+          title="일기 등록 완료"
+          description="일기가 성공적으로 등록되었습니다."
+          primaryButtonText="확인"
+          onPrimaryClick={() => {
+            // 모든 모달 닫기
+            closeAllModals();
+            // 상세페이지로 이동
+            router.push(paths.diaries.detail(newId));
+          }}
+        />
+      </div>
+    );
+  };
+
+  return {
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
+    isSubmitDisabled: !isAllFieldsFilled,
+  };
+};
+
