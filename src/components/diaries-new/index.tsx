@@ -76,7 +76,7 @@ export default function DiariesNew() {
           size="large"
           theme="light"
           className={styles.closeButton}
-          onClick={closeModal}
+          onClick={() => closeModal()}
         >
           닫기
         </Button>
