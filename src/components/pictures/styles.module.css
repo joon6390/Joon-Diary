@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Gap 1: 1168 * 32 */
+.gap1 {
+  width: 1168px;
+  height: 32px;
+}
+
+/* Filter: 1168 * 48 */
+.filter {
+  width: 1168px;
+  height: 48px;
+  background-color: var(--color-gray-5);
+}
+
+/* Gap 2: 1168 * 42 */
+.gap2 {
+  width: 1168px;
+  height: 42px;
+}
+
+/* Main: 1168 * auto */
+.main {
+  width: 1168px;
+  height: auto;
+  background-color: var(--color-gray-5);
+}
+
