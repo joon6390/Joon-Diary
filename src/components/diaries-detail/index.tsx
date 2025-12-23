@@ -4,16 +4,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/commons/components/button";
 import { Input } from "@/commons/components/input";
-import { EmotionType, getEmotionData } from "@/commons/constants/enum";
+import { getEmotionData } from "@/commons/constants/enum";
+import { useBindingHook } from "./hooks/index.binding.hook";
 import styles from "./styles.module.css";
-
-// Mock 데이터
-const mockDiaryDetail = {
-  title: "이것은 타이틀 입니다.",
-  emotion: EmotionType.Happy,
-  date: "2024. 07. 12",
-  content: "내용이 들어갑니다".repeat(45),
-};
 
 // Mock 회고 데이터
 const mockRetrospects = [
@@ -30,11 +23,32 @@ const mockRetrospects = [
 ];
 
 export default function DiariesDetail() {
-  const emotionData = getEmotionData(mockDiaryDetail.emotion);
+  const { diary, isLoading } = useBindingHook();
   const [retrospectInput, setRetrospectInput] = useState("");
 
+  // 일기 데이터가 없거나 로딩 중일 때 처리
+  if (isLoading) {
+    return (
+      <div className={styles.container} data-testid="diaries-detail-container">
+        <div className={styles.gap64}></div>
+        <div>로딩 중...</div>
+      </div>
+    );
+  }
+
+  if (!diary) {
+    return (
+      <div className={styles.container} data-testid="diaries-detail-container">
+        <div className={styles.gap64}></div>
+        <div>일기를 찾을 수 없습니다.</div>
+      </div>
+    );
+  }
+
+  const emotionData = getEmotionData(diary.emotion);
+
   const handleCopyContent = () => {
-    navigator.clipboard.writeText(mockDiaryDetail.content);
+    navigator.clipboard.writeText(diary.content);
   };
 
   const handleEdit = () => {
@@ -51,13 +65,15 @@ export default function DiariesDetail() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="diaries-detail-container">
       <div className={styles.gap64}></div>
 
       {/* detail-title */}
       <div className={styles.detailTitle}>
         <div className={styles.titleSection}>
-          <h1 className={styles.title}>{mockDiaryDetail.title}</h1>
+          <h1 className={styles.title} data-testid="diary-title">
+            {diary.title}
+          </h1>
         </div>
         <div className={styles.emotionDateSection}>
           <div className={styles.emotionWrapper}>
@@ -67,16 +83,20 @@ export default function DiariesDetail() {
               width={32}
               height={32}
               className={styles.emotionIcon}
+              data-testid="diary-emotion-icon"
             />
             <span
               className={styles.emotionText}
               style={{ color: emotionData.color }}
+              data-testid="diary-emotion-text"
             >
               {emotionData.label}
             </span>
           </div>
           <div className={styles.dateWrapper}>
-            <span className={styles.dateText}>{mockDiaryDetail.date}</span>
+            <span className={styles.dateText} data-testid="diary-date">
+              {diary.createdAt}
+            </span>
             <span className={styles.dateText}>작성</span>
           </div>
         </div>
@@ -88,7 +108,9 @@ export default function DiariesDetail() {
       <div className={styles.detailContent}>
         <div className={styles.contentSection}>
           <h2 className={styles.contentLabel}>내용</h2>
-          <p className={styles.contentText}>{mockDiaryDetail.content}</p>
+          <p className={styles.contentText} data-testid="diary-content">
+            {diary.content}
+          </p>
         </div>
         <div className={styles.copySection}>
           <button className={styles.copyButton} onClick={handleCopyContent}>

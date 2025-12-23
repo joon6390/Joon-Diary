@@ -2,12 +2,12 @@ import { test, expect } from "@playwright/test";
 
 /**
  * Diaries New Link Modal Close Hook 테스트
- * 
+ *
  * 테스트 시나리오:
  * 1. 닫기 버튼 클릭 시 등록취소모달이 열림
  * 2. 계속작성 버튼 클릭 시 등록취소모달만 닫힘 (일기쓰기폼모달은 유지)
  * 3. 등록취소 버튼 클릭 시 두 모달 모두 닫힘
- * 
+ *
  * 테스트 대상:
  * - useLinkModalClose Hook
  * - Modal Provider 2중 모달 연동
@@ -41,8 +41,8 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     // 계속작성 버튼 클릭
     const continueButton = page
       .locator('[data-testid="cancel-modal"]')
-      .locator('button')
-      .filter({ hasText: '계속작성' });
+      .locator("button")
+      .filter({ hasText: "계속작성" });
     await continueButton.click();
 
     // 등록취소모달이 닫혔는지 확인
@@ -80,8 +80,8 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     // 등록취소 버튼 클릭
     const cancelButton = page
       .locator('[data-testid="cancel-modal"]')
-      .locator('button')
-      .filter({ hasText: '등록취소' });
+      .locator("button")
+      .filter({ hasText: "등록취소" });
     await cancelButton.click();
 
     // 등록취소모달이 닫혔는지 확인
@@ -93,4 +93,3 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     await expect(page.locator('[data-testid="diary-modal"]')).not.toBeVisible();
   });
 });
-
