@@ -3,17 +3,17 @@ import { EmotionType, getEmotionData } from "@/commons/constants/enum";
 
 /**
  * Diaries Detail Binding Hook 테스트
- * 
+ *
  * 테스트 시나리오:
  * 1. 로컬스토리지에 저장된 일기 데이터를 [id]로 조회하여 바인딩
  * 2. 제목, 감정아이콘/이미지, 감정텍스트, 작성일, 내용이 올바르게 표시되는지 확인
  * 3. 존재하지 않는 id로 접근 시 적절한 처리 확인
- * 
+ *
  * 테스트 대상:
  * - useBindingHook Hook
  * - 로컬스토리지에서 diaries 배열 조회
  * - emotion enum 타입 활용
- * 
+ *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
@@ -28,7 +28,9 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     await page.evaluate(() => localStorage.clear());
   });
 
-  test("로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다", async ({ page }) => {
+  test("로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다", async ({
+    page,
+  }) => {
     // Given: 로컬스토리지에 일기 데이터 저장 (ISO 날짜 형식 사용)
     const testDiary = {
       id: 1,
@@ -57,7 +59,9 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     // And: 감정 텍스트가 올바르게 표시됨 (enum을 통해 참조한 실제 텍스트)
     const emotionText = page.locator('[data-testid="diary-emotion-text"]');
     await expect(emotionText).toBeVisible();
-    await expect(emotionText).toHaveText(getEmotionData(testDiary.emotion).label);
+    await expect(emotionText).toHaveText(
+      getEmotionData(testDiary.emotion).label
+    );
 
     // And: 감정 아이콘이 표시됨
     const emotionIcon = page.locator('[data-testid="diary-emotion-icon"]');
@@ -72,7 +76,9 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     await expect(content).toHaveText(testDiary.content);
   });
 
-  test("다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다", async ({ page }) => {
+  test("다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다", async ({
+    page,
+  }) => {
     // Given: 다양한 감정 타입의 일기 데이터 저장 (ISO 날짜 형식 사용)
     const testDiaries = [
       {
@@ -150,7 +156,9 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     }
   });
 
-  test("존재하지 않는 id로 접근 시 적절히 처리되어야 한다", async ({ page }) => {
+  test("존재하지 않는 id로 접근 시 적절히 처리되어야 한다", async ({
+    page,
+  }) => {
     // Given: 로컬스토리지에 다른 id의 일기만 저장
     const testDiary = {
       id: 1,
@@ -174,7 +182,9 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     });
   });
 
-  test("로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다", async ({ page }) => {
+  test("로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다", async ({
+    page,
+  }) => {
     // Given: 로컬스토리지가 비어있음
     await page.evaluate(() => {
       localStorage.clear();
@@ -190,4 +200,3 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     });
   });
 });
-
