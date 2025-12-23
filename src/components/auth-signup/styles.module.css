@@ -1,0 +1,95 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gray-white);
+  padding: 24px;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-gray-white);
+  border-radius: 24px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  font-family: var(--typo-headline01-font);
+  font-weight: var(--typo-headline01-weight);
+  font-size: var(--typo-headline01-size);
+  line-height: var(--typo-headline01-line-height);
+  color: var(--color-gray-90);
+  text-align: center;
+  margin: 0 0 40px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: var(--typo-body02-medium-font);
+  font-weight: var(--typo-body02-medium-weight);
+  font-size: var(--typo-body02-medium-size);
+  line-height: var(--typo-body02-medium-line-height);
+  color: var(--color-gray-90);
+}
+
+.input {
+  width: 100%;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-light);
+}
+
+.footerText {
+  font-family: var(--typo-body02-regular-font);
+  font-weight: var(--typo-body02-regular-weight);
+  font-size: var(--typo-body02-regular-size);
+  line-height: var(--typo-body02-regular-line-height);
+  color: var(--color-gray-60);
+}
+
+.loginLink {
+  font-family: var(--typo-body02-medium-font);
+  font-weight: var(--typo-body02-medium-weight);
+  font-size: var(--typo-body02-medium-size);
+  line-height: var(--typo-body02-medium-line-height);
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.loginLink:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+.loginLink:active {
+  color: var(--color-blue-70);
+}
+
