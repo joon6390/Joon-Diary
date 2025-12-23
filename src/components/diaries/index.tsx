@@ -7,105 +7,20 @@ import { SearchBar } from "@/commons/components/searchbar";
 import { Button } from "@/commons/components/button";
 import { Pagination } from "@/commons/components/pagination";
 import Image from "next/image";
-import { EmotionType, getEmotionData } from "@/commons/constants/enum";
 import { useLinkModal } from "./hooks/index.link.modal.hook";
-
-// Mock 일기 데이터 인터페이스
-interface DiaryData {
-  id: number;
-  emotion: EmotionType;
-  date: string;
-  title: string;
-}
-
-// Mock 데이터 (emotion enum 타입 활용)
-const mockDiaries: DiaryData[] = [
-  {
-    id: 1,
-    emotion: EmotionType.Sad,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
-  },
-  {
-    id: 2,
-    emotion: EmotionType.Surprise,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 3,
-    emotion: EmotionType.Angry,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 4,
-    emotion: EmotionType.Happy,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 5,
-    emotion: EmotionType.Etc,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
-  },
-  {
-    id: 6,
-    emotion: EmotionType.Surprise,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 7,
-    emotion: EmotionType.Angry,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 8,
-    emotion: EmotionType.Happy,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 9,
-    emotion: EmotionType.Sad,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다. 한줄까지만 노출 됩니다.",
-  },
-  {
-    id: 10,
-    emotion: EmotionType.Surprise,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 11,
-    emotion: EmotionType.Angry,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-  {
-    id: 12,
-    emotion: EmotionType.Happy,
-    date: "2024. 03. 12",
-    title: "타이틀 영역 입니다.",
-  },
-];
+import { useBindingHook, DiaryCardData } from "./hooks/index.binding.hook";
 
 // 일기 카드 컴포넌트
 interface DiaryCardProps {
-  diary: DiaryData;
+  diary: DiaryCardData;
   onDelete: (id: number) => void;
 }
 
 function DiaryCard({ diary, onDelete }: DiaryCardProps) {
-  const emotionData = getEmotionData(diary.emotion);
-  const imageUrl = `/images/${emotionData.images.medium}`;
+  const imageUrl = `/images/${diary.emotionImage}`;
 
   return (
-    <div className={styles.diaryCard}>
+    <div className={styles.diaryCard} data-testid={`diary-card-${diary.id}`}>
       <div className={styles.imageWrapper}>
         <div className={styles.imageButtonRow}>
           <button
@@ -129,6 +44,7 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
             width={274}
             height={208}
             className={styles.diaryImage}
+            data-testid="diary-emotion-image"
           />
         </div>
       </div>
@@ -136,13 +52,18 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
         <div className={styles.cardHeader}>
           <span
             className={styles.emotionText}
-            style={{ color: emotionData.color }}
+            style={{ color: diary.emotionColor }}
+            data-testid="diary-emotion-text"
           >
-            {emotionData.label}
+            {diary.emotionLabel}
           </span>
-          <span className={styles.dateText}>{diary.date}</span>
+          <span className={styles.dateText} data-testid="diary-date">
+            {diary.formattedDate}
+          </span>
         </div>
-        <div className={styles.cardTitle}>{diary.title}</div>
+        <div className={styles.cardTitle} data-testid="diary-title">
+          {diary.title}
+        </div>
       </div>
     </div>
   );
@@ -150,12 +71,14 @@ function DiaryCard({ diary, onDelete }: DiaryCardProps) {
 
 export default function Diaries() {
   const [selectedFilter, setSelectedFilter] = useState<string>("");
-  const [diaries, setDiaries] = useState<DiaryData[]>(mockDiaries);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const totalPages = 5;
 
   // 일기쓰기 모달 hook
   const { handleWriteDiary } = useLinkModal();
+
+  // 일기 데이터 바인딩 hook
+  const { diaries, isLoading, refreshDiaries } = useBindingHook();
 
   const filterOptions = [
     { value: "all", label: "전체" },
@@ -172,7 +95,21 @@ export default function Diaries() {
   };
 
   const handleDeleteDiary = (id: number) => {
-    setDiaries((prev) => prev.filter((diary) => diary.id !== id));
+    // 로컬스토리지에서 해당 일기 삭제
+    try {
+      const diariesJson = localStorage.getItem("diaries");
+      if (diariesJson) {
+        const allDiaries = JSON.parse(diariesJson);
+        const updatedDiaries = allDiaries.filter(
+          (diary: { id: number }) => diary.id !== id
+        );
+        localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
+        // hook의 refresh 함수를 호출하여 데이터 갱신
+        refreshDiaries();
+      }
+    } catch (error) {
+      console.error("일기 삭제 중 오류 발생:", error);
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -223,13 +160,17 @@ export default function Diaries() {
       </div>
       <div className={styles.gap2} />
       <div className={styles.main}>
-        {diaries.map((diary) => (
-          <DiaryCard
-            key={diary.id}
-            diary={diary}
-            onDelete={handleDeleteDiary}
-          />
-        ))}
+        {isLoading ? (
+          <div>로딩 중...</div>
+        ) : (
+          diaries.map((diary) => (
+            <DiaryCard
+              key={diary.id}
+              diary={diary}
+              onDelete={handleDeleteDiary}
+            />
+          ))
+        )}
       </div>
       <div className={styles.gap3} />
       <div className={styles.pagination}>
