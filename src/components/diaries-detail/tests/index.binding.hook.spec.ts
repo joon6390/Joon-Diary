@@ -29,13 +29,13 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
   });
 
   test("로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: 로컬스토리지에 일기 데이터 저장 (ISO 날짜 형식 사용)
     const testDiary = {
       id: 1,
       title: "테스트 일기 제목",
       content: "테스트 일기 내용입니다.",
       emotion: EmotionType.Happy,
-      createdAt: "2024. 07. 12",
+      createdAt: "2024-07-12T08:57:49.537Z",
     };
 
     await page.evaluate((diary) => {
@@ -47,7 +47,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 500,
+      timeout: 499,
     });
 
     // And: 제목이 올바르게 표시됨
@@ -63,9 +63,9 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     const emotionIcon = page.locator('[data-testid="diary-emotion-icon"]');
     await expect(emotionIcon).toBeVisible();
 
-    // And: 작성일이 올바르게 표시됨
+    // And: 작성일이 올바르게 포맷되어 표시됨 (ISO 형식 → "YYYY. MM. DD" 형식)
     const dateText = page.locator('[data-testid="diary-date"]');
-    await expect(dateText).toContainText(testDiary.createdAt);
+    await expect(dateText).toHaveText("2024. 07. 12");
 
     // And: 내용이 올바르게 표시됨
     const content = page.locator('[data-testid="diary-content"]');
@@ -73,42 +73,42 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
   });
 
   test("다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다", async ({ page }) => {
-    // Given: 다양한 감정 타입의 일기 데이터 저장
+    // Given: 다양한 감정 타입의 일기 데이터 저장 (ISO 날짜 형식 사용)
     const testDiaries = [
       {
         id: 1,
         title: "행복한 일기",
         content: "행복한 내용",
         emotion: EmotionType.Happy,
-        createdAt: "2024. 07. 12",
+        createdAt: "2024-07-12T08:57:49.537Z",
       },
       {
         id: 2,
         title: "슬픈 일기",
         content: "슬픈 내용",
         emotion: EmotionType.Sad,
-        createdAt: "2024. 07. 13",
+        createdAt: "2024-07-13T08:57:49.537Z",
       },
       {
         id: 3,
         title: "화난 일기",
         content: "화난 내용",
         emotion: EmotionType.Angry,
-        createdAt: "2024. 07. 14",
+        createdAt: "2024-07-14T08:57:49.537Z",
       },
       {
         id: 4,
         title: "놀란 일기",
         content: "놀란 내용",
         emotion: EmotionType.Surprise,
-        createdAt: "2024. 07. 15",
+        createdAt: "2024-07-15T08:57:49.537Z",
       },
       {
         id: 5,
         title: "기타 일기",
         content: "기타 내용",
         emotion: EmotionType.Etc,
-        createdAt: "2024. 07. 16",
+        createdAt: "2024-07-16T08:57:49.537Z",
       },
     ];
 
@@ -122,7 +122,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
 
       // Then: 페이지가 완전히 로드될 때까지 대기
       await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-        timeout: 500,
+        timeout: 499,
       });
 
       // And: 제목이 올바르게 표시됨
@@ -133,9 +133,13 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       const content = page.locator('[data-testid="diary-content"]');
       await expect(content).toHaveText(diary.content);
 
-      // And: 작성일이 올바르게 표시됨
+      // And: 작성일이 올바르게 포맷되어 표시됨 (ISO 형식 → "YYYY. MM. DD" 형식)
       const dateText = page.locator('[data-testid="diary-date"]');
-      await expect(dateText).toContainText(diary.createdAt);
+      const expectedDate = new Date(diary.createdAt);
+      const year = expectedDate.getFullYear();
+      const month = String(expectedDate.getMonth() + 1).padStart(2, "0");
+      const day = String(expectedDate.getDate()).padStart(2, "0");
+      await expect(dateText).toHaveText(`${year}. ${month}. ${day}`);
 
       // And: 감정 아이콘과 텍스트가 표시됨 (enum을 통해 참조한 실제 텍스트)
       const emotionIcon = page.locator('[data-testid="diary-emotion-icon"]');
@@ -153,7 +157,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       title: "첫 번째 일기",
       content: "내용",
       emotion: EmotionType.Happy,
-      createdAt: "2024. 07. 12",
+      createdAt: "2024-07-12T08:57:49.537Z",
     };
 
     await page.evaluate((diary) => {
@@ -166,7 +170,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     // Then: 페이지가 로드되지만 데이터가 없거나 기본값이 표시됨
     // (구현에 따라 다를 수 있으나, 최소한 에러가 발생하지 않아야 함)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 500,
+      timeout: 499,
     });
   });
 
@@ -182,7 +186,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     // Then: 페이지가 로드되지만 데이터가 없거나 기본값이 표시됨
     // (구현에 따라 다를 수 있으나, 최소한 에러가 발생하지 않아야 함)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 500,
+      timeout: 499,
     });
   });
 });

@@ -23,7 +23,7 @@ const mockRetrospects = [
 ];
 
 export default function DiariesDetail() {
-  const { diary, isLoading } = useBindingHook();
+  const { diary, isLoading, formattedDate } = useBindingHook();
   const [retrospectInput, setRetrospectInput] = useState("");
 
   // 일기 데이터가 없거나 로딩 중일 때 처리
@@ -95,7 +95,7 @@ export default function DiariesDetail() {
           </div>
           <div className={styles.dateWrapper}>
             <span className={styles.dateText} data-testid="diary-date">
-              {diary.createdAt}
+              {formattedDate}
             </span>
             <span className={styles.dateText}>작성</span>
           </div>
@@ -112,17 +112,18 @@ export default function DiariesDetail() {
             {diary.content}
           </p>
         </div>
-        <div className={styles.copySection}>
-          <button className={styles.copyButton} onClick={handleCopyContent}>
-            <Image
-              src="/icons/copy_outline_light_m.svg"
-              alt="복사"
-              width={24}
-              height={24}
-            />
-            <span className={styles.copyText}>내용 복사</span>
-          </button>
-        </div>
+      </div>
+
+      <div className={styles.copySection}>
+        <button className={styles.copyButton} onClick={handleCopyContent}>
+          <Image
+            src="/icons/copy_outline_light_m.svg"
+            alt="복사"
+            width={24}
+            height={24}
+          />
+          <span className={styles.copyText}>내용 복사</span>
+        </button>
       </div>
 
       <div className={styles.gap24}></div>
