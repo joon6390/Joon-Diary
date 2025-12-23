@@ -54,7 +54,6 @@
 /* Main: 1168 * 936 */
 .main {
   width: 1168px;
-  min-height: 936px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -70,6 +69,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .imageWrapper {

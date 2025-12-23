@@ -9,23 +9,38 @@ import { Pagination } from "@/commons/components/pagination";
 import Image from "next/image";
 import { useLinkModal } from "./hooks/index.link.modal.hook";
 import { useBindingHook, DiaryCardData } from "./hooks/index.binding.hook";
+import { useLinkRouting } from "./hooks/index.link.routing.hook";
 
 // 일기 카드 컴포넌트
 interface DiaryCardProps {
   diary: DiaryCardData;
   onDelete: (id: number) => void;
+  onCardClick: (id: number) => void;
 }
 
-function DiaryCard({ diary, onDelete }: DiaryCardProps) {
+function DiaryCard({ diary, onDelete, onCardClick }: DiaryCardProps) {
   const imageUrl = `/images/${diary.emotionImage}`;
 
+  const handleCardClick = () => {
+    onCardClick(diary.id);
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // 삭제 버튼 클릭 시 카드 클릭 이벤트 전파 방지
+    onDelete(diary.id);
+  };
+
   return (
-    <div className={styles.diaryCard} data-testid={`diary-card-${diary.id}`}>
+    <div
+      className={styles.diaryCard}
+      data-testid={`diary-card-${diary.id}`}
+      onClick={handleCardClick}
+    >
       <div className={styles.imageWrapper}>
         <div className={styles.imageButtonRow}>
           <button
             className={styles.deleteButton}
-            onClick={() => onDelete(diary.id)}
+            onClick={handleDeleteClick}
             aria-label="삭제"
           >
             <Image
@@ -79,6 +94,9 @@ export default function Diaries() {
 
   // 일기 데이터 바인딩 hook
   const { diaries, isLoading, refreshDiaries } = useBindingHook();
+
+  // 일기 카드 라우팅 hook
+  const { navigateToDiaryDetail } = useLinkRouting();
 
   const filterOptions = [
     { value: "all", label: "전체" },
@@ -168,6 +186,7 @@ export default function Diaries() {
               key={diary.id}
               diary={diary}
               onDelete={handleDeleteDiary}
+              onCardClick={navigateToDiaryDetail}
             />
           ))
         )}
