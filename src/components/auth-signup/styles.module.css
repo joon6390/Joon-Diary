@@ -4,14 +4,14 @@
   align-items: center;
   min-height: 100vh;
   padding: 2rem;
-  background: var(--color-background);
+  background: var(--background-inverse);
 }
 
 .formWrapper {
   width: 100%;
   max-width: 480px;
   padding: 3rem;
-  background: var(--color-surface);
+  background: var(--background-inverse);
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
@@ -23,17 +23,17 @@
 
 .title {
   margin: 0 0 0.75rem 0;
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  line-height: var(--line-height-tight);
+  font-size: var(--typo-title01-size);
+  font-weight: var(--typo-title01-weight);
+  color: var(--text-inverse);
+  line-height: var(--typo-title01-line-height);
 }
 
 .subtitle {
   margin: 0;
-  font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-normal);
+  font-size: var(--typo-body02-regular-size);
+  color: var(--text-inverse);
+  line-height: var(--typo-body02-regular-line-height);
 }
 
 .form {
@@ -49,17 +49,17 @@
 }
 
 .label {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
-  line-height: var(--line-height-normal);
+  font-size: var(--typo-body02-medium-size);
+  font-weight: var(--typo-body02-medium-weight);
+  color: var(--text-inverse);
+  line-height: var(--typo-body02-medium-line-height);
 }
 
 .error {
   margin: 0;
-  font-size: var(--font-size-xs);
+  font-size: var(--typo-caption01-size);
   color: var(--color-error);
-  line-height: var(--line-height-normal);
+  line-height: var(--typo-caption01-line-height);
 }
 
 .submitButton {
@@ -74,16 +74,16 @@
 
 .footerText {
   margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  line-height: var(--line-height-normal);
+  font-size: var(--typo-body02-regular-size);
+  color: var(--text-inverse);
+  line-height: var(--typo-body02-regular-line-height);
 }
 
 .link {
   background: none;
   border: none;
   padding: 0;
-  font-size: var(--font-size-sm);
+  font-size: var(--typo-body02-regular-size);
   font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
   cursor: pointer;
@@ -92,7 +92,7 @@
 }
 
 .link:hover {
-  color: var(--color-primary-hover);
+  color: var(--color-blue-60);
   text-decoration: underline;
 }
 
