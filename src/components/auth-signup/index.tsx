@@ -1,84 +1,145 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
 import { Input } from "@/commons/components/input";
 import { Button } from "@/commons/components/button";
+import { useRouter } from "next/navigation";
 import { paths } from "@/commons/constants/url";
 import styles from "./styles.module.css";
+import { useFormHook } from "./hooks/index.form.hook";
+import { Controller } from "react-hook-form";
 
 export default function AuthSignup() {
-  return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <h1 className={styles.title}>회원가입</h1>
+  const router = useRouter();
+  const { control, handleSubmit, errors, isSubmitDisabled } = useFormHook();
 
-        <form className={styles.form}>
-          <div className={styles.field}>
+  const handleLoginLinkClick = () => {
+    router.push(paths.auth.login);
+  };
+
+  return (
+    <div className={styles.container} data-testid="signup-container">
+      <div className={styles.formWrapper}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>회원가입</h1>
+          <p className={styles.subtitle}>새로운 계정을 만들어보세요</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGroup}>
             <label htmlFor="email" className={styles.label}>
               이메일
             </label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="이메일을 입력하세요"
-              variant="primary"
-              theme="light"
-              size="medium"
-              className={styles.input}
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="email"
+                  type="email"
+                  variant="primary"
+                  size="large"
+                  theme="light"
+                  placeholder="이메일을 입력하세요"
+                  data-testid="signup-email-input"
+                  {...field}
+                />
+              )}
             />
+            {errors.email && (
+              <p className={styles.error} data-testid="email-error">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
-          <div className={styles.field}>
+          <div className={styles.inputGroup}>
             <label htmlFor="password" className={styles.label}>
               비밀번호
             </label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="비밀번호를 입력하세요"
-              variant="primary"
-              theme="light"
-              size="medium"
-              className={styles.input}
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="password"
+                  type="password"
+                  variant="primary"
+                  size="large"
+                  theme="light"
+                  placeholder="비밀번호를 입력하세요"
+                  data-testid="signup-password-input"
+                  {...field}
+                />
+              )}
             />
+            {errors.password && (
+              <p className={styles.error} data-testid="password-error">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
-          <div className={styles.field}>
+          <div className={styles.inputGroup}>
             <label htmlFor="passwordConfirm" className={styles.label}>
-              비밀번호 재입력
+              비밀번호 확인
             </label>
-            <Input
-              id="passwordConfirm"
-              type="password"
-              placeholder="비밀번호를 다시 입력하세요"
-              variant="primary"
-              theme="light"
-              size="medium"
-              className={styles.input}
+            <Controller
+              name="passwordConfirm"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="passwordConfirm"
+                  type="password"
+                  variant="primary"
+                  size="large"
+                  theme="light"
+                  placeholder="비밀번호를 다시 입력하세요"
+                  data-testid="signup-password-confirm-input"
+                  {...field}
+                />
+              )}
             />
+            {errors.passwordConfirm && (
+              <p className={styles.error} data-testid="password-confirm-error">
+                {errors.passwordConfirm.message}
+              </p>
+            )}
           </div>
 
-          <div className={styles.field}>
+          <div className={styles.inputGroup}>
             <label htmlFor="name" className={styles.label}>
               이름
             </label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="이름을 입력하세요"
-              variant="primary"
-              theme="light"
-              size="medium"
-              className={styles.input}
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="name"
+                  type="text"
+                  variant="primary"
+                  size="large"
+                  theme="light"
+                  placeholder="이름을 입력하세요"
+                  data-testid="signup-name-input"
+                  {...field}
+                />
+              )}
             />
+            {errors.name && (
+              <p className={styles.error} data-testid="name-error">
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
           <Button
             type="submit"
             variant="primary"
-            theme="light"
             size="large"
+            theme="light"
+            disabled={isSubmitDisabled}
+            data-testid="signup-submit-button"
             className={styles.submitButton}
           >
             회원가입
@@ -86,10 +147,17 @@ export default function AuthSignup() {
         </form>
 
         <div className={styles.footer}>
-          <span className={styles.footerText}>이미 계정이 있으신가요?</span>
-          <Link href={paths.auth.login} className={styles.loginLink}>
-            로그인 페이지로 이동
-          </Link>
+          <p className={styles.footerText}>
+            이미 계정이 있으신가요?{" "}
+            <button
+              type="button"
+              onClick={handleLoginLinkClick}
+              className={styles.link}
+              data-testid="login-link"
+            >
+              로그인
+            </button>
+          </p>
         </div>
       </div>
     </div>
