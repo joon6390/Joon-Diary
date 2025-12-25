@@ -26,7 +26,11 @@ export default defineConfig({
     // actionTimeout: 0,
 
     /* 베이스 URL (예: http://localhost:3000) */
-    baseURL: "http://localhost:3000",
+    baseURL: process.env.CI_NODE_INDEX
+      ? `http://localhost:${
+          3000 + parseInt(process.env.CI_NODE_INDEX || "0", 10)
+        }`
+      : "http://localhost:3000",
 
     /* 실패한 테스트의 트레이스 수집 */
     // trace: "on-first-retry",
@@ -75,8 +79,16 @@ export default defineConfig({
 
   /* 테스트 전에 개발 서버 실행 설정 */
   webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
+    command: process.env.CI_NODE_INDEX
+      ? `npm run dev -- -p ${
+          3000 + parseInt(process.env.CI_NODE_INDEX || "0", 10)
+        }`
+      : "npm run dev",
+    url: process.env.CI_NODE_INDEX
+      ? `http://localhost:${
+          3000 + parseInt(process.env.CI_NODE_INDEX || "0", 10)
+        }`
+      : "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     env: {
       NEXT_PUBLIC_TEST_ENV: "test",
