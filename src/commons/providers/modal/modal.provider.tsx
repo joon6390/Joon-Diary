@@ -15,10 +15,11 @@ import styles from "./styles.module.css";
 interface ModalItem {
   id: string;
   content: ReactNode;
+  preventBackdropClose?: boolean;
 }
 
 interface ModalContextType {
-  openModal: (content: ReactNode) => string;
+  openModal: (content: ReactNode, options?: { preventBackdropClose?: boolean }) => string;
   closeModal: (id?: string) => void;
   closeAllModals: () => void;
   isOpen: boolean;
@@ -65,9 +66,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
     };
   }, [modals.length]);
 
-  const openModal = useCallback((content: ReactNode): string => {
+  const openModal = useCallback((content: ReactNode, options?: { preventBackdropClose?: boolean }): string => {
     const id = `modal-${modalIdCounter.current++}`;
-    setModals((prev) => [...prev, { id, content }]);
+    setModals((prev) => [...prev, { id, content, preventBackdropClose: options?.preventBackdropClose }]);
     return id;
   }, []);
 
@@ -85,7 +86,11 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   }, []);
 
   const handleBackdropClick = useCallback(
-    (modalId: string) => {
+    (modalId: string, preventBackdropClose?: boolean) => {
+      // preventBackdropClose가 true면 배경 클릭으로 닫히지 않음
+      if (preventBackdropClose) {
+        return;
+      }
       // 가장 최상위 모달만 닫기
       setModals((prev) => {
         if (prev.length > 0 && prev[prev.length - 1].id === modalId) {
@@ -121,11 +126,13 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
               key={modal.id}
               className={styles.modalContainer}
               style={{ zIndex }}
-              onClick={() => handleBackdropClick(modal.id)}
+              onClick={() => handleBackdropClick(modal.id, modal.preventBackdropClose)}
+              data-testid="modal-container"
             >
               <div
                 className={styles.backdrop}
                 style={{ zIndex: backdropZIndex }}
+                data-testid="modal-backdrop"
               />
               <div
                 className={styles.modalContent}

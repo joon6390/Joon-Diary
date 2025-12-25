@@ -96,9 +96,9 @@ test.describe("로그인 폼 기능", () => {
       const submitButton = page.locator('[data-testid="login-submit-button"]');
       await submitButton.click();
       
-      // 로그인완료모달이 표시될 때까지 대기 (최대 2초 - 실제 API 호출)
+      // 로그인완료모달이 표시될 때까지 대기 (최대 5초 - 실제 API 호출)
       const successModal = page.locator('[data-testid="login-success-modal"]');
-      await expect(successModal).toBeVisible({ timeout: 2000 });
+      await expect(successModal).toBeVisible({ timeout: 5000 });
       
       // 모달 내용 확인
       await expect(successModal).toContainText("로그인 완료");
@@ -114,7 +114,7 @@ test.describe("로그인 폼 기능", () => {
       
       // 로그인완료모달 대기
       const successModal = page.locator('[data-testid="login-success-modal"]');
-      await expect(successModal).toBeVisible({ timeout: 2000 });
+      await expect(successModal).toBeVisible({ timeout: 5000 });
       
       // 로컬스토리지에서 accessToken 확인
       const accessToken = await page.evaluate(() => localStorage.getItem("accessToken"));
@@ -132,7 +132,7 @@ test.describe("로그인 폼 기능", () => {
       
       // 로그인완료모달 대기
       const successModal = page.locator('[data-testid="login-success-modal"]');
-      await expect(successModal).toBeVisible({ timeout: 2000 });
+      await expect(successModal).toBeVisible({ timeout: 5000 });
       
       // 로컬스토리지에서 user 정보 확인
       const userStr = await page.evaluate(() => localStorage.getItem("user"));
@@ -153,7 +153,7 @@ test.describe("로그인 폼 기능", () => {
       
       // 로그인완료모달 대기
       const successModal = page.locator('[data-testid="login-success-modal"]');
-      await expect(successModal).toBeVisible({ timeout: 2000 });
+      await expect(successModal).toBeVisible({ timeout: 5000 });
       
       // 확인 버튼 클릭
       const confirmButton = successModal.locator('button').filter({ hasText: '확인' });

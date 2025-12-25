@@ -49,8 +49,8 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // Then: backdrop이 화면에 표시됨 (fixed inset-0 bg-black bg-opacity-50)
-    const backdrop = page.locator(".fixed.inset-0.bg-black.bg-opacity-50");
+    // Then: backdrop이 화면에 표시됨
+    const backdrop = page.locator('[data-testid="modal-backdrop"]');
     await expect(backdrop).toBeVisible();
   });
 
@@ -59,8 +59,8 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // Then: 모달 컨테이너가 중앙 정렬 스타일로 표시됨 (flex items-center justify-center)
-    const modalContainer = page.locator(".fixed.inset-0.z-50.flex.items-center.justify-center");
+    // Then: 모달 컨테이너가 중앙 정렬 스타일로 표시됨
+    const modalContainer = page.locator('[data-testid="modal-container"]');
     await expect(modalContainer).toBeVisible();
 
     // And: 모달 컨텐츠가 중앙에 위치함
@@ -78,11 +78,20 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     await expect(modal).toBeVisible();
 
     // When: 닫기 버튼 클릭
-    const closeButton = modal.locator("button", { hasText: "닫기" });
+    const closeButton = modal.locator('[data-testid="diary-close-button"]');
     await closeButton.click();
 
-    // Then: 모달이 화면에서 사라짐
-    await expect(modal).not.toBeVisible();
+    // And: 등록취소 모달이 열렸는지 확인
+    const cancelModal = page.locator('[data-testid="cancel-modal"]');
+    await expect(cancelModal).toBeVisible();
+
+    // When: 등록취소 버튼 클릭
+    const cancelButton = cancelModal.locator('button').filter({ hasText: '등록취소' });
+    await cancelButton.click();
+
+    // Then: 모든 모달이 화면에서 사라짐
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
+    await expect(cancelModal).not.toBeVisible({ timeout: 5000 });
   });
 
   test("모달 배경(backdrop) 클릭시 모달이 닫혀야 한다", async ({ page }) => {
@@ -96,12 +105,13 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
 
     // When: backdrop 클릭 (모달 컨텐츠가 아닌 배경 영역)
     // 모달 컨테이너의 좌측 상단 모서리 클릭 (모달이 없는 영역)
-    await page.locator(".fixed.inset-0.z-50.flex.items-center.justify-center").click({
+    const modalContainer = page.locator('[data-testid="modal-container"]').first();
+    await modalContainer.click({
       position: { x: 10, y: 10 }
     });
 
     // Then: 모달이 화면에서 사라짐
-    await expect(modal).not.toBeVisible();
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
   });
 
   test("모달 내부에 일기 작성 폼 요소들이 표시되어야 한다", async ({ page }) => {
@@ -145,11 +155,20 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     await expect(modal).toBeVisible();
 
     // When: 닫기 버튼으로 모달 닫기
-    const closeButton = modal.locator("button", { hasText: "닫기" });
+    const closeButton = modal.locator('[data-testid="diary-close-button"]');
     await closeButton.click();
 
-    // Then: 모달이 닫힘
-    await expect(modal).not.toBeVisible();
+    // And: 등록취소 모달이 열렸는지 확인
+    const cancelModal = page.locator('[data-testid="cancel-modal"]');
+    await expect(cancelModal).toBeVisible();
+
+    // When: 등록취소 버튼 클릭
+    const cancelButton = cancelModal.locator('button').filter({ hasText: '등록취소' });
+    await cancelButton.click();
+
+    // Then: 모든 모달이 닫힘
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
+    await expect(cancelModal).not.toBeVisible({ timeout: 5000 });
 
     // When: 두 번째로 모달 열기
     await writeButton.click();
@@ -159,12 +178,13 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     await expect(modal.locator("text=일기 쓰기")).toBeVisible();
 
     // When: 배경 클릭으로 모달 닫기
-    await page.locator(".fixed.inset-0.z-50.flex.items-center.justify-center").click({
+    const modalContainer = page.locator('[data-testid="modal-container"]').first();
+    await modalContainer.click({
       position: { x: 10, y: 10 }
     });
 
     // Then: 모달이 닫힘
-    await expect(modal).not.toBeVisible();
+    await expect(modal).not.toBeVisible({ timeout: 5000 });
 
     // When: 세 번째로 모달 열기
     await writeButton.click();
