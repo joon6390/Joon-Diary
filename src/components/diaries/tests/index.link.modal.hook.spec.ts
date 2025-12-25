@@ -90,8 +90,8 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     await cancelButton.click();
 
     // Then: 모든 모달이 화면에서 사라짐
-    await expect(modal).not.toBeVisible({ timeout: 5000 });
-    await expect(cancelModal).not.toBeVisible({ timeout: 5000 });
+    await expect(modal).not.toBeVisible({ timeout: 1500 });
+    await expect(cancelModal).not.toBeVisible({ timeout: 1500 });
   });
 
   test("모달 배경(backdrop) 클릭시 모달이 닫혀야 한다", async ({ page }) => {
@@ -111,7 +111,7 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     });
 
     // Then: 모달이 화면에서 사라짐
-    await expect(modal).not.toBeVisible({ timeout: 5000 });
+    await expect(modal).not.toBeVisible({ timeout: 1500 });
   });
 
   test("모달 내부에 일기 작성 폼 요소들이 표시되어야 한다", async ({ page }) => {
@@ -191,6 +191,63 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
 
     // Then: 모달이 여전히 정상적으로 작동함
     await expect(modal).toBeVisible();
+  });
+});
+
+test.describe("일기쓰기 권한 분기 테스트", () => {
+  test("비로그인 유저가 일기쓰기 버튼을 클릭하면 로그인요청모달이 노출되어야 한다", async ({ page }) => {
+    // Given: 비로그인 상태 설정 (로그인 검사 가드 활성화)
+    // auth.guard.hook.tsx의 로직에 따르면 window.__TEST_BYPASS__ = true일 때 실제 로그인 상태를 확인함
+    await page.addInitScript(() => {
+      (window as Window & { __TEST_BYPASS__?: boolean }).__TEST_BYPASS__ = true;
+      // localStorage에서 accessToken 제거 (비로그인 상태)
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+    });
+
+    // And: /diaries 페이지 접속
+    await page.goto("/diaries");
+
+    // And: 페이지 로드 완료를 data-testid로 확인
+    await expect(page.locator('[data-testid="diaries-container"]')).toBeVisible();
+
+    // When: 일기쓰기 버튼 클릭
+    const writeButton = page.locator('[data-testid="write-diary-button"]');
+    await writeButton.click();
+
+    // Then: 로그인요청모달이 노출됨
+    const loginRequiredModal = page.locator('[data-testid="login-required-modal"]');
+    await expect(loginRequiredModal).toBeVisible();
+
+    // And: 모달에 "로그인하시겠습니까?" 제목이 표시됨
+    await expect(loginRequiredModal.locator('h2:has-text("로그인하시겠습니까?")')).toBeVisible();
+  });
+
+  test("로그인 유저가 일기쓰기 버튼을 클릭하면 일기쓰기 페이지 모달이 노출되어야 한다", async ({ page }) => {
+    // Given: 로그인 상태 설정 (로그인 검사 가드 무시)
+    await page.addInitScript(() => {
+      // window.__TEST_BYPASS__를 설정하지 않거나 true로 설정하여 로그인 검사 가드를 무시
+      // localStorage에 accessToken 설정
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-id", name: "Test User" }));
+    });
+
+    // And: /diaries 페이지 접속
+    await page.goto("/diaries");
+
+    // And: 페이지 로드 완료를 data-testid로 확인
+    await expect(page.locator('[data-testid="diaries-container"]')).toBeVisible();
+
+    // When: 일기쓰기 버튼 클릭
+    const writeButton = page.locator('[data-testid="write-diary-button"]');
+    await writeButton.click();
+
+    // Then: 일기쓰기 페이지 모달이 노출됨
+    const diaryModal = page.locator('[data-testid="diary-modal"]');
+    await expect(diaryModal).toBeVisible();
+
+    // And: 모달에 "일기 쓰기" 헤더가 표시됨
+    await expect(diaryModal.locator("text=일기 쓰기")).toBeVisible();
   });
 });
 

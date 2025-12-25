@@ -22,12 +22,12 @@ const isTestEnv = (): boolean => {
  */
 const shouldBypassLoginCheck = (): boolean => {
   if (typeof window === "undefined") return false;
-  
+
   // 실제환경: 항상 비로그인 유저를 기본으로 하여, 로그인검사를 패스하지 않음
   if (!isTestEnv()) {
     return false;
   }
-  
+
   // 테스트환경: window.__TEST_BYPASS__가 true가 아니면 로그인검사를 패스
   // (비회원 가드테스트가 필요한 경우에만 window.__TEST_BYPASS__ = false로 설정)
   return !(window as Window & { __TEST_BYPASS__?: boolean }).__TEST_BYPASS__;
@@ -48,14 +48,14 @@ export interface AuthGuardHookReturn {
 /**
  * Auth Guard Hook
  * 권한 여부를 검증하는 GUARD 기능을 제공
- * 
+ *
  * @returns {AuthGuardHookReturn} guard 함수
  */
 export const useAuthGuard = (): AuthGuardHookReturn => {
   const router = useRouter();
   const { checkLoginStatus } = useAuth();
   const { openModal, closeAllModals } = useModal();
-  
+
   // 모달이 이미 표시되었는지 추적 (한 번만 보여야 함)
   const modalShownRef = useRef<boolean>(false);
   const modalIdRef = useRef<string | null>(null);
@@ -74,9 +74,9 @@ export const useAuthGuard = (): AuthGuardHookReturn => {
         <Modal
           variant="info"
           actions="dual"
-          title="로그인이 필요합니다"
-          description="이 기능을 사용하려면 로그인이 필요합니다. 로그인하시겠습니까?"
-          primaryButtonText="로그인하러가기"
+          title="로그인하시겠습니까?"
+          description="회원 전용 기능입니다. 로그인이 필요합니다."
+          primaryButtonText="로그인"
           secondaryButtonText="취소"
           onPrimaryClick={() => {
             // 모든 모달 닫기
@@ -131,4 +131,3 @@ export const useAuthGuard = (): AuthGuardHookReturn => {
     guard,
   };
 };
-
