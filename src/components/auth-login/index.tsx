@@ -5,9 +5,12 @@ import { Button } from "@/commons/components/button";
 import { useRouter } from "next/navigation";
 import { paths } from "@/commons/constants/url";
 import styles from "./styles.module.css";
+import { useFormHook } from "./hooks/index.form.hook";
+import { Controller } from "react-hook-form";
 
 export default function AuthLogin() {
   const router = useRouter();
+  const { control, handleSubmit, errors, isSubmitDisabled } = useFormHook();
 
   const handleSignupLinkClick = () => {
     router.push(paths.auth.signup);
@@ -21,37 +24,59 @@ export default function AuthLogin() {
           <p className={styles.subtitle}>계정에 로그인하세요</p>
         </div>
 
-        <form className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
             <label htmlFor="email" className={styles.label}>
               이메일
             </label>
-            <Input
-              id="email"
-              type="email"
-              variant="primary"
-              size="large"
-              theme="light"
-              placeholder="이메일을 입력하세요"
-              data-testid="login-email-input"
-              className={styles.input}
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="email"
+                  type="email"
+                  variant="primary"
+                  size="large"
+                  theme="light"
+                  placeholder="이메일을 입력하세요"
+                  data-testid="login-email-input"
+                  {...field}
+                />
+              )}
             />
+            {errors.email && (
+              <p className={styles.error} data-testid="email-error">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div className={styles.inputGroup}>
             <label htmlFor="password" className={styles.label}>
               비밀번호
             </label>
-            <Input
-              id="password"
-              type="password"
-              variant="primary"
-              size="large"
-              theme="light"
-              placeholder="비밀번호를 입력하세요"
-              data-testid="login-password-input"
-              className={styles.input}
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="password"
+                  type="password"
+                  variant="primary"
+                  size="large"
+                  theme="light"
+                  placeholder="비밀번호를 입력하세요"
+                  data-testid="login-password-input"
+                  {...field}
+                />
+              )}
             />
+            {errors.password && (
+              <p className={styles.error} data-testid="password-error">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <Button
@@ -59,6 +84,7 @@ export default function AuthLogin() {
             variant="primary"
             size="large"
             theme="light"
+            disabled={isSubmitDisabled}
             data-testid="login-submit-button"
             className={styles.submitButton}
           >
@@ -83,4 +109,3 @@ export default function AuthLogin() {
     </div>
   );
 }
-

@@ -55,6 +55,13 @@
   line-height: var(--typo-body02-medium-line-height);
 }
 
+.error {
+  margin: 0;
+  font-size: var(--typo-caption01-size);
+  color: var(--color-error);
+  line-height: var(--typo-caption01-line-height);
+}
+
 .input {
   width: 100%;
 }
