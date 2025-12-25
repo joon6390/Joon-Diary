@@ -65,6 +65,10 @@
   width: auto;
 }
 
+.loginButton {
+  width: auto;
+}
+
 /* Gap */
 .gap {
   width: 1168px;

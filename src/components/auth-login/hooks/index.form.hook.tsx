@@ -224,6 +224,9 @@ export const useFormHook = (): LoginFormHookReturn => {
       
       // accessToken을 로컬스토리지에 저장
       localStorage.setItem("accessToken", data.accessToken);
+      
+      // 커스텀 이벤트 발생 (동일 탭에서 변경 감지)
+      window.dispatchEvent(new Event("localStorageChange"));
 
       // fetchUserLoggedIn API 호출
       try {
@@ -237,6 +240,9 @@ export const useFormHook = (): LoginFormHookReturn => {
             name: userData.name,
           })
         );
+        
+        // 커스텀 이벤트 발생 (동일 탭에서 변경 감지)
+        window.dispatchEvent(new Event("localStorageChange"));
 
         // 모달이 이미 표시된 경우 중복 방지
         if (hasShownSuccessModal.current) return;

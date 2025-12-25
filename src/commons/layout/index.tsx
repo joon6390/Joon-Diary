@@ -3,6 +3,7 @@
 import React from "react";
 import { useLayoutLinkRouting } from "./hooks/index.link.routing.hook";
 import { useLayoutArea } from "./hooks/index.area.hook";
+import { useLayoutAuth } from "./hooks/index.auth.hook";
 import { Button } from "@/commons/components/button";
 import styles from "./styles.module.css";
 
@@ -21,6 +22,8 @@ export default function Layout({ children }: LayoutProps) {
   const { showHeader, showLogo, showBanner, showNavigation, showFooter } =
     useLayoutArea();
 
+  const { isLoggedIn, userName, handleLogin, handleLogout } = useLayoutAuth();
+
   return (
     <div className={styles.container} data-testid="layout-container">
       {showHeader && (
@@ -36,16 +39,34 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             )}
             <div className={styles.authStatus} data-testid="layout-auth-status">
-              <span className={styles.userName}>유저이름</span>
-              <Button
-                variant="secondary"
-                size="medium"
-                theme="light"
-                className={styles.logoutButton}
-                data-testid="logout-button"
-              >
-                로그아웃
-              </Button>
+              {isLoggedIn ? (
+                <>
+                  <span className={styles.userName} data-testid="user-name">
+                    {userName}
+                  </span>
+                  <Button
+                    variant="secondary"
+                    size="medium"
+                    theme="light"
+                    className={styles.logoutButton}
+                    data-testid="logout-button"
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="medium"
+                  theme="light"
+                  className={styles.loginButton}
+                  data-testid="login-button"
+                  onClick={handleLogin}
+                >
+                  로그인
+                </Button>
+              )}
             </div>
           </div>
         </header>
