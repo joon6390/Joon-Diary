@@ -3,6 +3,7 @@
 import React from "react";
 import { useLayoutLinkRouting } from "./hooks/index.link.routing.hook";
 import { useLayoutArea } from "./hooks/index.area.hook";
+import { Button } from "@/commons/components/button";
 import styles from "./styles.module.css";
 
 interface LayoutProps {
@@ -34,6 +35,18 @@ export default function Layout({ children }: LayoutProps) {
                 민지의 다이어리
               </div>
             )}
+            <div className={styles.authStatus} data-testid="layout-auth-status">
+              <span className={styles.userName}>유저이름</span>
+              <Button
+                variant="secondary"
+                size="medium"
+                theme="light"
+                className={styles.logoutButton}
+                data-testid="logout-button"
+              >
+                로그아웃
+              </Button>
+            </div>
           </div>
         </header>
       )}

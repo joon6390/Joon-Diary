@@ -41,6 +41,30 @@
   font-synthesis: none;
 }
 
+.authStatus {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userName {
+  font-family: var(--typo-body01-medium-font);
+  font-weight: var(--typo-body01-medium-weight);
+  font-size: var(--typo-body01-medium-size);
+  line-height: var(--typo-body01-medium-line-height);
+  letter-spacing: -0.16px;
+  color: var(--color-gray-black);
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+}
+
+.logoutButton {
+  width: auto;
+}
+
 /* Gap */
 .gap {
   width: 1168px;
