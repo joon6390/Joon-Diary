@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
 }
 
 /* Gap 1: 1168 * 32 */
@@ -364,4 +365,27 @@
 .gap4 {
   width: 1168px;
   height: 40px;
+}
+
+/* 반응형 브레이크포인트: 767px - gap 및 페이지네이션 영역 */
+@media (max-width: 767px) {
+  .gap1 {
+    width: 100%;
+  }
+
+  .gap2 {
+    width: 100%;
+  }
+
+  .gap3 {
+    width: 100%;
+  }
+
+  .pagination {
+    width: 100%;
+  }
+
+  .gap4 {
+    width: 100%;
+  }
 }
