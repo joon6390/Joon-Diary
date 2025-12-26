@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useLinkModal } from "./hooks/index.link.modal.hook";
 import { useBindingHook, DiaryCardData } from "./hooks/index.binding.hook";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
+import { useSearchHook } from "./hooks/index.search.hook";
 
 // 일기 카드 컴포넌트
 interface DiaryCardProps {
@@ -95,6 +96,9 @@ export default function Diaries() {
   // 일기 데이터 바인딩 hook
   const { diaries, isLoading, refreshDiaries } = useBindingHook();
 
+  // 일기 검색 hook
+  const { filteredDiaries, handleSearch } = useSearchHook(diaries);
+
   // 일기 카드 라우팅 hook
   const { navigateToDiaryDetail } = useLinkRouting();
 
@@ -106,10 +110,6 @@ export default function Diaries() {
 
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
-  };
-
-  const handleSearch = (value: string) => {
-    console.log("검색:", value);
   };
 
   const handleDeleteDiary = (id: number) => {
@@ -156,6 +156,7 @@ export default function Diaries() {
             placeholder="검색어를 입력해 주세요."
             onSearch={handleSearch}
             className={styles.searchbar}
+            data-testid="diary-search-input"
           />
         </div>
         <Button
@@ -181,7 +182,7 @@ export default function Diaries() {
         {isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          diaries.map((diary) => (
+          filteredDiaries.map((diary) => (
             <DiaryCard
               key={diary.id}
               diary={diary}

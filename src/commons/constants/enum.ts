@@ -97,3 +97,12 @@ export const emotionList: EmotionData[] = [
 export const getEmotionData = (type: EmotionType): EmotionData => {
   return emotionDataMap[type];
 };
+
+/**
+ * 강아지 사진 필터 타입 Enum
+ */
+export enum PictureFilterType {
+  Default = "DEFAULT",
+  Horizontal = "HORIZONTAL",
+  Vertical = "VERTICAL",
+}

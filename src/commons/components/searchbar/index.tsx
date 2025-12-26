@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import styles from "./styles.module.css";
 
@@ -21,6 +21,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
   ...rest
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { "data-testid": dataTestId, ...inputProps } = rest as {
+    "data-testid"?: string;
+    [key: string]: unknown;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e);
   };
@@ -28,6 +34,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && onSearch) {
       onSearch(e.currentTarget.value);
+    }
+  };
+
+  const handleIconClick = () => {
+    if (onSearch && !disabled && inputRef.current) {
+      onSearch(inputRef.current.value);
     }
   };
 
@@ -45,8 +57,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const iconSize = size === "small" ? 16 : size === "large" ? 28 : 24;
 
   return (
-    <div className={containerClasses}>
-      <div className={styles.iconWrapper}>
+    <div className={containerClasses} data-testid={dataTestId}>
+      <div
+        className={styles.iconWrapper}
+        onClick={handleIconClick}
+        style={{ cursor: disabled ? "not-allowed" : "pointer" }}
+      >
         <Image
           src="/icons/search_outline_light_m.svg"
           alt="search"
@@ -56,19 +72,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         />
       </div>
       <input
+        ref={inputRef}
         className={styles.input}
         disabled={disabled}
         placeholder={placeholder}
         onChange={handleChange}
         onKeyPress={handleKeyPress}
-        {...rest}
+        {...inputProps}
       />
     </div>
   );
 };
 
 export default SearchBar;
-
-
-
-

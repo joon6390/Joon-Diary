@@ -1,0 +1,544 @@
+
+> vibe-coding@0.1.0 test:e2e
+> playwright test
+
+
+Running 107 tests using 8 workers
+
+  ✓  1 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:29:9 › 회원가입 폼 기능 › 폼 검증 - 회원가입 버튼 활성화 조건 › 초기 상태에서 회원가입 버튼은 비활성화되어야 한다 (3.2s)
+  ✓  2 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:32:9 › 로그인 폼 기능 › 폼 검증 - 로그인 버튼 활성화 조건 › 초기 상태에서 로그인 버튼은 비활성화되어야 한다 (3.5s)
+  ✓  3 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:25:7 › 일기쓰기 모달 기능 테스트 › 일기쓰기 버튼이 표시되어야 한다 (3.2s)
+  ✓  4 [chromium] › src\commons\layout\tests\index.area.hook.spec.ts:16:7 › Layout Area Visibility › 일기목록 페이지(/diaries)에서 모든 영역 표시 (3.4s)
+  ✓  5 [chromium] › src\commons\layout\tests\index.link.routing.hook.spec.ts:21:7 › Layout Link Routing › 로고 클릭 시 일기목록 페이지로 이동 (3.6s)
+  ✓  6 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:26:7 › Layout Auth Hook - 비로그인 유저 › 비회원으로 /diaries에 접속하여 페이지 로드 확인 (4.9s)
+  ✓  7 [chromium] › src\components\diaries\tests\index.binding.hook.spec.ts:45:7 › 일기 목록 페이지 데이터 바인딩 › 로컬스토리지에 저장된 일기 데이터들이 올바르게 바인딩되어야 한다 (4.6s)
+  ✓  8 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:37:9 › 로그인 폼 기능 › 폼 검증 - 로그인 버튼 활성화 조건 › 이메일만 입력한 경우 로그인 버튼은 비활성화되어야 한다 (1.7s)
+  ✓  9 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:34:9 › 회원가입 폼 기능 › 폼 검증 - 회원가입 버튼 활성화 조건 › 이메일만 입력한 경우 회원가입 버튼은 비활성화되어야 한다 (1.8s)
+  ✓  10 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:34:7 › 일기쓰기 모달 기능 테스트 › 일기쓰기 버튼 클릭시 모달이 열려야 한다 (1.9s)
+  ✓  11 [chromium] › src\commons\layout\tests\index.link.routing.hook.spec.ts:31:7 › Layout Link Routing › 일기보관함 클릭 시 일기목록 페이지로 이동 (2.7s)
+  ✓  12 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:44:9 › 로그인 폼 기능 › 폼 검증 - 로그인 버튼 활성화 조건 › 이메일과 비밀번호를 모두 입력하면 로그인 버튼이 활성화되어야 한다 (1.3s)
+  ✓  13 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:41:9 › 회원가입 폼 기능 › 폼 검증 - 회원가입 버튼 활성화 조건 › 이메일과 비밀번호만 입력한 경우 회원가입 버튼은 비활성화되어야 한다 (1.3s)
+  ✓  14 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:47:7 › 일기쓰기 모달 기능 테스트 › 모달이 열렸을 때 배경(backdrop)이 표시되어야 한다 (1.3s)
+  ✓  15 [chromium] › src\components\diaries\tests\index.link.routing.hook.spec.ts:32:7 › 일기 카드 라우팅 기능 › 일기 카드 클릭 시 일기 상세 페이지로 이동해야 한다 (6.7s)
+  ✓  16 [chromium] › src\commons\layout\tests\index.area.hook.spec.ts:42:7 › Layout Area Visibility › 일기상세 페이지(/diaries/:id)에서 일부 영역만 표시 (3.7s)
+  -  17 [chromium] › src\commons\layout\tests\index.area.hook.spec.ts:69:8 › Layout Area Visibility › 로그인 페이지(/auth/login)에서 모든 영역 숨김
+  -  18 [chromium] › src\commons\layout\tests\index.area.hook.spec.ts:92:8 › Layout Area Visibility › 회원가입 페이지(/auth/signup)에서 모든 영역 숨김
+  -  19 [chromium] › src\commons\layout\tests\index.area.hook.spec.ts:115:8 › Layout Area Visibility › 사진목록 페이지(/pictures)에서 모든 영역 표시
+  ✓  20 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:36:7 › Layout Auth Hook - 비로그인 유저 › layout의 로그인버튼 노출여부 확인 (3.1s)
+  ✓  21 [chromium] › src\components\diaries\tests\index.binding.hook.spec.ts:117:7 › 일기 목록 페이지 데이터 바인딩 › 다양한 감정 타입의 일기들이 올바르게 바인딩되어야 한다 (3.0s)
+  ✓  22 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:54:9 › 로그인 폼 기능 › 폼 검증 - 이메일 형식 › 이메일에 @가 없으면 버튼이 비활성화되어야 한다 (1.7s)
+  ✓  23 [chromium] › src\commons\layout\tests\index.link.routing.hook.spec.ts:41:7 › Layout Link Routing › 일기보관함 클릭 시 CSS 액티브 상태 확인 (1.9s)
+  -  24 [chromium] › src\commons\layout\tests\index.link.routing.hook.spec.ts:57:8 › Layout Link Routing › 사진보관함 클릭 시 사진목록 페이지로 이동
+  -  25 [chromium] › src\commons\layout\tests\index.link.routing.hook.spec.ts:67:8 › Layout Link Routing › 사진보관함 클릭 시 CSS 액티브 상태 확인
+  ✓  26 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:49:9 › 회원가입 폼 기능 › 폼 검증 - 회원가입 버튼 활성화 조건 › 모든 필드를 올바르게 입력하면 회원가입 버튼이 활성화되어야 한다 (1.7s)
+  ✓  27 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:57:7 › 일기쓰기 모달 기능 테스트 › 모달이 페이지 중앙에 overlay되어야 한다 (1.6s)
+  ✓  28 [chromium] › src\components\diaries\tests\index.link.routing.hook.spec.ts:67:7 › 일기 카드 라우팅 기능 › 삭제 아이콘 클릭 시 페이지 이동하지 않아야 한다 (2.5s)
+  ✓  29 [chromium] › src\components\diaries\tests\index.search.hook.spec.ts:31:7 › 일기 검색 기능 › 검색어를 입력하고 엔터를 누르면 해당 검색어가 포함된 일기만 표시되어야 한다 (2.9s)
+  ✓  30 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:62:9 › 로그인 폼 기능 › 폼 검증 - 이메일 형식 › 이메일에 @가 포함되면 버튼이 활성화되어야 한다 (2.0s)
+  ✓  31 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:61:9 › 회원가입 폼 기능 › 폼 검증 - 이메일 형식 › 이메일에 @가 없으면 에러 메시지를 표시해야 한다 (1.9s)
+  ✓  32 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:71:7 › 일기쓰기 모달 기능 테스트 › 모달의 닫기 버튼을 클릭하면 모달이 닫혀야 한다 (2.1s)
+  ✓  33 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:56:7 › Layout Auth Hook - 비로그인 유저 › 로그인버튼 클릭하여 /auth/login 페이지로 이동 (3.4s)
+  ✓  34 [chromium] › src\components\diaries\tests\index.binding.hook.spec.ts:189:7 › 일기 목록 페이지 데이터 바인딩 › 제목이 길면 말줄임 처리되어 표시되어야 한다 (3.3s)
+  ✓  35 [chromium] › src\commons\layout\tests\index.link.routing.hook.spec.ts:82:7 › Layout Link Routing › 현재 경로에 따른 Navigation 액티브 상태 자동 적용 (3.3s)
+  ✓  36 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:72:9 › 로그인 폼 기능 › 폼 검증 - 비밀번호 › 비밀번호가 비어있으면 버튼이 비활성화되어야 한다 (1.6s)
+  ✓  37 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:72:9 › 회원가입 폼 기능 › 폼 검증 - 이메일 형식 › 올바른 이메일 형식이면 에러가 없어야 한다 (1.7s)
+  ✓  38 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:97:7 › 일기쓰기 모달 기능 테스트 › 모달 배경(backdrop) 클릭시 모달이 닫혀야 한다 (1.5s)
+  ✓  39 [chromium] › src\components\diaries\tests\index.search.hook.spec.ts:83:7 › 일기 검색 기능 › 검색어가 없을 때는 모든 일기가 표시되어야 한다 (9.3s)
+  ✓  40 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:80:9 › 로그인 폼 기능 › 폼 검증 - 비밀번호 › 비밀번호가 1글자 이상이면 버튼이 활성화되어야 한다 (10.1s)
+  ✓  41 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:84:9 › 회원가입 폼 기능 › 폼 검증 - 비밀번호 › 비밀번호가 8자 미만이면 버튼이 비활성화되어야 한다 (10.1s)
+  ✓  42 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:117:7 › 일기쓰기 모달 기능 테스트 › 모달 내부에 일기 작성 폼 요소들이 표시되어야 한다 (10.2s)
+  ✓  43 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:83:7 › Layout Auth Hook - 로그인 유저 › 비회원으로 /auth/login에 접속하여 페이지 로드 확인 (11.0s)
+  ✓  44 [chromium] › src\components\diaries\tests\index.binding.hook.spec.ts:241:7 › 일기 목록 페이지 데이터 바인딩 › 로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다 (11.0s)
+  ✘  45 [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:31:7 › 일기 상세 페이지 데이터 바인딩 › 로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다 (11.3s)
+  ✓  46 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:94:9 › 회원가입 폼 기능 › 폼 검증 - 비밀번호 › 비밀번호에 영문이 없으면 버튼이 비활성화되어야 한다 (7.3s)
+  ✓  47 [chromium] › src\components\diaries\tests\index.search.hook.spec.ts:125:7 › 일기 검색 기능 › 검색어와 일치하는 일기가 없을 때는 일기 카드가 표시되지 않아야 한다 (9.9s)
+  ✓  48 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:90:9 › 로그인 폼 기능 › 로그인 API - 성공 시나리오 › 로그인 성공시 accessToken이 반환되고 로그인완료모달이 표시되어야 한다 (8.5s)
+  ✓  49 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:148:7 › 일기쓰기 모달 기능 테스트 › 모달이 여러 번 열고 닫혀도 정상 작동해야 한다 (8.5s)
+  ✘  50 [chromium] › src\components\diaries\tests\index.link.routing.hook.spec.ts:104:7 › 일기 카드 라우팅 기능 › 여러 일기 카드가 있을 때 각각 올바른 경로로 이동해야 한다 (24.1s)
+  ✓  51 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:104:9 › 회원가입 폼 기능 › 폼 검증 - 비밀번호 › 비밀번호에 숫자가 없으면 버튼이 비활성화되어야 한다 (8.2s)
+  ✓  52 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:198:7 › 일기쓰기 권한 분기 테스트 › 비로그인 유저가 일기쓰기 버튼을 클릭하면 로그인요청모달이 노출되어야 한다 (7.7s)
+  ✓  53 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:107:9 › 로그인 폼 기능 › 로그인 API - 성공 시나리오 › 로그인 성공시 accessToken이 로컬스토리지에 저장되어야 한다 (8.3s)
+  ✘  54 [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:51:7 › 회고쓰기 폼 등록 기능 › 초기 상태에서 입력 버튼은 비활성화되어야 한다 (18.1s)
+  ✓  55 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:95:7 › Layout Auth Hook - 로그인 유저 › 로그인 성공 후, 완료 모달 클릭하여 /diaries 페이지 로드 확인 (20.3s)
+  ✓  56 [chromium] › src\components\diaries\tests\index.search.hook.spec.ts:167:7 › 일기 검색 기능 › 검색어는 대소문자를 구분하지 않고 검색되어야 한다 (16.4s)
+  ✓  57 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:114:9 › 회원가입 폼 기능 › 폼 검증 - 비밀번호 › 비밀번호가 영문+숫자 8자 이상이면 버튼이 활성화되어야 한다 (8.7s)
+  ✓  58 [chromium] › src\components\diaries\tests\index.link.modal.hook.spec.ts:226:7 › 일기쓰기 권한 분기 테스트 › 로그인 유저가 일기쓰기 버튼을 클릭하면 일기쓰기 페이지 모달이 노출되어야 한다 (8.1s)
+  ✓  59 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:125:9 › 로그인 폼 기능 › 로그인 API - 성공 시나리오 › 로그인 성공시 fetchUserLoggedIn API가 호출되고 user 정보가 로컬스토리지에 저장되어야 한다 (8.4s)
+  ✘  60 [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:79:7 › 일기 상세 페이지 데이터 바인딩 › 다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다 (16.0s)
+  ✓  61 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:126:9 › 회원가입 폼 기능 › 폼 검증 - 비밀번호 확인 › 비밀번호와 비밀번호 확인이 다르면 버튼이 비활성화되어야 한다 (8.2s)
+  ✓  62 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:35:7 › 일기쓰기 폼 등록 기능 › 초기 상태에서 등록하기 버튼은 비활성화되어야 한다 (8.5s)
+  ✓  63 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:146:9 › 로그인 폼 기능 › 로그인 API - 성공 시나리오 › 로그인완료모달의 확인 버튼 클릭시 일기목록 페이지로 이동해야 한다 (12.3s)
+  ✓  64 [chromium] › src\components\diaries\tests\index.search.hook.spec.ts:207:7 › 일기 검색 기능 › 검색 후 다시 빈 검색어로 검색하면 모든 일기가 표시되어야 한다 (16.2s)
+  ✓  65 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:124:7 › Layout Auth Hook - 로그인 유저 › layout에서 유저이름, 로그아웃버튼 노출여부 확인 (19.4s)
+  ✓  66 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:136:9 › 회원가입 폼 기능 › 폼 검증 - 비밀번호 확인 › 비밀번호와 비밀번호 확인이 같으면 버튼이 활성화되어야 한다 (7.5s)
+  ✓  67 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:41:7 › 일기쓰기 폼 등록 기능 › 감정만 선택한 경우 등록하기 버튼은 비활성화되어야 한다 (8.1s)
+  ✓  68 [chromium] › src\components\diaries\tests\index.link.routing.hook.spec.ts:186:7 › 일기 카드 라우팅 기능 › 일기 카드에 cursor: pointer 스타일이 적용되어야 한다 (17.1s)
+  ✓  69 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:171:9 › 로그인 폼 기능 › 로그인 API - 실패 시나리오 › 잘못된 이메일/비밀번호로 로그인시 로그인실패모달이 표시되어야 한다 (9.5s)
+  ✓  70 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:148:9 › 회원가입 폼 기능 › 폼 검증 - 이름 › 이름이 비어있으면 버튼이 비활성화되어야 한다 (6.8s)
+  ✓  71 [chromium] › src\components\diaries-new\tests\index.link.modal.close.hook.spec.ts:18:7 › 일기쓰기 모달 닫기 기능 › 닫기 버튼 클릭 시 등록취소모달이 열리고, 계속작성 버튼으로 등록취소모달만 닫힘 (7.5s)
+  ✓  72 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:50:7 › 일기쓰기 폼 등록 기능 › 감정과 제목만 입력한 경우 등록하기 버튼은 비활성화되어야 한다 (6.3s)
+[2m[WebServer] [22m [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload due to a runtime error.
+  ✓  73 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:62:7 › 일기쓰기 폼 등록 기능 › 모든 필드를 입력하면 등록하기 버튼이 활성화되어야 한다 (7.7s)
+  ✓  74 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:158:9 › 회원가입 폼 기능 › 폼 검증 - 이름 › 이름이 1글자 이상이면 버튼이 활성화되어야 한다 (8.4s)
+  ✓  75 [chromium] › src\components\diaries-new\tests\index.link.modal.close.hook.spec.ts:57:7 › 일기쓰기 모달 닫기 기능 › 닫기 버튼 클릭 시 등록취소모달이 열리고, 등록취소 버튼으로 두 모달 모두 닫힘 (8.9s)
+  ✓  76 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:209:9 › 로그인 폼 기능 › 로그인 API - 실패 시나리오 › 로그인실패모달의 확인 버튼 클릭시 모달이 닫혀야 한다 (9.5s)
+  ✘  77 [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:57:7 › 회고쓰기 폼 등록 기능 › 회고 인풋이 입력되면 입력 버튼이 활성화되어야 한다 (17.7s)
+  ✘  78 [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:159:7 › 일기 상세 페이지 데이터 바인딩 › 존재하지 않는 id로 접근 시 적절히 처리되어야 한다 (9.6s)
+  ✘  79 [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:26:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 페이지 접속 시 강아지 목록 조회 API를 요청하고 6마리 강아지 이미지를 표시해야 한다 (9.7s)
+  ✓  80 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:160:7 › Layout Auth Hook - 로그인 유저 › 로그아웃버튼 클릭하여 /auth/login 페이지 로드 확인 (20.8s)
+  ✓  81 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:250:9 › 로그인 폼 기능 › 로그인 API - 실패 시나리오 › 네트워크 에러 발생시 로그인실패모달이 표시되어야 한다 (4.7s)
+  ✓  82 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:170:9 › 회원가입 폼 기능 › 회원가입 API - 성공 시나리오 › 회원가입 성공시 _id가 반환되고 가입완료모달이 표시되어야 한다 (5.8s)
+  ✓  83 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:77:7 › 일기쓰기 폼 등록 기능 › 로컬스토리지가 비어있을 때 첫 일기를 등록하면 id는 1이어야 한다 (5.9s)
+  ✘  84 [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:24:7 › 강아지 사진 필터 기능 › 페이지 접속 시 기본 필터(640x640)가 선택되어 있어야 한다 (6.0s)
+  ✓  85 [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts:275:9 › 로그인 폼 기능 › 회원가입 페이지 링크 › 회원가입 링크 클릭시 회원가입 페이지로 이동해야 한다 (6.3s)
+  ✓  86 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:193:9 › 회원가입 폼 기능 › 회원가입 API - 성공 시나리오 › 가입완료모달의 확인 버튼 클릭시 로그인 페이지로 이동해야 한다 (7.4s)
+  ✓  87 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:102:7 › 일기쓰기 폼 등록 기능 › 로컬스토리지에 기존 일기가 있을 때 새 일기를 등록하면 id는 최대id+1이어야 한다 (10.4s)
+  ✓  88 [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:55:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 로딩 중에는 6개의 스플래시 스크린이 표시되어야 한다 (10.0s)
+  ✓  89 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:224:9 › 회원가입 폼 기능 › 회원가입 API - 실패 시나리오 › 중복된 이메일로 회원가입시 가입실패모달이 표시되어야 한다 (7.9s)
+  ✘  90 [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:185:7 › 일기 상세 페이지 데이터 바인딩 › 로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다 (15.4s)
+  ✓  91 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:151:7 › 일기쓰기 폼 등록 기능 › 등록 완료시 등록완료모달이 표시되어야 한다 (6.5s)
+  ✓  92 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:192:7 › Layout Auth Hook - 로그인 유저 › /diaries에 접속하여 페이지 로드 확인 (21.0s)
+  ✘  93 [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:67:7 › 회고쓰기 폼 등록 기능 › 로컬스토리지가 비어있을 때 첫 회고를 등록하면 id는 1이어야 한다 (20.0s)
+  ✓  94 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:264:9 › 회원가입 폼 기능 › 회원가입 API - 실패 시나리오 › 가입실패모달의 확인 버튼 클릭시 모달이 닫혀야 한다 (7.0s)
+  ✘  95 [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:62:7 › 강아지 사진 필터 기능 › 필터를 '가로형'으로 변경 시 이미지 크기가 640x480으로 변경되어야 한다 (6.7s)
+  ✓  96 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:169:7 › 일기쓰기 폼 등록 기능 › 등록완료모달의 확인 버튼 클릭시 상세페이지로 이동하고 모든 모달이 닫혀야 한다 (7.9s)
+  ✘  97 [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:73:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 스크롤이 마지막 2개만 남았을 때 추가 강아지를 요청해야 한다 (7.9s)
+  ✓  98 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:307:9 › 회원가입 폼 기능 › 회원가입 API - 실패 시나리오 › 네트워크 에러 발생시 가입실패모달이 표시되어야 한다 (5.7s)
+  ✓  99 [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts:194:7 › 일기쓰기 폼 등록 기능 › 등록완료 후 상세페이지에서 등록된 일기 내용을 확인할 수 있어야 한다 (6.8s)
+  ✓  100 [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts:334:9 › 회원가입 폼 기능 › 로그인 페이지 링크 › 로그인 링크 클릭시 로그인 페이지로 이동해야 한다 (6.3s)
+  ✓  101 [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts:225:7 › Layout Auth Hook - 로그인 유저 › layout에 로그인버튼 노출여부 확인 (15.7s)
+  ✓  102 [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:111:7 › 강아지 사진 목록 페이지 데이터 바인딩 › API 요청 실패 시 에러 처리가 되어야 한다 (3.7s)
+  ✘  103 [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:127:7 › 강아지 사진 필터 기능 › 필터를 '세로형'으로 변경 시 이미지 크기가 480x640으로 변경되어야 한다 (7.1s)
+  ✘  104 [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:93:7 › 회고쓰기 폼 등록 기능 › 로컬스토리지에 기존 회고가 있을 때 새 회고를 등록하면 id는 최대id+1이어야 한다 (12.3s)
+  ✘  105 [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:192:7 › 강아지 사진 필터 기능 › 필터를 '기본'으로 변경 시 이미지 크기가 640x640으로 변경되어야 한다 (4.4s)
+  ✘  106 [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:139:7 › 회고쓰기 폼 등록 기능 › 등록 완료 후 페이지가 새로고침되어야 한다 (9.6s)
+  ✘  107 [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:156:7 › 회고쓰기 폼 등록 기능 › 등록된 회고가 올바른 diaryId를 저장해야 한다 (7.8s)
+
+
+  1) [chromium] › src\components\diaries\tests\index.link.routing.hook.spec.ts:104:7 › 일기 카드 라우팅 기능 › 여러 일기 카드가 있을 때 각각 올바른 경로로 이동해야 한다 
+
+    TimeoutError: page.waitForSelector: Timeout 499ms exceeded.
+    Call log:
+      [2m- waiting for locator('[data-testid="diaries-container"]') to be visible[22m
+    [2m  -   locator resolved to visible <div class="styles_container__FqIil" data-testid="dia…>…</div>[22m
+
+
+      170 |     // When: 목록 페이지로 다시 이동
+      171 |     await page.goto("/diaries");
+    > 172 |     await page.waitForSelector('[data-testid="diaries-container"]', {
+          |                ^
+      173 |       timeout: 499,
+      174 |     });
+      175 |
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries\tests\index.link.routing.hook.spec.ts:172:16
+
+  2) [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:31:7 › 일기 상세 페이지 데이터 바인딩 › 로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다 
+
+    TimeoutError: page.waitForSelector: Timeout 499ms exceeded.
+    Call log:
+      [2m- waiting for locator('[data-testid="diaries-detail-container"]') to be visible[22m
+
+
+      49 |
+      50 |     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
+    > 51 |     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
+         |                ^
+      52 |       timeout: 499,
+      53 |     });
+      54 |
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.binding.hook.spec.ts:51:16
+
+  3) [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:79:7 › 일기 상세 페이지 데이터 바인딩 › 다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다 
+
+    TimeoutError: page.waitForSelector: Timeout 499ms exceeded.
+    Call log:
+      [2m- waiting for locator('[data-testid="diaries-detail-container"]') to be visible[22m
+
+
+      128 |
+      129 |       // Then: 페이지가 완전히 로드될 때까지 대기
+    > 130 |       await page.waitForSelector('[data-testid="diaries-detail-container"]', {
+          |                  ^
+      131 |         timeout: 499,
+      132 |       });
+      133 |
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.binding.hook.spec.ts:130:18
+
+  4) [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:159:7 › 일기 상세 페이지 데이터 바인딩 › 존재하지 않는 id로 접근 시 적절히 처리되어야 한다 
+
+    TimeoutError: page.waitForSelector: Timeout 499ms exceeded.
+    Call log:
+      [2m- waiting for locator('[data-testid="diaries-detail-container"]') to be visible[22m
+
+
+      178 |     // Then: 페이지가 로드되지만 데이터가 없거나 기본값이 표시됨
+      179 |     // (구현에 따라 다를 수 있으나, 최소한 에러가 발생하지 않아야 함)
+    > 180 |     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
+          |                ^
+      181 |       timeout: 499,
+      182 |     });
+      183 |   });
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.binding.hook.spec.ts:180:16
+
+  5) [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:185:7 › 일기 상세 페이지 데이터 바인딩 › 로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다 
+
+    TimeoutError: page.waitForSelector: Timeout 499ms exceeded.
+    Call log:
+      [2m- waiting for locator('[data-testid="diaries-detail-container"]') to be visible[22m
+
+
+      196 |     // Then: 페이지가 로드되지만 데이터가 없거나 기본값이 표시됨
+      197 |     // (구현에 따라 다를 수 있으나, 최소한 에러가 발생하지 않아야 함)
+    > 198 |     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
+          |                ^
+      199 |       timeout: 499,
+      200 |     });
+      201 |   });
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.binding.hook.spec.ts:198:16
+
+  6) [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:51:7 › 회고쓰기 폼 등록 기능 › 초기 상태에서 입력 버튼은 비활성화되어야 한다 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="diaries-detail-container"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="diaries-detail-container"]')[22m
+
+
+      46 |     
+      47 |     // 페이지 로드 대기
+    > 48 |     await expect(page.locator('[data-testid="diaries-detail-container"]')).toBeVisible();
+         |                                                                            ^
+      49 |   });
+      50 |
+      51 |   test("초기 상태에서 입력 버튼은 비활성화되어야 한다", async ({ page }) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:48:76
+
+  7) [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:57:7 › 회고쓰기 폼 등록 기능 › 회고 인풋이 입력되면 입력 버튼이 활성화되어야 한다 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="diaries-detail-container"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="diaries-detail-container"]')[22m
+
+
+      46 |     
+      47 |     // 페이지 로드 대기
+    > 48 |     await expect(page.locator('[data-testid="diaries-detail-container"]')).toBeVisible();
+         |                                                                            ^
+      49 |   });
+      50 |
+      51 |   test("초기 상태에서 입력 버튼은 비활성화되어야 한다", async ({ page }) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:48:76
+
+  8) [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:67:7 › 회고쓰기 폼 등록 기능 › 로컬스토리지가 비어있을 때 첫 회고를 등록하면 id는 1이어야 한다 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="diaries-detail-container"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="diaries-detail-container"]')[22m
+
+
+      46 |     
+      47 |     // 페이지 로드 대기
+    > 48 |     await expect(page.locator('[data-testid="diaries-detail-container"]')).toBeVisible();
+         |                                                                            ^
+      49 |   });
+      50 |
+      51 |   test("초기 상태에서 입력 버튼은 비활성화되어야 한다", async ({ page }) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:48:76
+
+  9) [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:93:7 › 회고쓰기 폼 등록 기능 › 로컬스토리지에 기존 회고가 있을 때 새 회고를 등록하면 id는 최대id+1이어야 한다 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="diaries-detail-container"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="diaries-detail-container"]')[22m
+
+
+      46 |     
+      47 |     // 페이지 로드 대기
+    > 48 |     await expect(page.locator('[data-testid="diaries-detail-container"]')).toBeVisible();
+         |                                                                            ^
+      49 |   });
+      50 |
+      51 |   test("초기 상태에서 입력 버튼은 비활성화되어야 한다", async ({ page }) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:48:76
+
+  10) [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:139:7 › 회고쓰기 폼 등록 기능 › 등록 완료 후 페이지가 새로고침되어야 한다 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="diaries-detail-container"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="diaries-detail-container"]')[22m
+
+
+      46 |     
+      47 |     // 페이지 로드 대기
+    > 48 |     await expect(page.locator('[data-testid="diaries-detail-container"]')).toBeVisible();
+         |                                                                            ^
+      49 |   });
+      50 |
+      51 |   test("초기 상태에서 입력 버튼은 비활성화되어야 한다", async ({ page }) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:48:76
+
+  11) [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:156:7 › 회고쓰기 폼 등록 기능 › 등록된 회고가 올바른 diaryId를 저장해야 한다 
+
+    Error: [31mTimed out 5000ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="diaries-detail-container"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 5000ms[22m
+    [2m  - waiting for locator('[data-testid="diaries-detail-container"]')[22m
+
+
+      46 |     
+      47 |     // 페이지 로드 대기
+    > 48 |     await expect(page.locator('[data-testid="diaries-detail-container"]')).toBeVisible();
+         |                                                                            ^
+      49 |   });
+      50 |
+      51 |   test("초기 상태에서 입력 버튼은 비활성화되어야 한다", async ({ page }) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:48:76
+
+  12) [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:26:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 페이지 접속 시 강아지 목록 조회 API를 요청하고 6마리 강아지 이미지를 표시해야 한다 
+
+    Error: [31mTimed out 1999ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m
+
+    Locator: locator('[data-testid^="dog-image-"]')
+    Expected: [32m6[39m
+    Received: [31m12[39m
+    Call log:
+      [2m- expect.toHaveCount with timeout 1999ms[22m
+    [2m  - waiting for locator('[data-testid^="dog-image-"]')[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 12 elements[22m
+    [2m  -   unexpected value "12"[22m
+
+
+      35 |     // And: 강아지 이미지들이 표시됨 (dog.ceo가 포함된 이미지 주소)
+      36 |     const dogImages = page.locator('[data-testid^="dog-image-"]');
+    > 37 |     await expect(dogImages).toHaveCount(6, { timeout: 1999 });
+         |                             ^
+      38 |
+      39 |     // And: 각 이미지가 로드될 때까지 대기
+      40 |     for (let i = 0; i < 6; i++) {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\pictures\tests\index.binding.hook.spec.ts:37:29
+
+  13) [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:73:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 스크롤이 마지막 2개만 남았을 때 추가 강아지를 요청해야 한다 
+
+    Error: [31mTimed out 1999ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m
+
+    Locator: locator('[data-testid^="dog-image-"]')
+    Expected: [32m6[39m
+    Received: [31m12[39m
+    Call log:
+      [2m- expect.toHaveCount with timeout 1999ms[22m
+    [2m  - waiting for locator('[data-testid^="dog-image-"]')[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 0 elements[22m
+    [2m  -   unexpected value "0"[22m
+    [2m  -   locator resolved to 12 elements[22m
+    [2m  -   unexpected value "12"[22m
+
+
+      82 |     // And: 초기 6마리 강아지 이미지가 표시됨
+      83 |     const initialImages = page.locator('[data-testid^="dog-image-"]');
+    > 84 |     await expect(initialImages).toHaveCount(6, { timeout: 1999 });
+         |                                 ^
+      85 |
+      86 |     // And: 각 이미지가 로드될 때까지 대기
+      87 |     for (let i = 0; i < 6; i++) {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\pictures\tests\index.binding.hook.spec.ts:84:33
+
+  14) [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:24:7 › 강아지 사진 필터 기능 › 페이지 접속 시 기본 필터(640x640)가 선택되어 있어야 한다 
+
+    Error: [31mTimed out 499ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid="dog-image-wrapper-wrapper-0"]')
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 499ms[22m
+    [2m  - waiting for locator('[data-testid="dog-image-wrapper-wrapper-0"]')[22m
+
+
+      44 |       `[data-testid="dog-image-wrapper-${imageIdNumber}"]`
+      45 |     );
+    > 46 |     await expect(imageWrapper).toBeVisible({ timeout: 499 });
+         |                                ^
+      47 |
+      48 |     // 인라인 스타일로 설정된 크기 확인
+      49 |     const width = await imageWrapper.evaluate((el) => {
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\pictures\tests\index.filter.hook.spec.ts:46:32
+
+  15) [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:62:7 › 강아지 사진 필터 기능 › 필터를 '가로형'으로 변경 시 이미지 크기가 640x480으로 변경되어야 한다 
+
+    Error: [31mTimed out 1999ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid^="dog-image-"]').first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 1999ms[22m
+    [2m  - waiting for locator('[data-testid^="dog-image-"]').first()[22m
+
+
+      73 |     // And: 강아지 이미지들이 표시됨
+      74 |     const dogImages = page.locator('[data-testid^="dog-image-"]');
+    > 75 |     await expect(dogImages.first()).toBeVisible({ timeout: 1999 });
+         |                                     ^
+      76 |
+      77 |     // When: 필터 선택박스를 클릭하여 드롭다운 열기
+      78 |     const selectBox = page.locator('[data-testid="pictures-filter-selectbox"]');
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\pictures\tests\index.filter.hook.spec.ts:75:37
+
+  16) [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:127:7 › 강아지 사진 필터 기능 › 필터를 '세로형'으로 변경 시 이미지 크기가 480x640으로 변경되어야 한다 
+
+    TimeoutError: locator.click: Timeout 499ms exceeded.
+    Call log:
+      [2m- waiting for locator('[data-testid="pictures-filter-option-vertical"]')[22m
+    [2m  -   locator resolved to <div class="styles_option__OXFjb " data-testid="pictu…>…</div>[22m
+    [2m  - attempting click action[22m
+    [2m  -   waiting for element to be visible, enabled and stable[22m
+    [2m  -   element is visible, enabled and stable[22m
+    [2m  -   scrolling into view if needed[22m
+    [2m  -   done scrolling[22m
+    [2m  -   <div class="styles_main__h4iSS">…</div> intercepts pointer events[22m
+    [2m  - retrying click action, attempt #1[22m
+    [2m  -   waiting for element to be visible, enabled and stable[22m
+    [2m  -   element is visible, enabled and stable[22m
+    [2m  -   scrolling into view if needed[22m
+    [2m  -   done scrolling[22m
+    [2m  -   <div class="styles_main__h4iSS">…</div> intercepts pointer events[22m
+    [2m  - retrying click action, attempt #2[22m
+    [2m  -   waiting 20ms[22m
+    [2m  -   waiting for element to be visible, enabled and stable[22m
+    [2m  -   element is visible, enabled and stable[22m
+    [2m  -   scrolling into view if needed[22m
+    [2m  -   done scrolling[22m
+    [2m  -   <div class="styles_main__h4iSS">…</div> intercepts pointer events[22m
+    [2m  - retrying click action, attempt #3[22m
+    [2m  -   waiting 100ms[22m
+    [2m  -   waiting for element to be visible, enabled and stable[22m
+    [2m  -   element is visible, enabled and stable[22m
+    [2m  -   scrolling into view if needed[22m
+    [2m  -   done scrolling[22m
+    [2m  -   <div class="styles_main__h4iSS">…</div> intercepts pointer events[22m
+    [2m  - retrying click action, attempt #4[22m
+    [2m  -   waiting 100ms[22m
+    [2m  -   waiting for element to be visible, enabled and stable[22m
+    [2m  -   element is visible, enabled and stable[22m
+    [2m  -   scrolling into view if needed[22m
+    [2m  -   done scrolling[22m
+    [2m  -   <div class="styles_main__h4iSS">…</div> intercepts pointer events[22m
+    [2m  - retrying click action, attempt #5[22m
+    [2m  -   waiting 500ms[22m
+
+
+      149 |     );
+      150 |     await verticalOption.waitFor({ state: "visible", timeout: 499 });
+    > 151 |     await verticalOption.click({ timeout: 499 });
+          |                          ^
+      152 |
+      153 |     // Then: 이미지 크기가 480x640으로 변경됨
+      154 |     const firstImage = dogImages.first();
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\pictures\tests\index.filter.hook.spec.ts:151:26
+
+  17) [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:192:7 › 강아지 사진 필터 기능 › 필터를 '기본'으로 변경 시 이미지 크기가 640x640으로 변경되어야 한다 
+
+    Error: [31mTimed out 1999ms waiting for [39m[2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m
+
+    Locator: locator('[data-testid^="dog-image-"]').first()
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      [2m- expect.toBeVisible with timeout 1999ms[22m
+    [2m  - waiting for locator('[data-testid^="dog-image-"]').first()[22m
+
+
+      203 |     // And: 강아지 이미지들이 표시됨
+      204 |     const dogImages = page.locator('[data-testid^="dog-image-"]');
+    > 205 |     await expect(dogImages.first()).toBeVisible({ timeout: 1999 });
+          |                                     ^
+      206 |
+      207 |     // Given: 필터를 먼저 "가로형"으로 변경
+      208 |     const selectBox = page.locator('[data-testid="pictures-filter-selectbox"]');
+
+        at C:\Users\joon6\Documents\vibe-coding\src\components\pictures\tests\index.filter.hook.spec.ts:205:37
+
+  Slow test file: [chromium] › src\commons\layout\tests\index.auth.hook.spec.ts (2.0m)
+  Slow test file: [chromium] › src\components\auth-signup\tests\index.form.hook.spec.ts (1.9m)
+  Slow test file: [chromium] › src\components\auth-login\tests\index.form.hook.spec.ts (1.5m)
+  Slow test file: [chromium] › src\components\diaries-new\tests\index.form.hook.spec.ts (1.1m)
+  Slow test file: [chromium] › src\components\diaries\tests\index.search.hook.spec.ts (54.6s)
+  Consider splitting slow test files to speed up parallel execution
+  17 failed
+    [chromium] › src\components\diaries\tests\index.link.routing.hook.spec.ts:104:7 › 일기 카드 라우팅 기능 › 여러 일기 카드가 있을 때 각각 올바른 경로로 이동해야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:31:7 › 일기 상세 페이지 데이터 바인딩 › 로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:79:7 › 일기 상세 페이지 데이터 바인딩 › 다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:159:7 › 일기 상세 페이지 데이터 바인딩 › 존재하지 않는 id로 접근 시 적절히 처리되어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.binding.hook.spec.ts:185:7 › 일기 상세 페이지 데이터 바인딩 › 로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:51:7 › 회고쓰기 폼 등록 기능 › 초기 상태에서 입력 버튼은 비활성화되어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:57:7 › 회고쓰기 폼 등록 기능 › 회고 인풋이 입력되면 입력 버튼이 활성화되어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:67:7 › 회고쓰기 폼 등록 기능 › 로컬스토리지가 비어있을 때 첫 회고를 등록하면 id는 1이어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:93:7 › 회고쓰기 폼 등록 기능 › 로컬스토리지에 기존 회고가 있을 때 새 회고를 등록하면 id는 최대id+1이어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:139:7 › 회고쓰기 폼 등록 기능 › 등록 완료 후 페이지가 새로고침되어야 한다 
+    [chromium] › src\components\diaries-detail\tests\index.retrospect.form.hook.spec.ts:156:7 › 회고쓰기 폼 등록 기능 › 등록된 회고가 올바른 diaryId를 저장해야 한다 
+    [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:26:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 페이지 접속 시 강아지 목록 조회 API를 요청하고 6마리 강아지 이미지를 표시해야 한다 
+    [chromium] › src\components\pictures\tests\index.binding.hook.spec.ts:73:7 › 강아지 사진 목록 페이지 데이터 바인딩 › 스크롤이 마지막 2개만 남았을 때 추가 강아지를 요청해야 한다 
+    [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:24:7 › 강아지 사진 필터 기능 › 페이지 접속 시 기본 필터(640x640)가 선택되어 있어야 한다 
+    [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:62:7 › 강아지 사진 필터 기능 › 필터를 '가로형'으로 변경 시 이미지 크기가 640x480으로 변경되어야 한다 
+    [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:127:7 › 강아지 사진 필터 기능 › 필터를 '세로형'으로 변경 시 이미지 크기가 480x640으로 변경되어야 한다 
+    [chromium] › src\components\pictures\tests\index.filter.hook.spec.ts:192:7 › 강아지 사진 필터 기능 › 필터를 '기본'으로 변경 시 이미지 크기가 640x640으로 변경되어야 한다 
+  5 skipped
+  85 passed (2.7m)

@@ -129,6 +129,3 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 };
 
 export default SelectBox;
-
-
-
