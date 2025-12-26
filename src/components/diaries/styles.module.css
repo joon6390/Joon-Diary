@@ -125,8 +125,15 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 24px;
+}
+
+/* 1168px 이하에서 center 정렬 */
+@media (max-width: 1168px) {
+  .main {
+    justify-content: center;
+  }
 }
 
 /* DiaryCard */
@@ -211,6 +218,79 @@
   height: 88px;
 }
 
+/* 반응형 브레이크포인트: 767px - main 영역 */
+@media (max-width: 767px) {
+  .main {
+    gap: 16px;
+    max-width: 320px;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .diaryCard {
+    width: 152px;
+    height: 192px;
+  }
+
+  .imageWrapper {
+    width: 152px;
+    height: 116px;
+  }
+
+  .imageContainer {
+    width: 152px;
+    height: 116px;
+  }
+
+  .cardContent {
+    height: auto;
+    min-height: 44px;
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .cardHeader {
+    height: 16px;
+  }
+}
+
+/* 388px 이하에서 center 정렬 */
+@media (max-width: 388px) {
+  .main {
+    justify-content: center;
+  }
+
+  .diaryCard {
+    width: 152px;
+    height: 192px;
+  }
+
+  .imageWrapper {
+    width: 152px;
+    height: 116px;
+  }
+
+  .imageContainer {
+    width: 152px;
+    height: 116px;
+  }
+
+  .cardContent {
+    height: auto;
+    min-height: 44px;
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .cardHeader {
+    height: 16px;
+  }
+
+  .cardTitle {
+    height: 24px;
+  }
+}
+
 .cardHeader {
   display: flex;
   flex-direction: row;
@@ -247,6 +327,21 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   height: 24px;
+}
+
+/* 767px 이하에서 폰트 크기 조정 */
+@media (max-width: 767px) {
+  .emotionText {
+    font-size: 12px;
+  }
+
+  .dateText {
+    font-size: 12px;
+  }
+
+  .cardTitle {
+    font-size: 14px;
+  }
 }
 
 /* Gap 3: 1168 * 40 */
