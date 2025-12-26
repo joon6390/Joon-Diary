@@ -25,7 +25,12 @@ interface DiaryCardProps {
   isLoggedIn: boolean;
 }
 
-function DiaryCard({ diary, onDelete, onCardClick, isLoggedIn }: DiaryCardProps) {
+function DiaryCard({
+  diary,
+  onDelete,
+  onCardClick,
+  isLoggedIn,
+}: DiaryCardProps) {
   const imageUrl = `/images/${diary.emotionImage}`;
 
   const handleCardClick = () => {
@@ -101,13 +106,17 @@ export default function Diaries() {
   const { diaries, isLoading } = useBindingHook();
 
   // 일기 검색 hook
-  const { filteredDiaries: searchFilteredDiaries, handleSearch } = useSearchHook(diaries);
+  const { filteredDiaries: searchFilteredDiaries, handleSearch } =
+    useSearchHook(diaries);
 
   // 일기 필터 hook (검색 결과에 필터 적용)
-  const { filteredDiaries, handleFilterChange, selectedFilter } = useFilterHook(searchFilteredDiaries);
+  const { filteredDiaries, handleFilterChange, selectedFilter } = useFilterHook(
+    searchFilteredDiaries
+  );
 
   // 일기 페이지네이션 hook (필터 결과에 페이지네이션 적용)
-  const { paginatedDiaries, currentPage, totalPages, handlePageChange } = usePaginationHook(filteredDiaries);
+  const { paginatedDiaries, currentPage, totalPages, handlePageChange } =
+    usePaginationHook(filteredDiaries);
 
   // 일기 카드 라우팅 hook
   const { navigateToDiaryDetail } = useLinkRouting();
@@ -122,10 +131,19 @@ export default function Diaries() {
   // emotion 필터 옵션
   const filterOptions = [
     { value: "all", label: "전체" },
-    { value: EmotionType.Happy, label: emotionDataMap[EmotionType.Happy].label },
+    {
+      value: EmotionType.Happy,
+      label: emotionDataMap[EmotionType.Happy].label,
+    },
     { value: EmotionType.Sad, label: emotionDataMap[EmotionType.Sad].label },
-    { value: EmotionType.Surprise, label: emotionDataMap[EmotionType.Surprise].label },
-    { value: EmotionType.Angry, label: emotionDataMap[EmotionType.Angry].label },
+    {
+      value: EmotionType.Surprise,
+      label: emotionDataMap[EmotionType.Surprise].label,
+    },
+    {
+      value: EmotionType.Angry,
+      label: emotionDataMap[EmotionType.Angry].label,
+    },
   ];
 
   const handleFilterSelectChange = (value: string) => {
@@ -135,7 +153,6 @@ export default function Diaries() {
       handleFilterChange(value as EmotionType);
     }
   };
-
 
   return (
     <div className={styles.container} data-testid="diaries-container">

@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
 }
 
 /* Gap 64px */
@@ -30,7 +30,7 @@
 .detailTitle {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   height: 84px;
 }
 
@@ -101,7 +101,7 @@
 .detailContent {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   min-height: 169px;
 }
 
@@ -163,7 +163,7 @@
    ======================================== */
 .detailFooter {
   display: flex;
-  width: 1168px;
+  width: 100%;
   height: 56px;
   justify-content: flex-end;
   align-items: flex-start;
@@ -181,7 +181,7 @@
 .retrospectInput {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   height: 85px;
 }
 
@@ -204,7 +204,7 @@
 }
 
 .retrospectInputField {
-  width: 1101px;
+  flex: 1;
 }
 
 .retrospectButton {
@@ -217,7 +217,7 @@
 .retrospectList {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   border-radius: 16px;
 }
 
@@ -262,7 +262,7 @@
 .updateEmotionSection {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   min-height: 64px;
   gap: 16px;
   margin-bottom: 24px;
@@ -304,24 +304,17 @@
   border: 2px solid var(--color-gray-30);
   border-radius: 50%;
   background-color: var(--color-gray-white);
-  position: relative;
+  box-sizing: border-box;
 }
 
 .updateRadioInput:checked {
   background-color: var(--color-gray-white);
   border-color: var(--color-gray-black);
-}
-
-.updateRadioInput:checked::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: var(--color-gray-black);
+  background-image: radial-gradient(
+    circle,
+    var(--color-gray-black) 6px,
+    transparent 6px
+  );
 }
 
 .updateRadioText {
@@ -337,7 +330,7 @@
 .updateTitleSection {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   min-height: 76px;
   gap: 8px;
   margin-bottom: 24px;
@@ -361,7 +354,7 @@
 .updateContentSection {
   display: flex;
   flex-direction: column;
-  width: 1168px;
+  width: 100%;
   min-height: 156px;
   gap: 8px;
   margin-bottom: 24px;
@@ -403,7 +396,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 1168px;
+  width: 100%;
   height: 48px;
   gap: 16px;
 }
