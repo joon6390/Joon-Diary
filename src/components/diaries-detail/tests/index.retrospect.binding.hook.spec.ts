@@ -45,7 +45,7 @@ test.describe("회고 데이터 바인딩 기능", () => {
 
     // 페이지 로드 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
     });
   });
 

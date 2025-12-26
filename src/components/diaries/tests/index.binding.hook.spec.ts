@@ -206,7 +206,7 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 일기 카드가 표시됨

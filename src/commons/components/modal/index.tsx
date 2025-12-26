@@ -14,6 +14,11 @@ export interface ModalProps {
   onSecondaryClick?: () => void;
   disabled?: boolean;
   className?: string;
+  'data-testid'?: string;
+  'data-testid-title'?: string;
+  'data-testid-description'?: string;
+  'data-testid-primary-button'?: string;
+  'data-testid-secondary-button'?: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -28,6 +33,11 @@ export const Modal: React.FC<ModalProps> = ({
   onSecondaryClick,
   disabled = false,
   className,
+  'data-testid': dataTestId,
+  'data-testid-title': dataTestIdTitle,
+  'data-testid-description': dataTestIdDescription,
+  'data-testid-primary-button': dataTestIdPrimaryButton,
+  'data-testid-secondary-button': dataTestIdSecondaryButton,
 }) => {
   // Prepare for future variant expansion (danger, etc.)
   const modalClasses = [
@@ -62,10 +72,10 @@ export const Modal: React.FC<ModalProps> = ({
     .join(' ');
 
   return (
-    <div className={modalClasses}>
+    <div className={modalClasses} data-testid={dataTestId}>
       <div className={styles.contentArea}>
-        <h2 className={titleClasses}>{title}</h2>
-        <p className={descriptionClasses}>{description}</p>
+        <h2 className={titleClasses} data-testid={dataTestIdTitle}>{title}</h2>
+        <p className={descriptionClasses} data-testid={dataTestIdDescription}>{description}</p>
       </div>
       <div className={buttonAreaClasses}>
         {actions === 'dual' && secondaryButtonText && onSecondaryClick && (
@@ -76,6 +86,7 @@ export const Modal: React.FC<ModalProps> = ({
             onClick={onSecondaryClick}
             disabled={disabled}
             className={styles.button}
+            data-testid={dataTestIdSecondaryButton}
           >
             {secondaryButtonText}
           </Button>
@@ -87,6 +98,7 @@ export const Modal: React.FC<ModalProps> = ({
           onClick={onPrimaryClick}
           disabled={disabled}
           className={actions === 'single' ? styles.buttonFull : styles.button}
+          data-testid={dataTestIdPrimaryButton}
         >
           {primaryButtonText}
         </Button>

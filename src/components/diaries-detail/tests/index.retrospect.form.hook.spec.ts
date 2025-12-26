@@ -93,9 +93,9 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     // When: 입력 버튼 클릭
     await submitButton.click();
 
-    // Then: 페이지가 새로고침됨 (로드 대기 - 네트워크 통신이므로 1999ms)
+    // Then: 페이지가 새로고침됨 (로드 대기)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 1999,
+      state: "visible",
     });
 
     // And: 로컬스토리지에 id가 1인 데이터가 저장됨

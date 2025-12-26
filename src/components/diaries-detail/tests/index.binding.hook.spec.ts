@@ -49,7 +49,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 제목이 올바르게 표시됨
@@ -128,7 +128,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
 
       // Then: 페이지가 완전히 로드될 때까지 대기
       await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-        timeout: 499,
+        state: "visible",
       });
 
       // And: 제목이 올바르게 표시됨

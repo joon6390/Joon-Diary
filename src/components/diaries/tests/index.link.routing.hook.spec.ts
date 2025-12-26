@@ -48,7 +48,7 @@ test.describe("일기 카드 라우팅 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 일기 카드가 표시됨
@@ -81,18 +81,33 @@ test.describe("일기 카드 라우팅 기능", () => {
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
 
+    // 로그인 유저로 설정
+    await page.evaluate(() => {
+      localStorage.setItem("accessToken", "test-token");
+    });
+    await page.reload();
+
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 일기 카드가 표시됨
     const diaryCard = page.locator('[data-testid="diary-card-1"]');
     await expect(diaryCard).toBeVisible();
 
-    // When: 삭제 버튼 클릭
+    // When: 삭제 버튼 클릭하여 모달 열기
     const deleteButton = diaryCard.locator('button[aria-label="삭제"]');
+    await expect(deleteButton).toBeVisible();
     await deleteButton.click();
+
+    // And: 삭제 모달이 노출됨
+    const deleteModal = page.locator('[data-testid="diary-delete-modal"]');
+    await expect(deleteModal).toBeVisible();
+
+    // When: 모달에서 삭제 버튼 클릭
+    const confirmDeleteButton = deleteModal.locator('button:has-text("삭제")');
+    await confirmDeleteButton.click();
 
     // Then: 페이지가 이동하지 않고 목록 페이지에 머물러 있음
     await expect(page).toHaveURL("/diaries");

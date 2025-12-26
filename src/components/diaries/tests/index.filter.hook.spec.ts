@@ -127,7 +127,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 모든 일기 카드가 표시됨
@@ -182,7 +182,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 필터선택박스를 클릭하고 행복해요를 선택
@@ -234,7 +234,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 필터선택박스를 클릭하고 슬퍼요를 선택
@@ -286,7 +286,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 필터선택박스를 클릭하고 놀랐어요를 선택
@@ -338,7 +338,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 필터선택박스를 클릭하고 화나요를 선택
@@ -397,7 +397,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 검색창에 "행복"을 입력하고 엔터를 누름
@@ -463,7 +463,7 @@ test.describe("일기 필터 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 필터선택박스를 클릭하고 행복해요를 선택

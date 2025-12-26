@@ -5,10 +5,13 @@ import { Controller } from "react-hook-form";
 import { Button } from "@/commons/components/button";
 import { Input } from "@/commons/components/input";
 import { getEmotionData, emotionList, EmotionType } from "@/commons/constants/enum";
+import { Modal } from "@/commons/components/modal";
+import { useModal } from "@/commons/providers/modal/modal.provider";
 import { useBindingHook } from "./hooks/index.binding.hook";
 import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
 import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook";
 import { useUpdateHook } from "./hooks/index.update.hook";
+import { useDeleteHook } from "./hooks/index.delete.hook";
 import styles from "./styles.module.css";
 
 export default function DiariesDetail() {
@@ -25,6 +28,8 @@ export default function DiariesDetail() {
     errors: updateErrors,
     isSubmitDisabled: isUpdateSubmitDisabled,
   } = useUpdateHook(diary);
+  const { handleDelete } = useDeleteHook(diary);
+  const { openModal, closeModal } = useModal();
 
   // 일기 데이터가 없거나 로딩 중일 때 처리
   if (isLoading) {
@@ -55,8 +60,31 @@ export default function DiariesDetail() {
     setIsEditMode(true);
   };
 
-  const handleDelete = () => {
-    console.log("삭제 버튼 클릭");
+  const handleDeleteClick = () => {
+    const modalId = openModal(
+      <Modal
+        variant="danger"
+        actions="dual"
+        theme="light"
+        title="일기 삭제"
+        description="일기를 삭제 하시겠어요?"
+        primaryButtonText="삭제"
+        secondaryButtonText="취소"
+        onPrimaryClick={() => {
+          handleDelete();
+          closeModal(modalId);
+        }}
+        onSecondaryClick={() => {
+          closeModal(modalId);
+        }}
+        data-testid="diary-delete-modal"
+        data-testid-title="diary-delete-modal-title"
+        data-testid-description="diary-delete-modal-description"
+        data-testid-primary-button="diary-delete-modal-delete-button"
+        data-testid-secondary-button="diary-delete-modal-cancel-button"
+      />,
+      { preventBackdropClose: true }
+    );
   };
 
   return (
@@ -140,7 +168,7 @@ export default function DiariesDetail() {
               variant="secondary"
               theme="light"
               size="medium"
-              onClick={handleDelete}
+              onClick={handleDeleteClick}
               className={styles.footerButton}
             >
               삭제

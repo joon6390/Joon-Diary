@@ -13,16 +13,19 @@ import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useSearchHook } from "./hooks/index.search.hook";
 import { useFilterHook } from "./hooks/index.filter.hook";
 import { usePaginationHook } from "./hooks/index.pagination.hook";
+import { useDeleteHook } from "./hooks/index.delete.hook";
 import { EmotionType, emotionDataMap } from "@/commons/constants/enum";
+import { useAuth } from "@/commons/providers/auth/auth.provider";
 
 // 일기 카드 컴포넌트
 interface DiaryCardProps {
   diary: DiaryCardData;
   onDelete: (id: number) => void;
   onCardClick: (id: number) => void;
+  isLoggedIn: boolean;
 }
 
-function DiaryCard({ diary, onDelete, onCardClick }: DiaryCardProps) {
+function DiaryCard({ diary, onDelete, onCardClick, isLoggedIn }: DiaryCardProps) {
   const imageUrl = `/images/${diary.emotionImage}`;
 
   const handleCardClick = () => {
@@ -41,21 +44,23 @@ function DiaryCard({ diary, onDelete, onCardClick }: DiaryCardProps) {
       onClick={handleCardClick}
     >
       <div className={styles.imageWrapper}>
-        <div className={styles.imageButtonRow}>
-          <button
-            className={styles.deleteButton}
-            onClick={handleDeleteClick}
-            aria-label="삭제"
-          >
-            <Image
-              src="/icons/close_outline_light_m.svg"
-              alt="close"
-              width={40}
-              height={40}
-              className={styles.deleteIcon}
-            />
-          </button>
-        </div>
+        {isLoggedIn && (
+          <div className={styles.imageButtonRow}>
+            <button
+              className={styles.deleteButton}
+              onClick={handleDeleteClick}
+              aria-label="삭제"
+            >
+              <Image
+                src="/icons/close_outline_light_m.svg"
+                alt="close"
+                width={40}
+                height={40}
+                className={styles.deleteIcon}
+              />
+            </button>
+          </div>
+        )}
         <div className={styles.imageContainer}>
           <Image
             src={imageUrl}
@@ -93,7 +98,7 @@ export default function Diaries() {
   const { handleWriteDiary } = useLinkModal();
 
   // 일기 데이터 바인딩 hook
-  const { diaries, isLoading, refreshDiaries } = useBindingHook();
+  const { diaries, isLoading } = useBindingHook();
 
   // 일기 검색 hook
   const { filteredDiaries: searchFilteredDiaries, handleSearch } = useSearchHook(diaries);
@@ -106,6 +111,13 @@ export default function Diaries() {
 
   // 일기 카드 라우팅 hook
   const { navigateToDiaryDetail } = useLinkRouting();
+
+  // 일기 삭제 hook
+  const { handleDeleteDiary } = useDeleteHook();
+
+  // 로그인 상태 확인
+  const { checkLoginStatus } = useAuth();
+  const isLoggedIn = checkLoginStatus();
 
   // emotion 필터 옵션
   const filterOptions = [
@@ -124,23 +136,6 @@ export default function Diaries() {
     }
   };
 
-  const handleDeleteDiary = (id: number) => {
-    // 로컬스토리지에서 해당 일기 삭제
-    try {
-      const diariesJson = localStorage.getItem("diaries");
-      if (diariesJson) {
-        const allDiaries = JSON.parse(diariesJson);
-        const updatedDiaries = allDiaries.filter(
-          (diary: { id: number }) => diary.id !== id
-        );
-        localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
-        // hook의 refresh 함수를 호출하여 데이터 갱신
-        refreshDiaries();
-      }
-    } catch (error) {
-      console.error("일기 삭제 중 오류 발생:", error);
-    }
-  };
 
   return (
     <div className={styles.container} data-testid="diaries-container">
@@ -198,6 +193,7 @@ export default function Diaries() {
               diary={diary}
               onDelete={handleDeleteDiary}
               onCardClick={navigateToDiaryDetail}
+              isLoggedIn={isLoggedIn}
             />
           ))
         )}

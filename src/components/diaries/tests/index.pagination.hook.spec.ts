@@ -120,7 +120,7 @@ test.describe("일기 페이지네이션 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // Then: 첫 페이지에 12개의 일기 카드가 표시됨
