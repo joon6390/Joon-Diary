@@ -42,7 +42,7 @@ export default function Layout({ children }: LayoutProps) {
               {isLoggedIn ? (
                 <>
                   <span className={styles.userName} data-testid="user-name">
-                    {userName}
+                    {userName}님, 환영합니다.
                   </span>
                   <Button
                     variant="secondary"
