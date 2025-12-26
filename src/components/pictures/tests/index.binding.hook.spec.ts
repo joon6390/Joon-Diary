@@ -33,7 +33,9 @@ test.describe("강아지 사진 목록 페이지 데이터 바인딩", () => {
     });
 
     // And: 강아지 이미지들이 표시됨 (dog.ceo가 포함된 이미지 주소)
-    const dogImages = page.locator('[data-testid^="dog-image-"]');
+    const dogImages = page.locator(
+      '[data-testid^="dog-image-"]:not([data-testid*="wrapper"])'
+    );
     await expect(dogImages).toHaveCount(6, { timeout: 1999 });
 
     // And: 각 이미지가 로드될 때까지 대기
@@ -80,7 +82,9 @@ test.describe("강아지 사진 목록 페이지 데이터 바인딩", () => {
     });
 
     // And: 초기 6마리 강아지 이미지가 표시됨
-    const initialImages = page.locator('[data-testid^="dog-image-"]');
+    const initialImages = page.locator(
+      '[data-testid^="dog-image-"]:not([data-testid*="wrapper"])'
+    );
     await expect(initialImages).toHaveCount(6, { timeout: 1999 });
 
     // And: 각 이미지가 로드될 때까지 대기
@@ -100,7 +104,9 @@ test.describe("강아지 사진 목록 페이지 데이터 바인딩", () => {
 
     // Then: 추가 강아지 이미지가 로드됨 (총 12개 이상)
     // IntersectionObserver가 트리거되어 자동으로 로드되므로, 이미지가 추가될 때까지 대기
-    const allImages = page.locator('[data-testid^="dog-image-"]');
+    const allImages = page.locator(
+      '[data-testid^="dog-image-"]:not([data-testid*="wrapper"])'
+    );
     await expect(allImages).toHaveCount(12, { timeout: 1999 });
 
     // And: 새로 추가된 이미지들도 표시됨
@@ -128,7 +134,9 @@ test.describe("강아지 사진 목록 페이지 데이터 바인딩", () => {
 
     // And: 에러 상태가 표시되거나 빈 상태로 표시됨
     // (구현에 따라 에러 메시지 또는 빈 상태 표시)
-    const dogImages = page.locator('[data-testid^="dog-image-"]');
+    const dogImages = page.locator(
+      '[data-testid^="dog-image-"]:not([data-testid*="wrapper"])'
+    );
     const count = await dogImages.count({ timeout: 499 });
     expect(count).toBe(0);
   });

@@ -16,6 +16,8 @@ export interface SelectBoxProps {
   theme?: "light" | "dark";
   disabled?: boolean;
   className?: string;
+  testId?: string;
+  optionTestId?: (value: string) => string;
 }
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
@@ -28,6 +30,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   theme = "light",
   disabled = false,
   className,
+  testId,
+  optionTestId,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -60,7 +64,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     }
   };
 
-  const handleSelect = (optionValue: string) => {
+  const handleSelect = (optionValue: string, event?: React.MouseEvent) => {
+    event?.stopPropagation();
     if (onChange) {
       onChange(optionValue);
     }
@@ -89,7 +94,11 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   return (
     <div className={styles.wrapper} ref={selectRef}>
-      <div className={selectClasses} onClick={handleToggle}>
+      <div
+        className={selectClasses}
+        onClick={handleToggle}
+        data-testid={testId}
+      >
         <div className={styles.content}>
           <span className={styles.text}>{displayText}</span>
           <div className={styles.icon}>
@@ -110,7 +119,10 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
               className={`${styles.option} ${
                 value === option.value ? styles.selected : ""
               }`}
-              onClick={() => handleSelect(option.value)}
+              onClick={(e) => handleSelect(option.value, e)}
+              data-testid={
+                optionTestId ? optionTestId(option.value) : undefined
+              }
             >
               <span className={styles.optionText}>{option.label}</span>
               {value === option.value && (

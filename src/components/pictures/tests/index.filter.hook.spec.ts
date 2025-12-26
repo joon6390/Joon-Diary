@@ -74,15 +74,15 @@ test.describe("강아지 사진 필터 기능", () => {
     const selectBox = page.locator('[data-testid="pictures-filter-selectbox"]');
     await selectBox.click();
 
-    // And: 드롭다운이 완전히 열릴 때까지 대기
-    await page.waitForTimeout(100);
-
-    // And: "가로형" 옵션 선택
+    // And: "가로형" 옵션이 표시될 때까지 대기 (expect().toBeVisible()가 자동으로 대기)
     const horizontalOption = page.locator(
       '[data-testid="pictures-filter-option-horizontal"]'
     );
     await expect(horizontalOption).toBeVisible();
-    await horizontalOption.click({ force: true });
+    await horizontalOption.click();
+
+    // And: 필터 변경 후 DOM 업데이트 대기 (드롭다운이 닫힐 때까지)
+    await expect(horizontalOption).not.toBeVisible();
 
     // Then: 이미지 크기가 640x480으로 변경됨
     const firstImage = dogImages.first();
@@ -94,9 +94,9 @@ test.describe("강아지 사진 필터 기능", () => {
     );
     await expect(imageWrapper).toBeVisible();
 
-    // 인라인 스타일로 설정된 크기 확인
+    // 인라인 스타일로 설정된 크기 확인 (필터 변경 후 크기가 변경될 때까지 대기)
     await expect(imageWrapper).toHaveCSS("width", "640px");
-    await expect(imageWrapper).toHaveCSS("height", "480px");
+    await expect(imageWrapper).toHaveCSS("height", "480px", { timeout: 499 });
   });
 
   test("필터를 '세로형'으로 변경 시 이미지 크기가 480x640으로 변경되어야 한다", async ({
@@ -120,15 +120,15 @@ test.describe("강아지 사진 필터 기능", () => {
     const selectBox = page.locator('[data-testid="pictures-filter-selectbox"]');
     await selectBox.click();
 
-    // And: 드롭다운이 완전히 열릴 때까지 대기
-    await page.waitForTimeout(100);
-
-    // And: "세로형" 옵션 선택
+    // And: "세로형" 옵션이 표시될 때까지 대기 (expect().toBeVisible()가 자동으로 대기)
     const verticalOption = page.locator(
       '[data-testid="pictures-filter-option-vertical"]'
     );
     await expect(verticalOption).toBeVisible();
-    await verticalOption.click({ force: true });
+    await verticalOption.click();
+
+    // And: 필터 변경 후 DOM 업데이트 대기 (드롭다운이 닫힐 때까지)
+    await expect(verticalOption).not.toBeVisible();
 
     // Then: 이미지 크기가 480x640으로 변경됨
     const firstImage = dogImages.first();
@@ -140,8 +140,8 @@ test.describe("강아지 사진 필터 기능", () => {
     );
     await expect(imageWrapper).toBeVisible();
 
-    // 인라인 스타일로 설정된 크기 확인
-    await expect(imageWrapper).toHaveCSS("width", "480px");
+    // 인라인 스타일로 설정된 크기 확인 (필터 변경 후 크기가 변경될 때까지 대기)
+    await expect(imageWrapper).toHaveCSS("width", "480px", { timeout: 499 });
     await expect(imageWrapper).toHaveCSS("height", "640px");
   });
 
@@ -165,23 +165,21 @@ test.describe("강아지 사진 필터 기능", () => {
     // Given: 필터를 먼저 "가로형"으로 변경
     const selectBox = page.locator('[data-testid="pictures-filter-selectbox"]');
     await selectBox.click();
-    await page.waitForTimeout(100);
     const horizontalOption = page.locator(
       '[data-testid="pictures-filter-option-horizontal"]'
     );
     await expect(horizontalOption).toBeVisible();
-    await horizontalOption.click({ force: true });
+    await horizontalOption.click();
 
     // When: 필터 선택박스를 다시 클릭하여 드롭다운 열기
     await selectBox.click();
-    await page.waitForTimeout(100);
 
-    // And: "기본" 옵션 선택
+    // And: "기본" 옵션이 표시될 때까지 대기 (expect().toBeVisible()가 자동으로 대기)
     const defaultOption = page.locator(
       '[data-testid="pictures-filter-option-default"]'
     );
     await expect(defaultOption).toBeVisible();
-    await defaultOption.click({ force: true });
+    await defaultOption.click();
 
     // Then: 이미지 크기가 640x640으로 변경됨
     const firstImage = dogImages.first();

@@ -1,23 +1,32 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { SelectBox } from "@/commons/components/selectbox";
+import { PictureFilterType } from "@/commons/constants/enum";
 import { useBindingHook } from "./hooks/index.binding.hook";
+import { useFilterHook } from "./hooks/index.filter.hook";
 import styles from "./styles.module.css";
 
-// 필터 옵션
-const filterOptions = [
-  { value: "default", label: "기본" },
-  { value: "recent", label: "최신순" },
-  { value: "oldest", label: "오래된순" },
-];
-
 export default function Pictures() {
-  const [selectedFilter, setSelectedFilter] = useState<string>("default");
+  const { filterType, setFilterType, imageSize } = useFilterHook();
   const { dogs, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useBindingHook();
   const observerTarget = useRef<HTMLDivElement>(null);
+
+  // 필터 옵션
+  const filterOptions = [
+    { value: PictureFilterType.Default, label: "기본" },
+    { value: PictureFilterType.Horizontal, label: "가로형" },
+    { value: PictureFilterType.Vertical, label: "세로형" },
+  ];
+
+  // 필터 옵션별 testId 매핑
+  const filterOptionTestIdMap: Record<string, string> = {
+    [PictureFilterType.Default]: "pictures-filter-option-default",
+    [PictureFilterType.Horizontal]: "pictures-filter-option-horizontal",
+    [PictureFilterType.Vertical]: "pictures-filter-option-vertical",
+  };
 
   // 무한 스크롤: 마지막 2개만 남았을 때 추가 로드
   useEffect(() => {
@@ -58,13 +67,15 @@ export default function Pictures() {
       <div className={styles.filter}>
         <SelectBox
           options={filterOptions}
-          value={selectedFilter}
-          onChange={setSelectedFilter}
+          value={filterType}
+          onChange={(value) => setFilterType(value as PictureFilterType)}
           placeholder="기본"
           variant="primary"
           theme="light"
           size="medium"
           className={styles.selectbox}
+          testId="pictures-filter-selectbox"
+          optionTestId={(value) => filterOptionTestIdMap[value] || ""}
         />
       </div>
       <div className={styles.gap2} />
@@ -75,6 +86,10 @@ export default function Pictures() {
             <div
               key={`splash-${index}`}
               className={styles.splashScreen}
+              style={{
+                width: `${imageSize.width}px`,
+                height: `${imageSize.height}px`,
+              }}
               data-testid={`splash-screen-${index}`}
             />
           ))}
@@ -82,12 +97,19 @@ export default function Pictures() {
         {/* 강아지 이미지 목록 */}
         {dogs.map((dog, index) => (
           <div key={dog.id}>
-            <div className={styles.imageWrapper}>
+            <div
+              className={styles.imageWrapper}
+              style={{
+                width: `${imageSize.width}px`,
+                height: `${imageSize.height}px`,
+              }}
+              data-testid={`dog-image-wrapper-${dog.id}`}
+            >
               <Image
                 src={dog.src}
                 alt={dog.alt}
-                width={640}
-                height={640}
+                width={imageSize.width}
+                height={imageSize.height}
                 className={styles.image}
                 data-testid={`dog-image-${dog.id}`}
                 unoptimized
@@ -112,6 +134,10 @@ export default function Pictures() {
             <div
               key={`splash-next-${index}`}
               className={styles.splashScreen}
+              style={{
+                width: `${imageSize.width}px`,
+                height: `${imageSize.height}px`,
+              }}
               data-testid={`splash-screen-next-${index}`}
             />
           ))}

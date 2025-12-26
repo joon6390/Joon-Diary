@@ -81,7 +81,8 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
 
     // id를 number로 변환 (string[]인 경우 첫 번째 요소 사용)
     const idString = Array.isArray(id) ? id[0] : id;
-    const diaryId = typeof idString === "string" ? parseInt(idString, 10) : idString;
+    const diaryId =
+      typeof idString === "string" ? parseInt(idString, 10) : idString;
     if (isNaN(diaryId)) {
       console.error("유효하지 않은 diaryId입니다.");
       return;
@@ -126,4 +127,3 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
     isSubmitDisabled: !isContentFilled,
   };
 };
-

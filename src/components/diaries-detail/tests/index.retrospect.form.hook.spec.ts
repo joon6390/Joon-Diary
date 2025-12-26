@@ -93,9 +93,9 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     // When: 입력 버튼 클릭
     await submitButton.click();
 
-    // Then: 페이지가 새로고침됨 (로드 대기)
+    // Then: 페이지가 새로고침됨 (로드 대기 - 네트워크 통신이므로 1999ms)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      timeout: 1999,
     });
 
     // And: 로컬스토리지에 id가 1인 데이터가 저장됨
@@ -152,9 +152,9 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     await expect(submitButton).toBeEnabled();
     await submitButton.click();
 
-    // Then: 페이지가 새로고침됨
+    // Then: 페이지가 새로고침됨 (네트워크 통신이므로 1999ms)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      timeout: 1999,
     });
 
     // And: 로컬스토리지에 id가 4(3+1)인 데이터가 추가됨
@@ -185,9 +185,9 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     // When: 입력 버튼 클릭
     await submitButton.click();
 
-    // Then: 페이지가 새로고침되어 다시 로드됨
+    // Then: 페이지가 새로고침되어 다시 로드됨 (네트워크 통신이므로 1999ms)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      timeout: 1999,
     });
 
     // And: 인풋 필드가 초기화됨 (새로고침으로 인해)
@@ -236,9 +236,9 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     await expect(submitButton).toBeEnabled();
     await submitButton.click();
 
-    // Then: 페이지가 새로고침됨
+    // Then: 페이지가 새로고침됨 (네트워크 통신이므로 1999ms)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      timeout: 1999,
     });
 
     // And: 등록된 회고의 diaryId가 1 (현재 페이지의 diaryId)로 저장됨
