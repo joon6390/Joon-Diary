@@ -336,18 +336,24 @@ export default function DiariesDetail() {
 
       {/* retrospect-list */}
       <div className={styles.retrospectList} data-testid="retrospect-list">
-        {retrospects.map((retrospect, index) => (
-          <div key={retrospect.id}>
-            {index > 0 && <div className={styles.retrospectDivider}></div>}
-            <div
-              className={styles.retrospectItem}
-              data-testid={`retrospect-item-${retrospect.id}`}
-            >
-              <span className={styles.retrospectText}>{retrospect.text}</span>
-              <span className={styles.retrospectDate}>[{retrospect.date}]</span>
-            </div>
+        {retrospects.length === 0 ? (
+          <div className={styles.retrospectEmpty}>
+            등록된 회고가 없습니다.
           </div>
-        ))}
+        ) : (
+          retrospects.map((retrospect, index) => (
+            <div key={retrospect.id}>
+              {index > 0 && <div className={styles.retrospectDivider}></div>}
+              <div
+                className={styles.retrospectItem}
+                data-testid={`retrospect-item-${retrospect.id}`}
+              >
+                <span className={styles.retrospectText}>{retrospect.text}</span>
+                <span className={styles.retrospectDate}>[{retrospect.date}]</span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       <div className={styles.gap40}></div>
