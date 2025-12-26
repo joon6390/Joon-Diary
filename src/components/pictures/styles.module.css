@@ -99,3 +99,29 @@
   height: 1px;
   visibility: hidden;
 }
+
+/* 모바일 반응형 (767px 이하) */
+@media (max-width: 767px) {
+  /* Gap 1: 100% * 32 */
+  .gap1 {
+    width: 100%;
+    height: 32px;
+  }
+
+  /* Gap 2: 100% * 42 */
+  .gap2 {
+    width: 100%;
+    height: 42px;
+  }
+
+  /* Main: gap 24px로 변경 */
+  .main {
+    gap: 24px;
+  }
+
+  /* Gap 3: 100% * 40 */
+  .gap3 {
+    width: 100%;
+    height: 40px;
+  }
+}
