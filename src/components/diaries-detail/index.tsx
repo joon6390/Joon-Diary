@@ -66,11 +66,46 @@ export default function DiariesDetail() {
   const handleCopyContent = async () => {
     try {
       await navigator.clipboard.writeText(diary.content);
-      // 복사 성공 피드백 (추후 토스트 메시지로 대체 가능)
-      alert("내용이 클립보드에 복사되었습니다.");
+      // 복사 성공 모달 표시
+      const modalId = openModal(
+        <Modal
+          variant="info"
+          actions="single"
+          theme="light"
+          title="복사 완료"
+          description="내용이 클립보드에 복사되었습니다."
+          primaryButtonText="확인"
+          onPrimaryClick={() => {
+            closeModal(modalId);
+          }}
+          data-testid="copy-success-modal"
+          data-testid-title="copy-success-modal-title"
+          data-testid-description="copy-success-modal-description"
+          data-testid-primary-button="copy-success-modal-ok-button"
+        />,
+        { preventBackdropClose: true }
+      );
     } catch (error) {
       console.error("복사 실패:", error);
-      alert("복사에 실패했습니다. 다시 시도해주세요.");
+      // 복사 실패 모달 표시
+      const modalId = openModal(
+        <Modal
+          variant="danger"
+          actions="single"
+          theme="light"
+          title="복사 실패"
+          description="복사에 실패했습니다. 다시 시도해주세요."
+          primaryButtonText="확인"
+          onPrimaryClick={() => {
+            closeModal(modalId);
+          }}
+          data-testid="copy-fail-modal"
+          data-testid-title="copy-fail-modal-title"
+          data-testid-description="copy-fail-modal-description"
+          data-testid-primary-button="copy-fail-modal-ok-button"
+        />,
+        { preventBackdropClose: true }
+      );
     }
   };
 
