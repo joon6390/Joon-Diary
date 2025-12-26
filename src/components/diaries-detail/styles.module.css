@@ -131,6 +131,7 @@
   color: var(--color-gray-80);
   margin: 0;
   word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .copySection {
