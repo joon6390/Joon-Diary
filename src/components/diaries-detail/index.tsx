@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Controller } from "react-hook-form";
 import { Button } from "@/commons/components/button";
@@ -12,6 +13,7 @@ import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
 import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook";
 import { useUpdateHook } from "./hooks/index.update.hook";
 import { useDeleteHook } from "./hooks/index.delete.hook";
+import { RetrospectData } from "./hooks/index.retrospect.form.hook";
 import styles from "./styles.module.css";
 
 export default function DiariesDetail() {
@@ -30,6 +32,8 @@ export default function DiariesDetail() {
   } = useUpdateHook(diary);
   const { handleDelete } = useDeleteHook(diary);
   const { openModal, closeModal } = useModal();
+  const [editingRetrospectId, setEditingRetrospectId] = useState<number | null>(null);
+  const [editingRetrospectContent, setEditingRetrospectContent] = useState<string>("");
 
   // 일기 데이터가 없거나 로딩 중일 때 처리
   if (isLoading) {
@@ -52,8 +56,15 @@ export default function DiariesDetail() {
 
   const emotionData = getEmotionData(diary.emotion);
 
-  const handleCopyContent = () => {
-    navigator.clipboard.writeText(diary.content);
+  const handleCopyContent = async () => {
+    try {
+      await navigator.clipboard.writeText(diary.content);
+      // 복사 성공 피드백 (추후 토스트 메시지로 대체 가능)
+      alert("내용이 클립보드에 복사되었습니다.");
+    } catch (error) {
+      console.error("복사 실패:", error);
+      alert("복사에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   const handleEdit = () => {
@@ -82,6 +93,101 @@ export default function DiariesDetail() {
         data-testid-description="diary-delete-modal-description"
         data-testid-primary-button="diary-delete-modal-delete-button"
         data-testid-secondary-button="diary-delete-modal-cancel-button"
+      />,
+      { preventBackdropClose: true }
+    );
+  };
+
+  // 회고 수정 시작
+  const handleRetrospectEditStart = (retrospectId: number, currentContent: string) => {
+    setEditingRetrospectId(retrospectId);
+    setEditingRetrospectContent(currentContent);
+  };
+
+  // 회고 수정 취소
+  const handleRetrospectEditCancel = () => {
+    setEditingRetrospectId(null);
+    setEditingRetrospectContent("");
+  };
+
+  // 회고 수정 완료
+  const handleRetrospectEditSubmit = (retrospectId: number) => {
+    if (!editingRetrospectContent.trim()) {
+      alert("회고 내용을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const retrospectsJson = localStorage.getItem("retrospects");
+      if (!retrospectsJson) {
+        console.error("회고 데이터를 찾을 수 없습니다.");
+        return;
+      }
+
+      const allRetrospects: RetrospectData[] = JSON.parse(retrospectsJson);
+      const updatedRetrospects = allRetrospects.map((r) =>
+        r.id === retrospectId
+          ? { ...r, content: editingRetrospectContent.trim() }
+          : r
+      );
+
+      localStorage.setItem("retrospects", JSON.stringify(updatedRetrospects));
+      
+      // 커스텀 이벤트 발생 (같은 탭에서의 변경 감지)
+      window.dispatchEvent(new Event("localStorageChange"));
+
+      setEditingRetrospectId(null);
+      setEditingRetrospectContent("");
+    } catch (error) {
+      console.error("회고 수정 중 오류 발생:", error);
+      alert("회고 수정에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  // 회고 삭제
+  const handleRetrospectDelete = (retrospectId: number) => {
+    const modalId = openModal(
+      <Modal
+        variant="danger"
+        actions="dual"
+        theme="light"
+        title="회고 삭제"
+        description="회고를 삭제 하시겠어요?"
+        primaryButtonText="삭제"
+        secondaryButtonText="취소"
+        onPrimaryClick={() => {
+          try {
+            const retrospectsJson = localStorage.getItem("retrospects");
+            if (!retrospectsJson) {
+              console.error("회고 데이터를 찾을 수 없습니다.");
+              return;
+            }
+
+            const allRetrospects: RetrospectData[] = JSON.parse(retrospectsJson);
+            const updatedRetrospects = allRetrospects.filter(
+              (r) => r.id !== retrospectId
+            );
+
+            localStorage.setItem("retrospects", JSON.stringify(updatedRetrospects));
+            
+            // 커스텀 이벤트 발생 (같은 탭에서의 변경 감지)
+            window.dispatchEvent(new Event("localStorageChange"));
+
+            closeModal(modalId);
+          } catch (error) {
+            console.error("회고 삭제 중 오류 발생:", error);
+            alert("회고 삭제에 실패했습니다. 다시 시도해주세요.");
+            closeModal(modalId);
+          }
+        }}
+        onSecondaryClick={() => {
+          closeModal(modalId);
+        }}
+        data-testid="retrospect-delete-modal"
+        data-testid-title="retrospect-delete-modal-title"
+        data-testid-description="retrospect-delete-modal-description"
+        data-testid-primary-button="retrospect-delete-modal-delete-button"
+        data-testid-secondary-button="retrospect-delete-modal-cancel-button"
       />,
       { preventBackdropClose: true }
     );
@@ -344,13 +450,70 @@ export default function DiariesDetail() {
           retrospects.map((retrospect, index) => (
             <div key={retrospect.id}>
               {index > 0 && <div className={styles.retrospectDivider}></div>}
-              <div
-                className={styles.retrospectItem}
-                data-testid={`retrospect-item-${retrospect.id}`}
-              >
-                <span className={styles.retrospectText}>{retrospect.text}</span>
-                <span className={styles.retrospectDate}>[{retrospect.date}]</span>
-              </div>
+              {editingRetrospectId === retrospect.id ? (
+                <div className={styles.retrospectEditItem}>
+                  <Input
+                    value={editingRetrospectContent}
+                    onChange={(e) => setEditingRetrospectContent(e.target.value)}
+                    variant="primary"
+                    theme="light"
+                    size="medium"
+                    className={styles.retrospectEditInput}
+                    data-testid={`retrospect-edit-input-${retrospect.id}`}
+                  />
+                  <div className={styles.retrospectEditActions}>
+                    <Button
+                      variant="secondary"
+                      theme="light"
+                      size="medium"
+                      onClick={handleRetrospectEditCancel}
+                      className={styles.retrospectEditCancelButton}
+                      data-testid={`retrospect-edit-cancel-${retrospect.id}`}
+                    >
+                      취소
+                    </Button>
+                    <Button
+                      variant="primary"
+                      theme="light"
+                      size="medium"
+                      onClick={() => handleRetrospectEditSubmit(retrospect.id)}
+                      disabled={!editingRetrospectContent.trim()}
+                      className={styles.retrospectEditSubmitButton}
+                      data-testid={`retrospect-edit-submit-${retrospect.id}`}
+                    >
+                      수정
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className={styles.retrospectItem}
+                  data-testid={`retrospect-item-${retrospect.id}`}
+                >
+                  <div className={styles.retrospectContent}>
+                    <span className={styles.retrospectText}>{retrospect.text}</span>
+                    <span className={styles.retrospectDate}>[{retrospect.date}]</span>
+                  </div>
+                  <div className={styles.retrospectActions}>
+                    <button
+                      className={styles.retrospectActionButton}
+                      onClick={() => handleRetrospectEditStart(retrospect.id, retrospect.text)}
+                      data-testid={`retrospect-edit-button-${retrospect.id}`}
+                      disabled={isEditMode}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className={styles.retrospectActionButton}
+                      onClick={() => handleRetrospectDelete(retrospect.id)}
+                      data-testid={`retrospect-delete-button-${retrospect.id}`}
+                      disabled={isEditMode}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         )}
