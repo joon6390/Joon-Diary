@@ -28,7 +28,7 @@ export interface RetrospectData {
  * 회고 작성 폼 Hook 반환 타입
  */
 export interface RetrospectFormHookReturn {
-  register: ReturnType<typeof useForm<RetrospectFormData>>["register"];
+  control: ReturnType<typeof useForm<RetrospectFormData>>["control"];
   handleSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   errors: ReturnType<typeof useForm<RetrospectFormData>>["formState"]["errors"];
   isSubmitDisabled: boolean;
@@ -41,7 +41,7 @@ export interface RetrospectFormHookReturn {
  * 로컬스토리지에 회고를 저장하고 등록 완료시 페이지를 새로고침
  *
  * @returns {RetrospectFormHookReturn} 폼 관리 함수 및 상태
- * - register: 폼 필드 등록 함수
+ * - control: 폼 필드 제어 객체
  * - handleSubmit: 폼 제출 핸들러
  * - errors: 폼 검증 에러
  * - isSubmitDisabled: 제출 버튼 비활성화 여부
@@ -50,19 +50,23 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
   const params = useParams();
 
   const {
-    register,
+    control,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
   } = useForm<RetrospectFormData>({
     resolver: zodResolver(retrospectFormSchema),
     mode: "onChange",
+    defaultValues: {
+      content: "",
+    },
   });
 
-  // content 필드 값 감시
-  const content = watch("content");
-  const isContentFilled = content && content.trim().length > 0 && isValid;
+  // content 필드 값 감시 (watch로 리렌더링 트리거 및 값 가져오기)
+  const content = watch("content") || "";
+  // 값이 1글자 이상이면 활성화 (zod validation: min(1))
+  const isContentFilled = content.trim().length > 0;
 
   /**
    * 폼 제출 핸들러
@@ -116,7 +120,7 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
   };
 
   return {
-    register,
+    control,
     handleSubmit: handleSubmit(onSubmit),
     errors,
     isSubmitDisabled: !isContentFilled,

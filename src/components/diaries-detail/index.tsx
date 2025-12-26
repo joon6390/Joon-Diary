@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { Button } from "@/commons/components/button";
 import { Input } from "@/commons/components/input";
 import { getEmotionData } from "@/commons/constants/enum";
 import { useBindingHook } from "./hooks/index.binding.hook";
+import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
 import styles from "./styles.module.css";
 
 // Mock 회고 데이터
@@ -24,7 +25,8 @@ const mockRetrospects = [
 
 export default function DiariesDetail() {
   const { diary, isLoading, formattedDate } = useBindingHook();
-  const [retrospectInput, setRetrospectInput] = useState("");
+  const { control, handleSubmit, isSubmitDisabled } =
+    useRetrospectFormHook();
 
   // 일기 데이터가 없거나 로딩 중일 때 처리
   if (isLoading) {
@@ -57,11 +59,6 @@ export default function DiariesDetail() {
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
-  };
-
-  const handleRetrospectSubmit = () => {
-    console.log("회고 입력:", retrospectInput);
-    setRetrospectInput("");
   };
 
   return (
@@ -155,26 +152,34 @@ export default function DiariesDetail() {
       {/* retrospect-input */}
       <div className={styles.retrospectInput}>
         <h2 className={styles.retrospectLabel}>회고</h2>
-        <div className={styles.retrospectInputWrapper}>
-          <Input
-            variant="primary"
-            theme="light"
-            size="medium"
-            placeholder="회고를 남겨보세요."
-            value={retrospectInput}
-            onChange={(e) => setRetrospectInput(e.target.value)}
-            className={styles.retrospectInputField}
+        <form onSubmit={handleSubmit} className={styles.retrospectInputWrapper}>
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                variant="primary"
+                theme="light"
+                size="medium"
+                placeholder="회고를 남겨보세요."
+                className={styles.retrospectInputField}
+                data-testid="retrospect-input"
+              />
+            )}
           />
           <Button
+            type="submit"
             variant="primary"
             theme="light"
             size="large"
-            onClick={handleRetrospectSubmit}
+            disabled={isSubmitDisabled}
             className={styles.retrospectButton}
+            data-testid="retrospect-submit-button"
           >
             입력
           </Button>
-        </div>
+        </form>
       </div>
 
       <div className={styles.gap16}></div>
