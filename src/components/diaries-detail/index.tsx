@@ -7,26 +7,14 @@ import { Input } from "@/commons/components/input";
 import { getEmotionData } from "@/commons/constants/enum";
 import { useBindingHook } from "./hooks/index.binding.hook";
 import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
+import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook";
 import styles from "./styles.module.css";
-
-// Mock 회고 데이터
-const mockRetrospects = [
-  {
-    id: 1,
-    text: "3년이 지나고 다시 보니 이때가 그립다.",
-    date: "2024. 09. 24",
-  },
-  {
-    id: 2,
-    text: "3년이 지나고 다시 보니 이때가 그립다.",
-    date: "2024. 09. 24",
-  },
-];
 
 export default function DiariesDetail() {
   const { diary, isLoading, formattedDate } = useBindingHook();
   const { control, handleSubmit, isSubmitDisabled } =
     useRetrospectFormHook();
+  const { retrospects } = useRetrospectBindingHook();
 
   // 일기 데이터가 없거나 로딩 중일 때 처리
   if (isLoading) {
@@ -185,11 +173,14 @@ export default function DiariesDetail() {
       <div className={styles.gap16}></div>
 
       {/* retrospect-list */}
-      <div className={styles.retrospectList}>
-        {mockRetrospects.map((retrospect, index) => (
+      <div className={styles.retrospectList} data-testid="retrospect-list">
+        {retrospects.map((retrospect, index) => (
           <div key={retrospect.id}>
             {index > 0 && <div className={styles.retrospectDivider}></div>}
-            <div className={styles.retrospectItem}>
+            <div
+              className={styles.retrospectItem}
+              data-testid={`retrospect-item-${retrospect.id}`}
+            >
               <span className={styles.retrospectText}>{retrospect.text}</span>
               <span className={styles.retrospectDate}>[{retrospect.date}]</span>
             </div>

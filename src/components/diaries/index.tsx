@@ -11,6 +11,8 @@ import { useLinkModal } from "./hooks/index.link.modal.hook";
 import { useBindingHook, DiaryCardData } from "./hooks/index.binding.hook";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useSearchHook } from "./hooks/index.search.hook";
+import { useFilterHook } from "./hooks/index.filter.hook";
+import { EmotionType, emotionDataMap } from "@/commons/constants/enum";
 
 // 일기 카드 컴포넌트
 interface DiaryCardProps {
@@ -86,7 +88,6 @@ function DiaryCard({ diary, onDelete, onCardClick }: DiaryCardProps) {
 }
 
 export default function Diaries() {
-  const [selectedFilter, setSelectedFilter] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const totalPages = 5;
 
@@ -97,19 +98,29 @@ export default function Diaries() {
   const { diaries, isLoading, refreshDiaries } = useBindingHook();
 
   // 일기 검색 hook
-  const { filteredDiaries, handleSearch } = useSearchHook(diaries);
+  const { filteredDiaries: searchFilteredDiaries, handleSearch } = useSearchHook(diaries);
+
+  // 일기 필터 hook (검색 결과에 필터 적용)
+  const { filteredDiaries, handleFilterChange, selectedFilter } = useFilterHook(searchFilteredDiaries);
 
   // 일기 카드 라우팅 hook
   const { navigateToDiaryDetail } = useLinkRouting();
 
+  // emotion 필터 옵션
   const filterOptions = [
     { value: "all", label: "전체" },
-    { value: "recent", label: "최신순" },
-    { value: "oldest", label: "오래된순" },
+    { value: EmotionType.Happy, label: emotionDataMap[EmotionType.Happy].label },
+    { value: EmotionType.Sad, label: emotionDataMap[EmotionType.Sad].label },
+    { value: EmotionType.Surprise, label: emotionDataMap[EmotionType.Surprise].label },
+    { value: EmotionType.Angry, label: emotionDataMap[EmotionType.Angry].label },
   ];
 
-  const handleFilterChange = (value: string) => {
-    setSelectedFilter(value);
+  const handleFilterSelectChange = (value: string) => {
+    if (value === "all") {
+      handleFilterChange("all");
+    } else {
+      handleFilterChange(value as EmotionType);
+    }
   };
 
   const handleDeleteDiary = (id: number) => {
@@ -141,13 +152,15 @@ export default function Diaries() {
         <div className={styles.searchLeft}>
           <SelectBox
             options={filterOptions}
-            value={selectedFilter}
-            onChange={handleFilterChange}
+            value={selectedFilter === "all" ? "all" : selectedFilter}
+            onChange={handleFilterSelectChange}
             placeholder="전체"
             variant="primary"
             size="medium"
             theme="light"
             className={styles.selectbox}
+            testId="diary-filter-selectbox"
+            optionTestId={(value) => `diary-filter-option-${value}`}
           />
           <SearchBar
             variant="primary"
