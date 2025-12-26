@@ -35,7 +35,7 @@ export default function Layout({ children }: LayoutProps) {
                 onClick={navigateToDiaries}
                 data-testid="layout-logo"
               >
-                민지의 다이어리
+                해준의 다이어리
               </div>
             )}
             <div className={styles.authStatus} data-testid="layout-auth-status">
@@ -82,7 +82,9 @@ export default function Layout({ children }: LayoutProps) {
         <nav className={styles.navigation} data-testid="layout-navigation">
           <div className={styles.navContent}>
             <div
-              className={`${styles.tab} ${isDiariesActive ? styles.tabActive : ""}`}
+              className={`${styles.tab} ${
+                isDiariesActive ? styles.tabActive : ""
+              }`}
               onClick={navigateToDiaries}
               data-testid="nav-diaries"
               data-active={isDiariesActive}
@@ -90,7 +92,9 @@ export default function Layout({ children }: LayoutProps) {
               일기보관함
             </div>
             <div
-              className={`${styles.tab} ${isPicturesActive ? styles.tabActive : ""}`}
+              className={`${styles.tab} ${
+                isPicturesActive ? styles.tabActive : ""
+              }`}
               onClick={navigateToPictures}
               data-testid="nav-pictures"
               data-active={isPicturesActive}
@@ -104,10 +108,10 @@ export default function Layout({ children }: LayoutProps) {
       {showFooter && (
         <footer className={styles.footer} data-testid="layout-footer">
           <div className={styles.footerContent}>
-            <div className={styles.footerTitle}>민지의 다이어리</div>
-            <div className={styles.footerInfo}>대표 : {"{name}"}</div>
+            <div className={styles.footerTitle}>해준의 다이어리</div>
+            <div className={styles.footerInfo}>대표 : {"{joon}"}</div>
             <div className={styles.footerCopyright}>
-              Copyright © 2024. {"{name}"} Co., Ltd.
+              Copyright © 2025. {"{joon}"} Co., Ltd.
             </div>
           </div>
         </footer>
