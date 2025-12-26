@@ -130,6 +130,25 @@
   gap: 24px;
 }
 
+/* Empty State */
+.emptyState {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.emptyStateText {
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  color: #919191;
+  text-align: center;
+}
+
 /* 1168px 이하에서 center 정렬 */
 @media (max-width: 1168px) {
   .main {
