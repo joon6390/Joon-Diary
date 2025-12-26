@@ -8,27 +8,43 @@ export interface InputProps
   theme?: "light" | "dark";
 }
 
-export const Input: React.FC<InputProps> = ({
-  variant = "primary",
-  size = "medium",
-  theme = "light",
-  className,
-  disabled,
-  ...rest
-}) => {
-  const inputClasses = [
-    styles.input,
-    styles[variant],
-    styles[size],
-    styles[theme],
-    disabled && styles.disabled,
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      variant = "primary",
+      size = "medium",
+      theme = "light",
+      className,
+      disabled,
+      value,
+      ...rest
+    },
+    ref
+  ) => {
+    const inputClasses = [
+      styles.input,
+      styles[variant],
+      styles[size],
+      styles[theme],
+      disabled && styles.disabled,
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
-  return <input className={inputClasses} disabled={disabled} {...rest} />;
-};
+    return (
+      <input
+        ref={ref}
+        className={inputClasses}
+        disabled={disabled}
+        value={value ?? ""}
+        {...rest}
+      />
+    );
+  }
+);
+
+Input.displayName = "Input";
 
 export default Input;
 

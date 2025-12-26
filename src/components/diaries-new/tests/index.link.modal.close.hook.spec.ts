@@ -42,7 +42,7 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     const continueButton = page
       .locator('[data-testid="cancel-modal"]')
       .locator("button")
-      .filter({ hasText: "계속작성" });
+      .filter({ hasText: "계속 작성" });
     await continueButton.click();
 
     // 등록취소모달이 닫혔는지 확인
@@ -81,7 +81,7 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     const cancelButton = page
       .locator('[data-testid="cancel-modal"]')
       .locator("button")
-      .filter({ hasText: "등록취소" });
+      .filter({ hasText: "등록 취소" });
     await cancelButton.click();
 
     // 등록취소모달이 닫혔는지 확인

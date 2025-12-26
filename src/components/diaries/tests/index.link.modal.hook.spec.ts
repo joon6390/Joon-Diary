@@ -86,7 +86,7 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     await expect(cancelModal).toBeVisible();
 
     // When: 등록취소 버튼 클릭
-    const cancelButton = cancelModal.locator('button').filter({ hasText: '등록취소' });
+    const cancelButton = cancelModal.locator('button').filter({ hasText: '등록 취소' });
     await cancelButton.click();
 
     // Then: 모든 모달이 화면에서 사라짐
@@ -163,7 +163,7 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     await expect(cancelModal).toBeVisible();
 
     // When: 등록취소 버튼 클릭
-    const cancelButton = cancelModal.locator('button').filter({ hasText: '등록취소' });
+    const cancelButton = cancelModal.locator('button').filter({ hasText: '등록 취소' });
     await cancelButton.click();
 
     // Then: 모든 모달이 닫힘
