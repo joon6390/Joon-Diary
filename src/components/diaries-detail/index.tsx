@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 import { Button } from "@/commons/components/button";
 import { Input } from "@/commons/components/input";
 import { getEmotionData, emotionList, EmotionType } from "@/commons/constants/enum";
 import { Modal } from "@/commons/components/modal";
 import { useModal } from "@/commons/providers/modal/modal.provider";
+import { paths } from "@/commons/constants/url";
 import { useBindingHook } from "./hooks/index.binding.hook";
 import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
 import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook";
@@ -17,6 +19,7 @@ import { RetrospectData } from "./hooks/index.retrospect.form.hook";
 import styles from "./styles.module.css";
 
 export default function DiariesDetail() {
+  const router = useRouter();
   const { diary, isLoading, formattedDate } = useBindingHook();
   const { control, handleSubmit, isSubmitDisabled } =
     useRetrospectFormHook();
@@ -34,6 +37,10 @@ export default function DiariesDetail() {
   const { openModal, closeModal } = useModal();
   const [editingRetrospectId, setEditingRetrospectId] = useState<number | null>(null);
   const [editingRetrospectContent, setEditingRetrospectContent] = useState<string>("");
+
+  const handleBackToDiaries = () => {
+    router.push(paths.diaries.list);
+  };
 
   // 일기 데이터가 없거나 로딩 중일 때 처리
   if (isLoading) {
@@ -196,6 +203,26 @@ export default function DiariesDetail() {
   return (
     <div className={styles.container} data-testid="diaries-detail-container">
       <div className={styles.gap64}></div>
+
+      {/* back button */}
+      <div className={styles.backButtonSection}>
+        <button
+          className={styles.backButton}
+          onClick={handleBackToDiaries}
+          data-testid="back-to-diaries-button"
+        >
+          <Image
+            src="/icons/back_outline_light_m.svg"
+            alt="뒤로가기"
+            width={24}
+            height={24}
+            className={styles.backIcon}
+          />
+          <span className={styles.backText}>다이어리로 돌아가기</span>
+        </button>
+      </div>
+
+      <div className={styles.gap24}></div>
 
       {!isEditMode ? (
         <>
