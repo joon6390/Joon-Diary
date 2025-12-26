@@ -32,10 +32,10 @@ export const useLinkModalClose = (): DiariesNewLinkModalCloseReturn => {
         <Modal
           variant="info"
           actions="dual"
-          title="등록을 취소하시겠습니까?"
-          description="작성 중인 내용이 저장되지 않습니다."
-          primaryButtonText="등록취소"
-          secondaryButtonText="계속작성"
+          title="일기 등록 취소"
+          description="일기 등록을 취소 하시겠어요?"
+          primaryButtonText="등록 취소"
+          secondaryButtonText="계속 작성"
           onPrimaryClick={() => {
             // 등록취소 버튼: 두 모달 모두 닫기
             closeAllModals();
