@@ -7,6 +7,7 @@ import { paths } from "@/commons/constants/url";
 import styles from "./styles.module.css";
 import { useFormHook } from "./hooks/index.form.hook";
 import { Controller } from "react-hook-form";
+import Image from "next/image";
 
 export default function AuthLogin() {
   const router = useRouter();
@@ -16,8 +17,28 @@ export default function AuthLogin() {
     router.push(paths.auth.signup);
   };
 
+  const handleBackToDiaries = () => {
+    router.push(paths.diaries.list);
+  };
+
   return (
     <div className={styles.container} data-testid="login-container">
+      <button
+        type="button"
+        onClick={handleBackToDiaries}
+        className={styles.backButton}
+        data-testid="back-to-diaries-button"
+        aria-label="다이어리로 돌아가기"
+      >
+        <Image
+          src="/icons/back_outline_light_m.svg"
+          alt="뒤로가기"
+          width={24}
+          height={24}
+          className={styles.backIcon}
+        />
+        <span className={styles.backText}>다이어리로 돌아가기</span>
+      </button>
       <div className={styles.formWrapper}>
         <div className={styles.header}>
           <h1 className={styles.title}>로그인</h1>

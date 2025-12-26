@@ -1,10 +1,47 @@
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   padding: 2rem;
   background: var(--background-inverse);
+  position: relative;
+}
+
+.backButton {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-inverse);
+  font-size: var(--typo-body02-regular-size);
+  font-weight: var(--typo-body02-regular-weight);
+  transition: opacity 0.2s;
+}
+
+.backButton:hover {
+  opacity: 0.8;
+}
+
+.backButton:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.backIcon {
+  flex-shrink: 0;
+}
+
+.backText {
+  line-height: 24px;
 }
 
 .formWrapper {
