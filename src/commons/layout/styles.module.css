@@ -209,3 +209,10 @@
     padding-right: 20px;
   }
 }
+
+/* Responsive: 470px 이하에서 사용자 이름 숨기기 */
+@media (max-width: 470px) {
+  .userName {
+    display: none;
+  }
+}
