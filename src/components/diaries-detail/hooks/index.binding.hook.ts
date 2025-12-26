@@ -51,48 +51,75 @@ export const formatDate = (dateString: string): string => {
  * - diary: 조회된 일기 데이터 (없으면 null)
  * - isLoading: 데이터 로딩 중 여부
  */
-export const useBindingHook = (): DiaryDetailBindingHookReturn => {
-  const params = useParams();
-  const [diary, setDiary] = useState<DiaryData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+// 초기 데이터 로드 함수 (동기적 실행)
+const loadDiarySync = (diaryId: number): DiaryData | null => {
+  if (typeof window === "undefined") {
+    return null;
+  }
 
-  useEffect(() => {
-    // [id] 추출
-    const id = params?.id;
-    if (!id) {
-      setIsLoading(false);
-      return;
+  try {
+    // 로컬스토리지에서 diaries 배열 읽기
+    const diariesJson = localStorage.getItem("diaries");
+    if (!diariesJson) {
+      return null;
     }
 
-    // id를 number로 변환 (string[]인 경우 첫 번째 요소 사용)
+    const diaries: DiaryData[] = JSON.parse(diariesJson);
+
+    // id와 일치하는 일기 찾기
+    const foundDiary = diaries.find((d) => d.id === diaryId);
+
+    return foundDiary || null;
+  } catch (error) {
+    console.error("일기 데이터 조회 중 오류 발생:", error);
+    return null;
+  }
+};
+
+export const useBindingHook = (): DiaryDetailBindingHookReturn => {
+  const params = useParams();
+  
+  // 초기 diaryId 추출 및 데이터 로드
+  const getInitialDiary = (): DiaryData | null => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
+    const id = params?.id;
+    if (!id) {
+      return null;
+    }
+
     const idString = Array.isArray(id) ? id[0] : id;
     const diaryId = typeof idString === "string" ? parseInt(idString, 10) : idString;
     if (isNaN(diaryId)) {
-      setIsLoading(false);
+      return null;
+    }
+
+    return loadDiarySync(diaryId);
+  };
+
+  // 초기 데이터를 동기적으로 로드하여 렌더링 지연 최소화
+  const [diary, setDiary] = useState<DiaryData | null>(() => getInitialDiary());
+  const [isLoading] = useState<boolean>(false);
+
+  // params.id 변경 시 데이터 다시 로드
+  useEffect(() => {
+    const id = params?.id;
+    if (!id) {
+      setDiary(null);
       return;
     }
 
-    try {
-      // 로컬스토리지에서 diaries 배열 읽기
-      const diariesJson = localStorage.getItem("diaries");
-      if (!diariesJson) {
-        setDiary(null);
-        setIsLoading(false);
-        return;
-      }
-
-      const diaries: DiaryData[] = JSON.parse(diariesJson);
-
-      // id와 일치하는 일기 찾기
-      const foundDiary = diaries.find((d) => d.id === diaryId);
-
-      setDiary(foundDiary || null);
-    } catch (error) {
-      console.error("일기 데이터 조회 중 오류 발생:", error);
+    const idString = Array.isArray(id) ? id[0] : id;
+    const diaryId = typeof idString === "string" ? parseInt(idString, 10) : idString;
+    if (isNaN(diaryId)) {
       setDiary(null);
-    } finally {
-      setIsLoading(false);
+      return;
     }
+
+    const loadedDiary = loadDiarySync(diaryId);
+    setDiary(loadedDiary);
   }, [params?.id]);
 
   // 날짜 포맷팅

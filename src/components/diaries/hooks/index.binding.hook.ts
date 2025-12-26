@@ -81,51 +81,59 @@ export const truncateTitle = (title: string, maxLength?: number): string => {
  * - isLoading: 데이터 로딩 중 여부
  * - refreshDiaries: 로컬스토리지에서 데이터를 다시 읽어오는 함수
  */
+// 초기 데이터 로드 함수 (동기적 실행)
+const loadDiariesSync = (): DiaryCardData[] => {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    // 로컬스토리지에서 diaries 배열 읽기
+    const diariesJson = localStorage.getItem("diaries");
+    if (!diariesJson) {
+      return [];
+    }
+
+    const rawDiaries: DiaryData[] = JSON.parse(diariesJson);
+
+    // 각 일기 데이터를 카드 표시용 형태로 변환
+    const cardData: DiaryCardData[] = rawDiaries.map((diary) => {
+      const emotionData = getEmotionData(diary.emotion);
+
+      return {
+        id: diary.id,
+        title: diary.title,
+        content: diary.content,
+        emotion: diary.emotion,
+        createdAt: diary.createdAt,
+        formattedDate: formatDate(diary.createdAt),
+        emotionLabel: emotionData.label,
+        emotionColor: emotionData.color,
+        emotionImage: emotionData.images.medium,
+      };
+    });
+
+    return cardData;
+  } catch (error) {
+    console.error("일기 데이터 조회 중 오류 발생:", error);
+    return [];
+  }
+};
+
 export const useBindingHook = (): DiariesBindingHookReturn => {
-  const [diaries, setDiaries] = useState<DiaryCardData[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // 초기 데이터를 동기적으로 로드하여 렌더링 지연 최소화
+  const [diaries, setDiaries] = useState<DiaryCardData[]>(() =>
+    loadDiariesSync()
+  );
+  const [isLoading] = useState<boolean>(false);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
-  const loadDiaries = () => {
-    try {
-      // 로컬스토리지에서 diaries 배열 읽기
-      const diariesJson = localStorage.getItem("diaries");
-      if (!diariesJson) {
-        setDiaries([]);
-        setIsLoading(false);
-        return;
-      }
-
-      const rawDiaries: DiaryData[] = JSON.parse(diariesJson);
-
-      // 각 일기 데이터를 카드 표시용 형태로 변환
-      const cardData: DiaryCardData[] = rawDiaries.map((diary) => {
-        const emotionData = getEmotionData(diary.emotion);
-
-        return {
-          id: diary.id,
-          title: diary.title,
-          content: diary.content,
-          emotion: diary.emotion,
-          createdAt: diary.createdAt,
-          formattedDate: formatDate(diary.createdAt),
-          emotionLabel: emotionData.label,
-          emotionColor: emotionData.color,
-          emotionImage: emotionData.images.medium,
-        };
-      });
-
-      setDiaries(cardData);
-    } catch (error) {
-      console.error("일기 데이터 조회 중 오류 발생:", error);
-      setDiaries([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // refreshTrigger 변경 시 데이터 다시 로드
   useEffect(() => {
-    loadDiaries();
+    if (refreshTrigger > 0) {
+      const loadedDiaries = loadDiariesSync();
+      setDiaries(loadedDiaries);
+    }
   }, [refreshTrigger]);
 
   const refreshDiaries = () => {

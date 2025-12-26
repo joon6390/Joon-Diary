@@ -253,3 +253,176 @@
   background-color: var(--color-gray-10);
   margin: 12px 0;
 }
+
+/* ========================================
+   Update Form
+   ======================================== */
+
+/* Update Emotion Section */
+.updateEmotionSection {
+  display: flex;
+  flex-direction: column;
+  width: 1168px;
+  min-height: 64px;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.updateEmotionQuestion {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-semibold);
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: var(--color-gray-black);
+  margin: 0;
+  height: 24px;
+}
+
+.updateEmotionRadioGroup {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  height: 24px;
+}
+
+.updateRadioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.updateRadioInput {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--color-gray-black);
+  appearance: none;
+  border: 2px solid var(--color-gray-30);
+  border-radius: 50%;
+  background-color: var(--color-gray-white);
+  position: relative;
+}
+
+.updateRadioInput:checked {
+  background-color: var(--color-gray-white);
+  border-color: var(--color-gray-black);
+}
+
+.updateRadioInput:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-gray-black);
+}
+
+.updateRadioText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-medium);
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: -0.18px;
+  color: var(--color-gray-80);
+}
+
+/* Update Title Section */
+.updateTitleSection {
+  display: flex;
+  flex-direction: column;
+  width: 1168px;
+  min-height: 76px;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.updateLabel {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-medium);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  color: var(--color-gray-80);
+  height: 20px;
+}
+
+.updateTitleInput {
+  width: 100%;
+}
+
+/* Update Content Section */
+.updateContentSection {
+  display: flex;
+  flex-direction: column;
+  width: 1168px;
+  min-height: 156px;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.updateContentTextarea {
+  width: 100%;
+  height: 128px;
+  padding: 12px 16px;
+  background-color: var(--color-gray-white);
+  border: 1px solid #d4d3d3;
+  border-radius: 8px;
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-medium);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  color: var(--color-gray-black);
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.updateContentTextarea::placeholder {
+  color: var(--color-gray-black);
+}
+
+.updateContentTextarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.updateContentTextarea:hover:not(:disabled) {
+  border-color: #a5a4a4;
+}
+
+/* Update Button Section */
+.updateButtonSection {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 1168px;
+  height: 48px;
+  gap: 16px;
+}
+
+.updateCancelButton {
+  width: 104px;
+}
+
+.updateSubmitButton {
+  width: 104px;
+}
+
+/* Error Text */
+.errorText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-medium);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  color: var(--color-red-60);
+  margin-top: 4px;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import styles from "./styles.module.css";
 import { SelectBox } from "@/commons/components/selectbox";
 import { SearchBar } from "@/commons/components/searchbar";
@@ -12,6 +12,7 @@ import { useBindingHook, DiaryCardData } from "./hooks/index.binding.hook";
 import { useLinkRouting } from "./hooks/index.link.routing.hook";
 import { useSearchHook } from "./hooks/index.search.hook";
 import { useFilterHook } from "./hooks/index.filter.hook";
+import { usePaginationHook } from "./hooks/index.pagination.hook";
 import { EmotionType, emotionDataMap } from "@/commons/constants/enum";
 
 // 일기 카드 컴포넌트
@@ -88,9 +89,6 @@ function DiaryCard({ diary, onDelete, onCardClick }: DiaryCardProps) {
 }
 
 export default function Diaries() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const totalPages = 5;
-
   // 일기쓰기 모달 hook
   const { handleWriteDiary } = useLinkModal();
 
@@ -102,6 +100,9 @@ export default function Diaries() {
 
   // 일기 필터 hook (검색 결과에 필터 적용)
   const { filteredDiaries, handleFilterChange, selectedFilter } = useFilterHook(searchFilteredDiaries);
+
+  // 일기 페이지네이션 hook (필터 결과에 페이지네이션 적용)
+  const { paginatedDiaries, currentPage, totalPages, handlePageChange } = usePaginationHook(filteredDiaries);
 
   // 일기 카드 라우팅 hook
   const { navigateToDiaryDetail } = useLinkRouting();
@@ -139,10 +140,6 @@ export default function Diaries() {
     } catch (error) {
       console.error("일기 삭제 중 오류 발생:", error);
     }
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
 
   return (
@@ -195,7 +192,7 @@ export default function Diaries() {
         {isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          filteredDiaries.map((diary) => (
+          paginatedDiaries.map((diary) => (
             <DiaryCard
               key={diary.id}
               diary={diary}
