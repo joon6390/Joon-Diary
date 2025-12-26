@@ -22,6 +22,16 @@
   gap: 16px;
 }
 
+/* 데스크톱 버전 (768px 이상) */
+.searchDesktop {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
 .searchLeft {
   display: flex;
   flex-direction: row;
@@ -39,6 +49,64 @@
 
 .writeButton {
   width: 110px;
+}
+
+/* 모바일 버전 (767px 이하) */
+.searchMobile {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.searchbarMobile {
+  width: 320px;
+}
+
+.searchBottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 11px;
+}
+
+.selectboxMobile {
+  width: 102px;
+}
+
+.writeButtonMobile {
+  width: 103px;
+}
+
+/* 반응형 브레이크포인트: 767px */
+@media (max-width: 767px) {
+  .search {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .searchDesktop {
+    display: none;
+  }
+
+  .searchMobile {
+    display: flex;
+    width: 100%;
+  }
+
+  .searchbarMobile {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .searchBottom {
+    width: 100%;
+    max-width: 320px;
+  }
 }
 
 .addIcon {

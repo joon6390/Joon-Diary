@@ -158,46 +158,92 @@ export default function Diaries() {
     <div className={styles.container} data-testid="diaries-container">
       <div className={styles.gap1} />
       <div className={styles.search}>
-        <div className={styles.searchLeft}>
-          <SelectBox
-            options={filterOptions}
-            value={selectedFilter === "all" ? "all" : selectedFilter}
-            onChange={handleFilterSelectChange}
-            placeholder="전체"
+        {/* 데스크톱 버전 (768px 이상) */}
+        <div className={styles.searchDesktop}>
+          <div className={styles.searchLeft}>
+            <SelectBox
+              options={filterOptions}
+              value={selectedFilter === "all" ? "all" : selectedFilter}
+              onChange={handleFilterSelectChange}
+              placeholder="전체"
+              variant="primary"
+              size="medium"
+              theme="light"
+              className={styles.selectbox}
+              testId="diary-filter-selectbox"
+              optionTestId={(value) => `diary-filter-option-${value}`}
+            />
+            <SearchBar
+              variant="primary"
+              size="medium"
+              theme="light"
+              placeholder="검색어를 입력해 주세요."
+              onSearch={handleSearch}
+              className={styles.searchbar}
+              data-testid="diary-search-input"
+            />
+          </div>
+          <Button
             variant="primary"
-            size="medium"
+            size="large"
             theme="light"
-            className={styles.selectbox}
-            testId="diary-filter-selectbox"
-            optionTestId={(value) => `diary-filter-option-${value}`}
-          />
+            onClick={handleWriteDiary}
+            className={styles.writeButton}
+            data-testid="write-diary-button"
+          >
+            <Image
+              src="/icons/plus_outline_light_m.svg"
+              alt="add"
+              width={24}
+              height={24}
+              className={styles.addIcon}
+            />
+            일기쓰기
+          </Button>
+        </div>
+        {/* 모바일 버전 (767px 이하) */}
+        <div className={styles.searchMobile}>
           <SearchBar
             variant="primary"
             size="medium"
             theme="light"
             placeholder="검색어를 입력해 주세요."
             onSearch={handleSearch}
-            className={styles.searchbar}
-            data-testid="diary-search-input"
+            className={styles.searchbarMobile}
+            data-testid="diary-search-input-mobile"
           />
+          <div className={styles.searchBottom}>
+            <SelectBox
+              options={filterOptions}
+              value={selectedFilter === "all" ? "all" : selectedFilter}
+              onChange={handleFilterSelectChange}
+              placeholder="전체"
+              variant="primary"
+              size="medium"
+              theme="light"
+              className={styles.selectboxMobile}
+              testId="diary-filter-selectbox-mobile"
+              optionTestId={(value) => `diary-filter-option-mobile-${value}`}
+            />
+            <Button
+              variant="primary"
+              size="large"
+              theme="light"
+              onClick={handleWriteDiary}
+              className={styles.writeButtonMobile}
+              data-testid="write-diary-button-mobile"
+            >
+              <Image
+                src="/icons/plus_outline_light_m.svg"
+                alt="add"
+                width={24}
+                height={24}
+                className={styles.addIcon}
+              />
+              일기쓰기
+            </Button>
+          </div>
         </div>
-        <Button
-          variant="primary"
-          size="large"
-          theme="light"
-          onClick={handleWriteDiary}
-          className={styles.writeButton}
-          data-testid="write-diary-button"
-        >
-          <Image
-            src="/icons/plus_outline_light_m.svg"
-            alt="add"
-            width={24}
-            height={24}
-            className={styles.addIcon}
-          />
-          일기쓰기
-        </Button>
       </div>
       <div className={styles.gap2} />
       <div className={styles.main}>
