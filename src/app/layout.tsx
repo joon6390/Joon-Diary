@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "Joon 일기장 | Joon Diary",
   description: "박해준 일기장",
   icons: {
-    icon: "/favicon.svg",
+    icon: "icon.svg",
   },
 };
 
