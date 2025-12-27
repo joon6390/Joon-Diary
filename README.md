@@ -1,4 +1,4 @@
-# Vibe Coding Project with Cursor AI, Next.js
+# Vibe Coding Project with Cursor AI, Next.js, Typescript
 
 cursor AI를 활용한 바이브 코딩 프로젝트입니다.  
 바이브 코딩은 AI시대 반드시 알고 있어야 하는 필수 역량이라고 생각합니다.  

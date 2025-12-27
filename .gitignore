@@ -49,9 +49,15 @@ storybook-static
 bash.exe.stackdump
 
 # temp / logs
-status
-status--short
+tatus
+tatus--short
 
 # env
 .env
+
+bash.exe.stackdump
+test-results.txt
+er.name
+bun.lock   
+
 
