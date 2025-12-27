@@ -131,6 +131,9 @@ export const useUpdateHook = (
           title: data.title,
           content: data.content,
           emotion: data.emotion,
+          // userName과 userId는 기존 값 보존
+          userName: d.userName,
+          userId: d.userId,
         };
       }
       return d;

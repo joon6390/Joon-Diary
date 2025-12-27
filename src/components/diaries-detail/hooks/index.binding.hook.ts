@@ -14,6 +14,7 @@ export interface DiaryData {
   emotion: EmotionType;
   createdAt: string;
   userId?: string; // 작성자 ID (선택적 필드, 기존 데이터 호환성 유지)
+  userName?: string; // 작성자 이름 (선택적 필드, 기존 데이터 호환성 유지)
 }
 
 /**

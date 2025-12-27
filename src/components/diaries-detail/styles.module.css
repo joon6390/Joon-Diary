@@ -132,6 +132,15 @@
   color: var(--color-gray-50);
 }
 
+.authorText {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-regular);
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.14px;
+  color: var(--color-gray-60);
+}
+
 /* ========================================
    Detail Content
    ======================================== */
@@ -279,6 +288,15 @@
 }
 
 .retrospectDate {
+  font-family: var(--font-korean);
+  font-weight: var(--font-weight-regular);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  color: var(--color-gray-60);
+}
+
+.retrospectAuthor {
   font-family: var(--font-korean);
   font-weight: var(--font-weight-regular);
   font-size: 16px;

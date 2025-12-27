@@ -13,6 +13,7 @@ export interface DiaryData {
   emotion: EmotionType;
   createdAt: string;
   userId?: string; // 작성자 ID (선택적 필드, 기존 데이터 호환성 유지)
+  userName?: string; // 작성자 이름 (선택적 필드, 기존 데이터 호환성 유지)
 }
 
 /**
@@ -29,6 +30,7 @@ export interface DiaryCardData {
   emotionColor: string;
   emotionImage: string;
   userId?: string; // 작성자 ID
+  userName?: string; // 작성자 이름
 }
 
 /**
@@ -113,6 +115,7 @@ const loadDiariesSync = (): DiaryCardData[] => {
         emotionColor: emotionData.color,
         emotionImage: emotionData.images.medium,
         userId: diary.userId, // 작성자 ID 전달
+        userName: diary.userName, // 작성자 이름 전달
       };
     });
 

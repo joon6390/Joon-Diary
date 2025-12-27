@@ -34,6 +34,8 @@ function DiaryCard({
   isOwner,
 }: DiaryCardProps) {
   const imageUrl = `/images/${diary.emotionImage}`;
+  const { getUser } = useAuth();
+  const currentUser = getUser();
 
   const handleCardClick = () => {
     onCardClick(diary.id);
@@ -43,6 +45,9 @@ function DiaryCard({
     e.stopPropagation(); // 삭제 버튼 클릭 시 카드 클릭 이벤트 전파 방지
     onDelete(diary.id);
   };
+
+  // userName이 없으면 현재 사용자 이름 사용 (기존 데이터 호환성)
+  const displayName = diary.userName || (diary.userId === currentUser?._id ? currentUser?.name : null);
 
   return (
     <div
@@ -92,8 +97,15 @@ function DiaryCard({
             {diary.formattedDate}
           </span>
         </div>
-        <div className={styles.cardTitle} data-testid="diary-title">
-          {diary.title}
+        <div className={styles.cardTitleWrapper}>
+          <div className={styles.cardTitle} data-testid="diary-title">
+            {diary.title}
+          </div>
+          {displayName && (
+            <div className={styles.cardAuthor} data-testid="diary-author">
+              {displayName}
+            </div>
+          )}
         </div>
       </div>
     </div>

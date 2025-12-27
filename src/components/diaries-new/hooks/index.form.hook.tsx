@@ -31,6 +31,7 @@ interface DiaryData {
   emotion: EmotionType;
   createdAt: string;
   userId?: string; // 작성자 ID
+  userName?: string; // 작성자 이름
 }
 
 /**
@@ -97,7 +98,7 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
 
     // 현재 로그인한 사용자 정보 가져오기
     const currentUser = getUser();
-    
+
     // 새 일기 데이터 생성
     const newDiary: DiaryData = {
       id: newId,
@@ -106,6 +107,7 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
       emotion: data.emotion,
       createdAt: new Date().toISOString(),
       userId: currentUser?._id, // 현재 사용자 ID 저장
+      userName: currentUser?.name, // 현재 사용자 이름 저장
     };
 
     // 로컬스토리지에 저장
@@ -140,4 +142,3 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
     isSubmitDisabled: !isAllFieldsFilled,
   };
 };
-

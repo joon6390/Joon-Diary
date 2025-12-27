@@ -159,7 +159,8 @@
 /* DiaryCard */
 .diaryCard {
   width: 274px;
-  height: 296px;
+  height: auto;
+  min-height: 296px;
   background-color: var(--color-gray-white);
   border-radius: 16px;
   overflow: hidden;
@@ -235,7 +236,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 88px;
+  min-height: 88px;
+  flex: 1;
 }
 
 /* 반응형 브레이크포인트: 767px - main 영역 */
@@ -249,7 +251,8 @@
 
   .diaryCard {
     width: 152px;
-    height: 192px;
+    height: auto;
+    min-height: 192px;
   }
 
   .imageWrapper {
@@ -282,7 +285,8 @@
 
   .diaryCard {
     width: 152px;
-    height: 192px;
+    height: auto;
+    min-height: 192px;
   }
 
   .imageWrapper {
@@ -336,6 +340,15 @@
   color: var(--color-gray-50);
 }
 
+.cardTitleWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 24px;
+}
+
 .cardTitle {
   font-family: var(--typo-title01-font);
   font-weight: var(--typo-title01-weight);
@@ -346,7 +359,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  height: 24px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardAuthor {
+  font-family: var(--typo-body02-regular-font);
+  font-weight: var(--typo-body02-regular-weight);
+  font-size: var(--typo-body02-regular-size);
+  line-height: 24px;
+  letter-spacing: -0.14px;
+  color: var(--color-gray-60);
+  flex-shrink: 0;
 }
 
 /* 767px 이하에서 폰트 크기 조정 */
@@ -359,8 +383,18 @@
     font-size: 12px;
   }
 
+  .cardTitleWrapper {
+    height: 20px;
+  }
+
   .cardTitle {
     font-size: 14px;
+    line-height: 20px;
+  }
+
+  .cardAuthor {
+    font-size: 12px;
+    line-height: 20px;
   }
 }
 

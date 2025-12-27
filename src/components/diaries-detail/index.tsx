@@ -68,6 +68,9 @@ export default function DiariesDetail() {
   // 본인이 작성한 일기인지 확인
   const currentUser = getUser();
   const isOwner = currentUser ? diary.userId === currentUser._id : false;
+  
+  // userName이 없으면 현재 사용자 이름 사용 (기존 데이터 호환성)
+  const displayName = diary.userName || (diary.userId === currentUser?._id ? currentUser?.name : null);
 
   const handleCopyContent = async () => {
     try {
@@ -297,6 +300,11 @@ export default function DiariesDetail() {
                   {formattedDate}
                 </span>
                 <span className={styles.dateText}>작성</span>
+                {displayName && (
+                  <span className={styles.authorText} data-testid="diary-author">
+                    {displayName}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -563,6 +571,11 @@ export default function DiariesDetail() {
                   <div className={styles.retrospectContent}>
                     <span className={styles.retrospectText}>{retrospect.text}</span>
                     <span className={styles.retrospectDate}>[{retrospect.date}]</span>
+                    {retrospect.userName && (
+                      <span className={styles.retrospectAuthor} data-testid={`retrospect-author-${retrospect.id}`}>
+                        {retrospect.userName}
+                      </span>
+                    )}
                   </div>
                   {/* 본인이 작성한 회고만 수정/삭제 버튼 표시 */}
                   {currentUser && retrospect.userId === currentUser._id && (

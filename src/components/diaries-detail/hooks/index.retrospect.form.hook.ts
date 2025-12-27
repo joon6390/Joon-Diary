@@ -24,6 +24,7 @@ export interface RetrospectData {
   diaryId: number;
   createdAt: string;
   userId?: string; // 작성자 ID (선택적 필드, 기존 데이터 호환성 유지)
+  userName?: string; // 작성자 이름 (선택적 필드, 기존 데이터 호환성 유지)
 }
 
 /**
@@ -114,6 +115,7 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
       diaryId: diaryId,
       createdAt: new Date().toISOString(),
       userId: currentUser?._id, // 현재 사용자 ID 저장
+      userName: currentUser?.name, // 현재 사용자 이름 저장
     };
 
     // 로컬스토리지에 저장
