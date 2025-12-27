@@ -21,7 +21,10 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Joon 일기장 | Joon Diary",
-  description: "박해준 일기장",
+  openGraph: {
+    title: "박해준 일기장",
+  },
+  description: "박해준의 개인 일기장입니다.",
   icons: {
     icon: "icon.svg",
   },
