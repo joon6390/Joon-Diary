@@ -140,7 +140,8 @@
 }
 
 .emptyStateText {
-  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    system-ui, sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
@@ -149,8 +150,15 @@
   text-align: center;
 }
 
-/* 1168px 이하에서 center 정렬 */
-@media (max-width: 1168px) {
+/* 768px ~ 928px에서 center 정렬 */
+@media (min-width: 768px) and (max-width: 928px) {
+  .main {
+    justify-content: center;
+  }
+}
+
+/* 930px 초과 1168px 이하에서 center 정렬 */
+@media (min-width: 931px) and (max-width: 1168px) {
   .main {
     justify-content: center;
   }
@@ -246,7 +254,6 @@
     gap: 16px;
     max-width: 320px;
     margin: 0 auto;
-    justify-content: center;
   }
 
   .diaryCard {
@@ -277,12 +284,8 @@
   }
 }
 
-/* 388px 이하에서 center 정렬 */
+/* 388px 이하 */
 @media (max-width: 388px) {
-  .main {
-    justify-content: center;
-  }
-
   .diaryCard {
     width: 152px;
     height: auto;
