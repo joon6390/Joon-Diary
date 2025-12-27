@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useParams } from "next/navigation";
+import { useAuth } from "@/commons/providers/auth/auth.provider";
 
 /**
  * 회고 폼 스키마
@@ -22,6 +23,7 @@ export interface RetrospectData {
   content: string;
   diaryId: number;
   createdAt: string;
+  userId?: string; // 작성자 ID (선택적 필드, 기존 데이터 호환성 유지)
 }
 
 /**
@@ -48,6 +50,7 @@ export interface RetrospectFormHookReturn {
  */
 export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
   const params = useParams();
+  const { getUser } = useAuth();
 
   const {
     control,
@@ -101,12 +104,16 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
         : 0;
     const newId = maxId + 1;
 
+    // 현재 로그인한 사용자 정보 가져오기
+    const currentUser = getUser();
+
     // 새 회고 데이터 생성
     const newRetrospect: RetrospectData = {
       id: newId,
       content: data.content,
       diaryId: diaryId,
       createdAt: new Date().toISOString(),
+      userId: currentUser?._id, // 현재 사용자 ID 저장
     };
 
     // 로컬스토리지에 저장

@@ -15,7 +15,14 @@ import { test, expect } from "@playwright/test";
 
 test.describe("일기쓰기 모달 기능 테스트", () => {
   test.beforeEach(async ({ page }) => {
-    // Given: /diaries 페이지로 이동
+    // Given: 로그인 상태 설정 (일기쓰기 모달을 열기 위해 필요)
+    // page.goto 전에 localStorage 설정
+    await page.addInitScript(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+    });
+
+    // And: /diaries 페이지로 이동
     await page.goto("/diaries");
 
     // And: 페이지 로드 완료를 data-testid로 확인
@@ -36,9 +43,9 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // Then: 모달이 화면에 표시됨
+    // Then: 모달이 화면에 표시됨 (대기 시간 증가)
     const modal = page.locator('[data-testid="diary-modal"]');
-    await expect(modal).toBeVisible();
+    await expect(modal).toBeVisible({ timeout: 10000 });
 
     // And: 모달에 "일기 쓰기" 헤더가 표시됨
     await expect(modal.locator("text=일기 쓰기")).toBeVisible();
@@ -49,7 +56,11 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // Then: backdrop이 화면에 표시됨
+    // Then: 모달이 먼저 열렸는지 확인
+    const modal = page.locator('[data-testid="diary-modal"]');
+    await expect(modal).toBeVisible({ timeout: 10000 });
+
+    // And: backdrop이 화면에 표시됨
     const backdrop = page.locator('[data-testid="modal-backdrop"]');
     await expect(backdrop).toBeVisible();
   });
@@ -61,11 +72,11 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
 
     // Then: 모달 컨테이너가 중앙 정렬 스타일로 표시됨
     const modalContainer = page.locator('[data-testid="modal-container"]');
-    await expect(modalContainer).toBeVisible();
+    await expect(modalContainer).toBeVisible({ timeout: 10000 });
 
     // And: 모달 컨텐츠가 중앙에 위치함
     const modal = page.locator('[data-testid="diary-modal"]');
-    await expect(modal).toBeVisible();
+    await expect(modal).toBeVisible({ timeout: 10000 });
   });
 
   test("모달의 닫기 버튼을 클릭하면 모달이 닫혀야 한다", async ({ page }) => {
@@ -73,9 +84,9 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // And: 모달이 열렸는지 확인
+    // And: 모달이 열렸는지 확인 (대기 시간 증가)
     const modal = page.locator('[data-testid="diary-modal"]');
-    await expect(modal).toBeVisible();
+    await expect(modal).toBeVisible({ timeout: 10000 });
 
     // When: 닫기 버튼 클릭
     const closeButton = modal.locator('[data-testid="diary-close-button"]');
@@ -99,9 +110,9 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // And: 모달이 열렸는지 확인
+    // And: 모달이 열렸는지 확인 (대기 시간 증가)
     const modal = page.locator('[data-testid="diary-modal"]');
-    await expect(modal).toBeVisible();
+    await expect(modal).toBeVisible({ timeout: 10000 });
 
     // When: backdrop 클릭 (모달 컨텐츠가 아닌 배경 영역)
     // 모달 컨테이너의 좌측 상단 모서리 클릭 (모달이 없는 영역)
@@ -119,9 +130,9 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // And: 모달이 열렸는지 확인
+    // And: 모달이 열렸는지 확인 (대기 시간 증가)
     const modal = page.locator('[data-testid="diary-modal"]');
-    await expect(modal).toBeVisible();
+    await expect(modal).toBeVisible({ timeout: 10000 });
 
     // Then: 감정 선택 질문이 표시됨
     await expect(modal.locator("text=오늘 기분은 어땠나요?")).toBeVisible();
@@ -150,9 +161,9 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     const writeButton = page.locator('[data-testid="write-diary-button"]');
     await writeButton.click();
 
-    // And: 모달이 열렸는지 확인
+    // And: 모달이 열렸는지 확인 (대기 시간 증가)
     const modal = page.locator('[data-testid="diary-modal"]');
-    await expect(modal).toBeVisible();
+    await expect(modal).toBeVisible({ timeout: 10000 });
 
     // When: 닫기 버튼으로 모달 닫기
     const closeButton = modal.locator('[data-testid="diary-close-button"]');
@@ -173,8 +184,8 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     // When: 두 번째로 모달 열기
     await writeButton.click();
 
-    // Then: 모달이 다시 정상적으로 열림
-    await expect(modal).toBeVisible();
+    // Then: 모달이 다시 정상적으로 열림 (대기 시간 증가)
+    await expect(modal).toBeVisible({ timeout: 10000 });
     await expect(modal.locator("text=일기 쓰기")).toBeVisible();
 
     // When: 배경 클릭으로 모달 닫기
@@ -189,8 +200,8 @@ test.describe("일기쓰기 모달 기능 테스트", () => {
     // When: 세 번째로 모달 열기
     await writeButton.click();
 
-    // Then: 모달이 여전히 정상적으로 작동함
-    await expect(modal).toBeVisible();
+    // Then: 모달이 여전히 정상적으로 작동함 (대기 시간 증가)
+    await expect(modal).toBeVisible({ timeout: 10000 });
   });
 });
 

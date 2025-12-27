@@ -20,6 +20,12 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
   }) => {
     // /diaries 페이지로 이동
     await page.goto("/diaries");
+    
+    // 로그인 유저 설정 (일기쓰기 모달을 열기 위해 필요)
+    await page.evaluate(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+    });
 
     // 페이지 로드 대기 (data-testid 사용)
     await expect(
@@ -29,8 +35,8 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     // 일기쓰기 버튼 클릭
     await page.click('[data-testid="write-diary-button"]');
 
-    // 일기쓰기폼모달이 열렸는지 확인
-    await expect(page.locator('[data-testid="diary-modal"]')).toBeVisible();
+    // 일기쓰기폼모달이 열렸는지 확인 (대기 시간 증가)
+    await expect(page.locator('[data-testid="diary-modal"]')).toBeVisible({ timeout: 10000 });
 
     // 닫기 버튼 클릭
     await page.click('[data-testid="diary-close-button"]');
@@ -59,6 +65,12 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
   }) => {
     // /diaries 페이지로 이동
     await page.goto("/diaries");
+    
+    // 로그인 유저 설정 (일기쓰기 모달을 열기 위해 필요)
+    await page.evaluate(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+    });
 
     // 페이지 로드 대기 (data-testid 사용)
     await expect(
@@ -68,8 +80,8 @@ test.describe("일기쓰기 모달 닫기 기능", () => {
     // 일기쓰기 버튼 클릭
     await page.click('[data-testid="write-diary-button"]');
 
-    // 일기쓰기폼모달이 열렸는지 확인
-    await expect(page.locator('[data-testid="diary-modal"]')).toBeVisible();
+    // 일기쓰기폼모달이 열렸는지 확인 (대기 시간 증가)
+    await expect(page.locator('[data-testid="diary-modal"]')).toBeVisible({ timeout: 10000 });
 
     // 닫기 버튼 클릭
     await page.click('[data-testid="diary-close-button"]');

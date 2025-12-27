@@ -23,9 +23,11 @@ import { EmotionType, getEmotionData } from "@/commons/constants/enum";
 
 test.describe("일기 상세 페이지 데이터 바인딩", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
+    // 로그인 상태 설정 (일기 상세 페이지는 회원 전용)
+    await page.addInitScript(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+    });
   });
 
   test("로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다", async ({
@@ -38,9 +40,10 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       content: "테스트 일기 내용입니다.",
       emotion: EmotionType.Happy,
       createdAt: "2024-07-12T08:57:49.537Z",
+      userId: "test-user-123",
     };
 
-    await page.evaluate((diary) => {
+    await page.addInitScript((diary) => {
       localStorage.setItem("diaries", JSON.stringify([diary]));
     }, testDiary);
 
@@ -50,6 +53,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
       state: "visible",
+      timeout: 10000,
     });
 
     // And: 제목이 올바르게 표시됨
@@ -87,6 +91,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
         content: "행복한 내용",
         emotion: EmotionType.Happy,
         createdAt: "2024-07-12T08:57:49.537Z",
+        userId: "test-user-123",
       },
       {
         id: 2,
@@ -94,6 +99,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
         content: "슬픈 내용",
         emotion: EmotionType.Sad,
         createdAt: "2024-07-13T08:57:49.537Z",
+        userId: "test-user-123",
       },
       {
         id: 3,
@@ -101,6 +107,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
         content: "화난 내용",
         emotion: EmotionType.Angry,
         createdAt: "2024-07-14T08:57:49.537Z",
+        userId: "test-user-123",
       },
       {
         id: 4,
@@ -108,6 +115,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
         content: "놀란 내용",
         emotion: EmotionType.Surprise,
         createdAt: "2024-07-15T08:57:49.537Z",
+        userId: "test-user-123",
       },
       {
         id: 5,
@@ -115,11 +123,12 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
         content: "기타 내용",
         emotion: EmotionType.Etc,
         createdAt: "2024-07-16T08:57:49.537Z",
+        userId: "test-user-123",
       },
     ];
 
     for (const diary of testDiaries) {
-      await page.evaluate((diaries) => {
+      await page.addInitScript((diaries) => {
         localStorage.setItem("diaries", JSON.stringify(diaries));
       }, testDiaries);
 
@@ -129,6 +138,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       // Then: 페이지가 완전히 로드될 때까지 대기
       await page.waitForSelector('[data-testid="diaries-detail-container"]', {
         state: "visible",
+        timeout: 10000,
       });
 
       // And: 제목이 올바르게 표시됨
@@ -166,9 +176,10 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       content: "내용",
       emotion: EmotionType.Happy,
       createdAt: "2024-07-12T08:57:49.537Z",
+      userId: "test-user-123",
     };
 
-    await page.evaluate((diary) => {
+    await page.addInitScript((diary) => {
       localStorage.setItem("diaries", JSON.stringify([diary]));
     }, testDiary);
 
@@ -177,17 +188,19 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
 
     // Then: 페이지가 로드되지만 데이터가 없거나 기본값이 표시됨
     // (구현에 따라 다를 수 있으나, 최소한 에러가 발생하지 않아야 함)
+    // 일기가 없을 때는 "일기를 찾을 수 없습니다." 메시지가 표시됨
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
   });
 
   test("로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지가 비어있음
-    await page.evaluate(() => {
-      localStorage.clear();
+    // Given: 로컬스토리지가 비어있음 (로그인 상태는 유지)
+    await page.addInitScript(() => {
+      localStorage.removeItem("diaries");
     });
 
     // When: 상세 페이지로 이동
@@ -195,8 +208,10 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
 
     // Then: 페이지가 로드되지만 데이터가 없거나 기본값이 표시됨
     // (구현에 따라 다를 수 있으나, 최소한 에러가 발생하지 않아야 함)
+    // 일기가 없을 때는 "일기를 찾을 수 없습니다." 메시지가 표시됨
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
   });
 });

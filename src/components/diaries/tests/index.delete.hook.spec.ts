@@ -83,32 +83,36 @@ test.describe("일기 삭제 기능", () => {
     await expect(deleteButton2).not.toBeVisible();
   });
 
-  test("로그인 유저일 때 일기카드 각각의 삭제아이콘(X)이 노출되어야 한다", async ({
+  test("로그인 유저일 때 본인이 작성한 일기카드에만 삭제아이콘(X)이 노출되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: 로컬스토리지에 일기 데이터 저장 (본인 일기와 다른 사람 일기)
+    const testUserId = "test-user-123";
     const testDiaries = [
       {
         id: 1,
-        title: "첫 번째 일기",
+        title: "본인이 작성한 일기",
         content: "첫 번째 일기 내용",
         emotion: EmotionType.Happy,
         createdAt: "2024-07-12T08:57:49.537Z",
+        userId: testUserId, // 본인 일기
       },
       {
         id: 2,
-        title: "두 번째 일기",
+        title: "다른 사람이 작성한 일기",
         content: "두 번째 일기 내용",
         emotion: EmotionType.Sad,
         createdAt: "2024-07-13T08:57:49.537Z",
+        userId: "other-user-456", // 다른 사람 일기
       },
     ];
 
-    await page.evaluate((diaries) => {
+    await page.evaluate(({ diaries, userId }) => {
       localStorage.setItem("diaries", JSON.stringify(diaries));
-      // 로그인 유저 설정: accessToken 설정
+      // 로그인 유저 설정: accessToken 및 user 정보 설정
       localStorage.setItem("accessToken", "test-token");
-    }, testDiaries);
+      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
+    }, { diaries: testDiaries, userId: testUserId });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -124,30 +128,33 @@ test.describe("일기 삭제 기능", () => {
     await expect(diaryCard1).toBeVisible();
     await expect(diaryCard2).toBeVisible();
 
-    // Then: 삭제 아이콘이 표시되어야 함
+    // Then: 본인이 작성한 일기(1번)에만 삭제 아이콘이 표시되어야 함
     const deleteButton1 = diaryCard1.locator('button[aria-label="삭제"]');
     const deleteButton2 = diaryCard2.locator('button[aria-label="삭제"]');
     await expect(deleteButton1).toBeVisible();
-    await expect(deleteButton2).toBeVisible();
+    await expect(deleteButton2).not.toBeVisible();
   });
 
   test("로그인 유저가 삭제아이콘(X)을 클릭하면 일기삭제 모달이 노출되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: 로컬스토리지에 본인이 작성한 일기 데이터 저장
+    const testUserId = "test-user-123";
     const testDiary = {
       id: 1,
       title: "테스트 일기",
       content: "테스트 내용",
       emotion: EmotionType.Happy,
       createdAt: "2024-07-12T08:57:49.537Z",
+      userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate((diary) => {
+    await page.evaluate(({ diary, userId }) => {
       localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 설정
+      // 로그인 유저 설정: accessToken 및 user 정보 설정
       localStorage.setItem("accessToken", "test-token");
-    }, testDiary);
+      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
+    }, { diary: testDiary, userId: testUserId });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -184,20 +191,23 @@ test.describe("일기 삭제 기능", () => {
   test("로그인 유저가 모달에서 취소를 클릭하면 모달이 닫혀야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: 로컬스토리지에 본인이 작성한 일기 데이터 저장
+    const testUserId = "test-user-123";
     const testDiary = {
       id: 1,
       title: "테스트 일기",
       content: "테스트 내용",
       emotion: EmotionType.Happy,
       createdAt: "2024-07-12T08:57:49.537Z",
+      userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate((diary) => {
+    await page.evaluate(({ diary, userId }) => {
       localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 설정
+      // 로그인 유저 설정: accessToken 및 user 정보 설정
       localStorage.setItem("accessToken", "test-token");
-    }, testDiary);
+      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
+    }, { diary: testDiary, userId: testUserId });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -234,7 +244,8 @@ test.describe("일기 삭제 기능", () => {
   test("로그인 유저가 모달에서 삭제를 클릭하면 일기가 삭제되고 페이지가 새로고침되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 여러 일기 데이터 저장
+    // Given: 로컬스토리지에 여러 일기 데이터 저장 (본인 일기만 포함)
+    const testUserId = "test-user-123";
     const testDiaries = [
       {
         id: 1,
@@ -242,6 +253,7 @@ test.describe("일기 삭제 기능", () => {
         content: "첫 번째 일기 내용",
         emotion: EmotionType.Happy,
         createdAt: "2024-07-12T08:57:49.537Z",
+        userId: testUserId, // 본인 일기
       },
       {
         id: 2,
@@ -249,14 +261,16 @@ test.describe("일기 삭제 기능", () => {
         content: "두 번째 일기 내용",
         emotion: EmotionType.Sad,
         createdAt: "2024-07-13T08:57:49.537Z",
+        userId: testUserId, // 본인 일기
       },
     ];
 
-    await page.evaluate((diaries) => {
+    await page.evaluate(({ diaries, userId }) => {
       localStorage.setItem("diaries", JSON.stringify(diaries));
-      // 로그인 유저 설정: accessToken 설정
+      // 로그인 유저 설정: accessToken 및 user 정보 설정
       localStorage.setItem("accessToken", "test-token");
-    }, testDiaries);
+      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
+    }, { diaries: testDiaries, userId: testUserId });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");

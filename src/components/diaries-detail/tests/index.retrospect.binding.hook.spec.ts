@@ -22,21 +22,19 @@ import { EmotionType } from "@/commons/constants/enum";
 
 test.describe("회고 데이터 바인딩 기능", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-
-    // 테스트용 일기 데이터 생성
+    // 로그인 상태 및 일기 데이터 설정 (일기 상세 페이지는 회원 전용)
     const testDiary = {
       id: 1,
       title: "테스트 일기",
       content: "테스트 내용",
       emotion: EmotionType.Happy,
       createdAt: new Date().toISOString(),
+      userId: "test-user-123",
     };
 
-    // 로컬스토리지 데이터 설정
-    await page.evaluate((diary) => {
+    await page.addInitScript((diary) => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
       localStorage.setItem("diaries", JSON.stringify([diary]));
     }, testDiary);
 
@@ -46,6 +44,7 @@ test.describe("회고 데이터 바인딩 기능", () => {
     // 페이지 로드 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
       state: "visible",
+      timeout: 10000,
     });
   });
 
@@ -60,6 +59,7 @@ test.describe("회고 데이터 바인딩 기능", () => {
           content: "다른 일기의 회고",
           diaryId: 2,
           createdAt: new Date().toISOString(),
+          userId: "test-user-123",
         },
       ];
       localStorage.setItem("retrospects", JSON.stringify(retrospects));
@@ -81,6 +81,7 @@ test.describe("회고 데이터 바인딩 기능", () => {
       content: "3년이 지나고 다시 보니 이때가 그립다.",
       diaryId: 1,
       createdAt: "2024-09-24T00:00:00.000Z",
+      userId: "test-user-123",
     };
 
     await page.evaluate((retrospect) => {
@@ -112,18 +113,21 @@ test.describe("회고 데이터 바인딩 기능", () => {
         content: "일기 1의 회고 1",
         diaryId: 1,
         createdAt: "2024-09-24T00:00:00.000Z",
+        userId: "test-user-123",
       },
       {
         id: 2,
         content: "일기 2의 회고",
         diaryId: 2,
         createdAt: "2024-09-25T00:00:00.000Z",
+        userId: "test-user-123",
       },
       {
         id: 3,
         content: "일기 1의 회고 2",
         diaryId: 1,
         createdAt: "2024-09-26T00:00:00.000Z",
+        userId: "test-user-123",
       },
     ];
 
@@ -163,6 +167,7 @@ test.describe("회고 데이터 바인딩 기능", () => {
       content: "날짜 포맷 테스트",
       diaryId: 1,
       createdAt: "2024-12-25T10:30:00.000Z",
+      userId: "test-user-123",
     };
 
     await page.evaluate((retrospect) => {
@@ -187,18 +192,21 @@ test.describe("회고 데이터 바인딩 기능", () => {
         content: "나중에 작성된 회고",
         diaryId: 1,
         createdAt: "2024-09-26T00:00:00.000Z",
+        userId: "test-user-123",
       },
       {
         id: 2,
         content: "먼저 작성된 회고",
         diaryId: 1,
         createdAt: "2024-09-24T00:00:00.000Z",
+        userId: "test-user-123",
       },
       {
         id: 3,
         content: "중간에 작성된 회고",
         diaryId: 1,
         createdAt: "2024-09-25T00:00:00.000Z",
+        userId: "test-user-123",
       },
     ];
 

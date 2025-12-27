@@ -40,9 +40,23 @@ test.describe("Layout Area Visibility", () => {
   });
 
   test("일기상세 페이지(/diaries/:id)에서 일부 영역만 표시", async ({ page }) => {
-    // Given: 일기상세 페이지로 이동 (예: /diaries/1)
+    // Given: 로그인 상태 설정 (일기 상세 페이지는 회원 전용)
+    await page.addInitScript(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+      // 테스트용 일기 데이터 설정
+      localStorage.setItem("diaries", JSON.stringify([{
+        id: 1,
+        title: "테스트 일기",
+        content: "테스트 내용",
+        emotion: "HAPPY",
+        createdAt: new Date().toISOString(),
+      }]));
+    });
+
+    // And: 일기상세 페이지로 이동 (예: /diaries/1)
     await page.goto("/diaries/1");
-    await page.waitForSelector('[data-testid="layout-container"]');
+    await page.waitForSelector('[data-testid="layout-container"]', { timeout: 10000 });
     
     // Then: header 영역 표시
     const header = page.locator('[data-testid="layout-header"]');

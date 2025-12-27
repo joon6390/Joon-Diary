@@ -11,6 +11,7 @@ export interface RetrospectDisplayData {
   id: number;
   text: string;
   date: string;
+  userId?: string; // 작성자 ID
 }
 
 /**
@@ -98,6 +99,7 @@ export const useRetrospectBindingHook = (): RetrospectBindingHookReturn => {
             id: r.id,
             text: r.content,
             date: formatRetrospectDate(r.createdAt),
+            userId: r.userId, // 작성자 ID 전달
           }));
 
         setRetrospects(displayRetrospects);

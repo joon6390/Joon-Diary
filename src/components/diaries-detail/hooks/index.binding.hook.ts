@@ -13,6 +13,7 @@ export interface DiaryData {
   content: string;
   emotion: EmotionType;
   createdAt: string;
+  userId?: string; // 작성자 ID (선택적 필드, 기존 데이터 호환성 유지)
 }
 
 /**

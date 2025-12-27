@@ -31,19 +31,24 @@ test.describe("일기 수정 기능", () => {
     await page.goto("/diaries");
     await page.evaluate(() => localStorage.clear());
 
-    // 테스트용 일기 데이터 생성
+    // 테스트용 일기 데이터 생성 (본인 일기)
+    const testUserId = "test-user-123";
     const testDiary = {
       id: 1,
       title: "테스트 일기",
       content: "테스트 내용",
       emotion: EmotionType.Happy,
       createdAt: "2024-07-12T08:57:49.537Z",
+      userId: testUserId, // 본인 일기
     };
 
     // 로컬스토리지 데이터 설정
-    await page.evaluate((diary) => {
+    await page.evaluate(({ diary, userId }) => {
       localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+      // 로그인 유저 설정: accessToken 및 user 정보 설정
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
+    }, { diary: testDiary, userId: testUserId });
 
     // 상세 페이지로 이동
     await page.goto("/diaries/1");

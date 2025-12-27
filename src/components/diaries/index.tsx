@@ -23,6 +23,7 @@ interface DiaryCardProps {
   onDelete: (id: number) => void;
   onCardClick: (id: number) => void;
   isLoggedIn: boolean;
+  isOwner: boolean; // 본인이 작성한 일기인지 여부
 }
 
 function DiaryCard({
@@ -30,6 +31,7 @@ function DiaryCard({
   onDelete,
   onCardClick,
   isLoggedIn,
+  isOwner,
 }: DiaryCardProps) {
   const imageUrl = `/images/${diary.emotionImage}`;
 
@@ -49,7 +51,7 @@ function DiaryCard({
       onClick={handleCardClick}
     >
       <div className={styles.imageWrapper}>
-        {isLoggedIn && (
+        {isLoggedIn && isOwner && (
           <div className={styles.imageButtonRow}>
             <button
               className={styles.deleteButton}
@@ -124,9 +126,10 @@ export default function Diaries() {
   // 일기 삭제 hook
   const { handleDeleteDiary } = useDeleteHook();
 
-  // 로그인 상태 확인
-  const { checkLoginStatus } = useAuth();
+  // 로그인 상태 및 사용자 정보 확인
+  const { checkLoginStatus, getUser } = useAuth();
   const isLoggedIn = checkLoginStatus();
+  const currentUser = getUser();
 
   // emotion 필터 옵션
   const filterOptions = [
@@ -143,6 +146,10 @@ export default function Diaries() {
     {
       value: EmotionType.Angry,
       label: emotionDataMap[EmotionType.Angry].label,
+    },
+    {
+      value: EmotionType.Etc,
+      label: emotionDataMap[EmotionType.Etc].label,
     },
   ];
 
@@ -254,15 +261,21 @@ export default function Diaries() {
             <div className={styles.emptyStateText}>등록된 일기가 없습니다.</div>
           </div>
         ) : (
-          paginatedDiaries.map((diary) => (
-            <DiaryCard
-              key={diary.id}
-              diary={diary}
-              onDelete={handleDeleteDiary}
-              onCardClick={navigateToDiaryDetail}
-              isLoggedIn={isLoggedIn}
-            />
-          ))
+          paginatedDiaries.map((diary) => {
+            // 본인이 작성한 일기인지 확인
+            const isOwner = currentUser ? diary.userId === currentUser._id : false;
+            
+            return (
+              <DiaryCard
+                key={diary.id}
+                diary={diary}
+                onDelete={handleDeleteDiary}
+                onCardClick={navigateToDiaryDetail}
+                isLoggedIn={isLoggedIn}
+                isOwner={isOwner}
+              />
+            );
+          })
         )}
       </div>
       <div className={styles.gap3} />

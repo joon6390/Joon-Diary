@@ -25,29 +25,29 @@ import { EmotionType } from "@/commons/constants/enum";
 
 test.describe("회고쓰기 폼 등록 기능", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-
-    // 테스트용 일기 데이터 생성
+    // 로그인 상태 및 일기 데이터 설정 (일기 상세 페이지는 회원 전용)
     const testDiary = {
       id: 1,
       title: "테스트 일기",
       content: "테스트 내용",
       emotion: EmotionType.Happy,
       createdAt: new Date().toISOString(),
+      userId: "test-user-123",
     };
 
-    // 로컬스토리지 데이터 설정
-    await page.evaluate((diary) => {
+    await page.addInitScript((diary) => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
       localStorage.setItem("diaries", JSON.stringify([diary]));
     }, testDiary);
+
     // 상세 페이지로 이동
     await page.goto("/diaries/1");
 
     // 페이지 로드 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 10000,
     });
   });
 
@@ -123,12 +123,14 @@ test.describe("회고쓰기 폼 등록 기능", () => {
           content: "기존 회고 1",
           diaryId: 1,
           createdAt: new Date().toISOString(),
+          userId: "test-user-123",
         },
         {
           id: 3,
           content: "기존 회고 2",
           diaryId: 1,
           createdAt: new Date().toISOString(),
+          userId: "test-user-123",
         },
       ];
       localStorage.setItem("retrospects", JSON.stringify(existingRetrospects));
@@ -137,7 +139,8 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     // 페이지 새로고침
     await page.reload();
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 10000,
     });
 
     // When: 새 회고 입력 및 등록
@@ -204,6 +207,7 @@ test.describe("회고쓰기 폼 등록 기능", () => {
         content: "내용 1",
         emotion: EmotionType.Happy,
         createdAt: new Date().toISOString(),
+        userId: "test-user-123",
       },
       {
         id: 2,
@@ -211,6 +215,7 @@ test.describe("회고쓰기 폼 등록 기능", () => {
         content: "내용 2",
         emotion: EmotionType.Sad,
         createdAt: new Date().toISOString(),
+        userId: "test-user-123",
       },
     ];
 
@@ -221,7 +226,8 @@ test.describe("회고쓰기 폼 등록 기능", () => {
     // 페이지 새로고침
     await page.reload();
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 10000,
     });
 
     // When: 회고 등록

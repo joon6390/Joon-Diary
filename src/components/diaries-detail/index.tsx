@@ -16,11 +16,13 @@ import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook"
 import { useUpdateHook } from "./hooks/index.update.hook";
 import { useDeleteHook } from "./hooks/index.delete.hook";
 import { RetrospectData } from "./hooks/index.retrospect.form.hook";
+import { useAuth } from "@/commons/providers/auth/auth.provider";
 import styles from "./styles.module.css";
 
 export default function DiariesDetail() {
   const router = useRouter();
   const { diary, isLoading, formattedDate } = useBindingHook();
+  const { getUser } = useAuth();
   const { control, handleSubmit, isSubmitDisabled } =
     useRetrospectFormHook();
   const { retrospects } = useRetrospectBindingHook();
@@ -62,6 +64,10 @@ export default function DiariesDetail() {
   }
 
   const emotionData = getEmotionData(diary.emotion);
+  
+  // 본인이 작성한 일기인지 확인
+  const currentUser = getUser();
+  const isOwner = currentUser ? diary.userId === currentUser._id : false;
 
   const handleCopyContent = async () => {
     try {
@@ -322,26 +328,28 @@ export default function DiariesDetail() {
           <div className={styles.gap24}></div>
 
           {/* detail-footer */}
-          <div className={styles.detailFooter}>
-            <Button
-              variant="secondary"
-              theme="light"
-              size="medium"
-              onClick={handleEdit}
-              className={styles.footerButton}
-            >
-              수정
-            </Button>
-            <Button
-              variant="secondary"
-              theme="light"
-              size="medium"
-              onClick={handleDeleteClick}
-              className={styles.footerButton}
-            >
-              삭제
-            </Button>
-          </div>
+          {isOwner && (
+            <div className={styles.detailFooter}>
+              <Button
+                variant="secondary"
+                theme="light"
+                size="medium"
+                onClick={handleEdit}
+                className={styles.footerButton}
+              >
+                수정
+              </Button>
+              <Button
+                variant="secondary"
+                theme="light"
+                size="medium"
+                onClick={handleDeleteClick}
+                className={styles.footerButton}
+              >
+                삭제
+              </Button>
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -556,24 +564,27 @@ export default function DiariesDetail() {
                     <span className={styles.retrospectText}>{retrospect.text}</span>
                     <span className={styles.retrospectDate}>[{retrospect.date}]</span>
                   </div>
-                  <div className={styles.retrospectActions}>
-                    <button
-                      className={styles.retrospectActionButton}
-                      onClick={() => handleRetrospectEditStart(retrospect.id, retrospect.text)}
-                      data-testid={`retrospect-edit-button-${retrospect.id}`}
-                      disabled={isEditMode}
-                    >
-                      수정
-                    </button>
-                    <button
-                      className={styles.retrospectActionButton}
-                      onClick={() => handleRetrospectDelete(retrospect.id)}
-                      data-testid={`retrospect-delete-button-${retrospect.id}`}
-                      disabled={isEditMode}
-                    >
-                      삭제
-                    </button>
-                  </div>
+                  {/* 본인이 작성한 회고만 수정/삭제 버튼 표시 */}
+                  {currentUser && retrospect.userId === currentUser._id && (
+                    <div className={styles.retrospectActions}>
+                      <button
+                        className={styles.retrospectActionButton}
+                        onClick={() => handleRetrospectEditStart(retrospect.id, retrospect.text)}
+                        data-testid={`retrospect-edit-button-${retrospect.id}`}
+                        disabled={isEditMode}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className={styles.retrospectActionButton}
+                        onClick={() => handleRetrospectDelete(retrospect.id)}
+                        data-testid={`retrospect-delete-button-${retrospect.id}`}
+                        disabled={isEditMode}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

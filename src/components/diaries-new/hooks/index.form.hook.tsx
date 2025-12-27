@@ -8,6 +8,7 @@ import { useModal } from "@/commons/providers/modal/modal.provider";
 import { Modal } from "@/commons/components/modal";
 import { EmotionType } from "@/commons/constants/enum";
 import { paths } from "@/commons/constants/url";
+import { useAuth } from "@/commons/providers/auth/auth.provider";
 
 /**
  * 일기 폼 스키마
@@ -29,6 +30,7 @@ interface DiaryData {
   content: string;
   emotion: EmotionType;
   createdAt: string;
+  userId?: string; // 작성자 ID
 }
 
 /**
@@ -56,6 +58,7 @@ export interface DiariesNewFormHookReturn {
 export const useFormHook = (): DiariesNewFormHookReturn => {
   const router = useRouter();
   const { openModal, closeAllModals } = useModal();
+  const { getUser } = useAuth();
 
   const {
     register,
@@ -92,6 +95,9 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
         : 0;
     const newId = maxId + 1;
 
+    // 현재 로그인한 사용자 정보 가져오기
+    const currentUser = getUser();
+    
     // 새 일기 데이터 생성
     const newDiary: DiaryData = {
       id: newId,
@@ -99,6 +105,7 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
       content: data.content,
       emotion: data.emotion,
       createdAt: new Date().toISOString(),
+      userId: currentUser?._id, // 현재 사용자 ID 저장
     };
 
     // 로컬스토리지에 저장

@@ -65,18 +65,23 @@ test.describe("일기 카드 라우팅 기능", () => {
   });
 
   test("삭제 아이콘 클릭 시 페이지 이동하지 않아야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: 로컬스토리지에 본인이 작성한 일기 데이터 저장
+    const testUserId = "test-user-123";
     const testDiary = {
       id: 1,
       title: "테스트 일기 제목",
       content: "테스트 일기 내용입니다.",
       emotion: EmotionType.Happy,
       createdAt: "2024-07-12T08:57:49.537Z",
+      userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate((diary) => {
+    await page.evaluate(({ diary, userId }) => {
       localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+      // 로그인 유저 설정: accessToken 및 user 정보 설정
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
+    }, { diary: testDiary, userId: testUserId });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
