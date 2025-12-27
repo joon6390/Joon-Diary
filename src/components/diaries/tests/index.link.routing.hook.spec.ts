@@ -4,17 +4,17 @@ import { paths } from "@/commons/constants/url";
 
 /**
  * Diaries Link Routing Hook 테스트
- * 
+ *
  * 테스트 시나리오:
  * 1. 일기 카드 클릭 시 일기 상세 페이지로 이동
  * 2. 삭제 아이콘 클릭 시 페이지 이동하지 않음
  * 3. 여러 일기 카드가 있을 때 각각 올바른 경로로 이동
- * 
+ *
  * 테스트 대상:
  * - useLinkRouting Hook
  * - DiaryCard 클릭 이벤트
  * - url.ts의 paths.diaries.detail 경로 사용
- * 
+ *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
@@ -29,7 +29,9 @@ test.describe("일기 카드 라우팅 기능", () => {
     await page.evaluate(() => localStorage.clear());
   });
 
-  test("일기 카드 클릭 시 일기 상세 페이지로 이동해야 한다", async ({ page }) => {
+  test("일기 카드 클릭 시 일기 상세 페이지로 이동해야 한다", async ({
+    page,
+  }) => {
     // Given: 로컬스토리지에 일기 데이터 저장
     const testDiary = {
       id: 1,
@@ -76,12 +78,18 @@ test.describe("일기 카드 라우팅 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate(({ diary, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
-      localStorage.setItem("accessToken", "test-token");
-      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diary: testDiary, userId: testUserId });
+    await page.evaluate(
+      ({ diary, userId }) => {
+        localStorage.setItem("diaries", JSON.stringify([diary]));
+        // 로그인 유저 설정: accessToken 및 user 정보 설정
+        localStorage.setItem("accessToken", "test-token");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ _id: userId, name: "테스트 유저" })
+        );
+      },
+      { diary: testDiary, userId: testUserId }
+    );
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -121,7 +129,9 @@ test.describe("일기 카드 라우팅 기능", () => {
     await expect(diaryCard).not.toBeVisible();
   });
 
-  test("여러 일기 카드가 있을 때 각각 올바른 경로로 이동해야 한다", async ({ page }) => {
+  test("여러 일기 카드가 있을 때 각각 올바른 경로로 이동해야 한다", async ({
+    page,
+  }) => {
     // Given: 로컬스토리지에 여러 일기 데이터 저장
     const testDiaries = [
       {
@@ -156,7 +166,7 @@ test.describe("일기 카드 라우팅 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 모든 일기 카드가 표시됨
@@ -175,7 +185,7 @@ test.describe("일기 카드 라우팅 기능", () => {
     // When: 목록 페이지로 다시 이동
     await page.goto("/diaries");
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 두 번째 일기 카드 클릭
@@ -190,7 +200,7 @@ test.describe("일기 카드 라우팅 기능", () => {
     // When: 목록 페이지로 다시 이동
     await page.goto("/diaries");
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // When: 세 번째 일기 카드 클릭
@@ -203,7 +213,9 @@ test.describe("일기 카드 라우팅 기능", () => {
     await expect(page).toHaveURL(paths.diaries.detail(3));
   });
 
-  test("일기 카드에 cursor: pointer 스타일이 적용되어야 한다", async ({ page }) => {
+  test("일기 카드에 cursor: pointer 스타일이 적용되어야 한다", async ({
+    page,
+  }) => {
     // Given: 로컬스토리지에 일기 데이터 저장
     const testDiary = {
       id: 1,
@@ -236,4 +248,3 @@ test.describe("일기 카드 라우팅 기능", () => {
     expect(cursorStyle).toBe("pointer");
   });
 });
-

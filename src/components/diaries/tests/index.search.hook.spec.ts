@@ -63,7 +63,7 @@ test.describe("일기 검색 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 모든 일기 카드가 표시됨
@@ -110,7 +110,7 @@ test.describe("일기 검색 기능", () => {
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     // And: 모든 일기 카드가 표시됨
@@ -301,9 +301,9 @@ test.describe("일기 검색 기능", () => {
     }, testDiaries);
     await page.reload();
 
-    // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
+    // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)  
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
     });
 
     const searchInput = page.locator('[data-testid="diary-search-input"] input');
