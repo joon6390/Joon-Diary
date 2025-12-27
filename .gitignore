@@ -41,3 +41,17 @@ next-env.d.ts
 
 *storybook.log
 storybook-static
+
+# cursor
+.cursor/
+
+# git bash dump
+bash.exe.stackdump
+
+# temp / logs
+status
+status--short
+
+# env
+.env
+
