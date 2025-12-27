@@ -50,7 +50,7 @@ bash.exe.stackdump
 
 # temp / logs
 tatus
-tatus--short
+tatus --short
 
 # env
 .env
