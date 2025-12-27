@@ -1,36 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vibe Coding Project with Cursor AI, Next.js
 
-## Getting Started
+cursor AI를 활용한 바이브 코딩 프로젝트입니다.
+바이브 코딩은 AI시대 반드시 알고 있어야 하는 필수 역량이라고 생각합니다.
+커서 Rule을 설정하고, 재사용 가능한 프롬프트를 활용합니다.
+안정적인 결과물 얻는 Rules와 바이브코딩을 위한 폴더 구조를 설계합니다.
+AI가 생성하는 바이브코딩 방식은 코드의 충돌을 피하기 위한 개발 순서가 중요합니다.
+병렬 처리는 커서AI의 장점이지만, AI가 생성하는 바이브코딩 방식은 코드의 충돌을 피하기 위해 병렬 가능한 범위를 알아야 합니다.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 피그마 디자인 그대로 UI 생성하기
+- 실무 개발처럼 공통 컴포넌트 만들기
+- 바이브코딩을 위한 개발 순서 정하기
+- 다양한 기능 구현 및 API 연결하기
+- 로그인 및 권한분기 처리하기
+- 개발자다운 병렬처리 방법
+- AI가 실수했을 때 안전하게 되돌리기
