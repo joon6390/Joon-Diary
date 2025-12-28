@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { Controller } from "react-hook-form";
 import { Button } from "@/commons/components/button";
 import { Input } from "@/commons/components/input";
-import { getEmotionData, emotionList, EmotionType } from "@/commons/constants/enum";
+import {
+  getEmotionData,
+  emotionList,
+  EmotionType,
+} from "@/commons/constants/enum";
 import { Modal } from "@/commons/components/modal";
 import { useModal } from "@/commons/providers/modal/modal.provider";
 import { paths } from "@/commons/constants/url";
@@ -15,7 +19,10 @@ import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
 import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook";
 import { useUpdateHook } from "./hooks/index.update.hook";
 import { useDeleteHook } from "./hooks/index.delete.hook";
-import { useUpdateRetrospect, useDeleteRetrospect } from "@/commons/hooks/use-retrospects";
+import {
+  useUpdateRetrospect,
+  useDeleteRetrospect,
+} from "@/commons/hooks/use-retrospects";
 import { useAuth } from "@/commons/providers/auth/auth.provider";
 import styles from "./styles.module.css";
 
@@ -23,8 +30,7 @@ export default function DiariesDetail() {
   const router = useRouter();
   const { diary, isLoading, formattedDate } = useBindingHook();
   const { getUser } = useAuth();
-  const { control, handleSubmit, isSubmitDisabled } =
-    useRetrospectFormHook();
+  const { control, handleSubmit, isSubmitDisabled } = useRetrospectFormHook();
   const { retrospects } = useRetrospectBindingHook();
   const {
     isEditMode,
@@ -39,8 +45,11 @@ export default function DiariesDetail() {
   const { openModal, closeModal } = useModal();
   const updateRetrospect = useUpdateRetrospect();
   const deleteRetrospect = useDeleteRetrospect();
-  const [editingRetrospectId, setEditingRetrospectId] = useState<number | null>(null);
-  const [editingRetrospectContent, setEditingRetrospectContent] = useState<string>("");
+  const [editingRetrospectId, setEditingRetrospectId] = useState<number | null>(
+    null
+  );
+  const [editingRetrospectContent, setEditingRetrospectContent] =
+    useState<string>("");
 
   const handleBackToDiaries = () => {
     router.push(paths.diaries.list);
@@ -66,13 +75,15 @@ export default function DiariesDetail() {
   }
 
   const emotionData = getEmotionData(diary.emotion);
-  
+
   // 본인이 작성한 일기인지 확인
   const currentUser = getUser();
   const isOwner = currentUser ? diary.userId === currentUser._id : false;
-  
+
   // userName이 없으면 현재 사용자 이름 사용 (기존 데이터 호환성)
-  const displayName = diary.userName || (diary.userId === currentUser?._id ? currentUser?.name : null);
+  const displayName =
+    diary.userName ||
+    (diary.userId === currentUser?._id ? currentUser?.name : null);
 
   const handleCopyContent = async () => {
     try {
@@ -152,7 +163,10 @@ export default function DiariesDetail() {
   };
 
   // 회고 수정 시작
-  const handleRetrospectEditStart = (retrospectId: number, currentContent: string) => {
+  const handleRetrospectEditStart = (
+    retrospectId: number,
+    currentContent: string
+  ) => {
     setEditingRetrospectId(retrospectId);
     setEditingRetrospectContent(currentContent);
   };
@@ -290,7 +304,10 @@ export default function DiariesDetail() {
                 </span>
                 <span className={styles.dateText}>작성</span>
                 {displayName && (
-                  <span className={styles.authorText} data-testid="diary-author">
+                  <span
+                    className={styles.authorText}
+                    data-testid="diary-author"
+                  >
                     {displayName}
                   </span>
                 )}
@@ -411,9 +428,7 @@ export default function DiariesDetail() {
                 )}
               />
               {updateErrors.title && (
-                <p className={styles.errorText}>
-                  {updateErrors.title.message}
-                </p>
+                <p className={styles.errorText}>{updateErrors.title.message}</p>
               )}
             </div>
 
@@ -510,9 +525,7 @@ export default function DiariesDetail() {
       {/* retrospect-list */}
       <div className={styles.retrospectList} data-testid="retrospect-list">
         {retrospects.length === 0 ? (
-          <div className={styles.retrospectEmpty}>
-            등록된 회고가 없습니다.
-          </div>
+          <div className={styles.retrospectEmpty}>등록된 회고가 없습니다.</div>
         ) : (
           retrospects.map((retrospect, index) => (
             <div key={retrospect.id}>
@@ -521,7 +534,9 @@ export default function DiariesDetail() {
                 <div className={styles.retrospectEditItem}>
                   <Input
                     value={editingRetrospectContent}
-                    onChange={(e) => setEditingRetrospectContent(e.target.value)}
+                    onChange={(e) =>
+                      setEditingRetrospectContent(e.target.value)
+                    }
                     variant="primary"
                     theme="light"
                     size="medium"
@@ -557,36 +572,48 @@ export default function DiariesDetail() {
                   className={styles.retrospectItem}
                   data-testid={`retrospect-item-${retrospect.id}`}
                 >
-                  <div className={styles.retrospectContent}>
-                    <span className={styles.retrospectText}>{retrospect.text}</span>
-                    <span className={styles.retrospectDate}>[{retrospect.date}]</span>
+                  <span className={styles.retrospectText}>
+                    {retrospect.text}
+                  </span>
+                  <div className={styles.retrospectMeta}>
+                    <span className={styles.retrospectDate}>
+                      [{retrospect.date}]
+                    </span>
                     {retrospect.userName && (
-                      <span className={styles.retrospectAuthor} data-testid={`retrospect-author-${retrospect.id}`}>
+                      <span
+                        className={styles.retrospectAuthor}
+                        data-testid={`retrospect-author-${retrospect.id}`}
+                      >
                         {retrospect.userName}
                       </span>
                     )}
+                    {/* 본인이 작성한 회고만 수정/삭제 버튼 표시 */}
+                    {currentUser && retrospect.userId === currentUser._id && (
+                      <div className={styles.retrospectActions}>
+                        <button
+                          className={styles.retrospectActionButton}
+                          onClick={() =>
+                            handleRetrospectEditStart(
+                              retrospect.id,
+                              retrospect.text
+                            )
+                          }
+                          data-testid={`retrospect-edit-button-${retrospect.id}`}
+                          disabled={isEditMode}
+                        >
+                          수정
+                        </button>
+                        <button
+                          className={styles.retrospectActionButton}
+                          onClick={() => handleRetrospectDelete(retrospect.id)}
+                          data-testid={`retrospect-delete-button-${retrospect.id}`}
+                          disabled={isEditMode}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  {/* 본인이 작성한 회고만 수정/삭제 버튼 표시 */}
-                  {currentUser && retrospect.userId === currentUser._id && (
-                    <div className={styles.retrospectActions}>
-                      <button
-                        className={styles.retrospectActionButton}
-                        onClick={() => handleRetrospectEditStart(retrospect.id, retrospect.text)}
-                        data-testid={`retrospect-edit-button-${retrospect.id}`}
-                        disabled={isEditMode}
-                      >
-                        수정
-                      </button>
-                      <button
-                        className={styles.retrospectActionButton}
-                        onClick={() => handleRetrospectDelete(retrospect.id)}
-                        data-testid={`retrospect-delete-button-${retrospect.id}`}
-                        disabled={isEditMode}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  )}
                 </div>
               )}
             </div>

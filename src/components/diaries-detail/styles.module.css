@@ -278,6 +278,18 @@
   gap: 12px;
 }
 
+/* 데스크톱에서 retrospectText와 retrospectMeta를 일렬로 배치 */
+.retrospectItem > .retrospectText {
+  flex: 1;
+}
+
+.retrospectItem > .retrospectMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
 .retrospectText {
   font-family: var(--font-korean);
   font-weight: var(--font-weight-medium);
@@ -328,6 +340,12 @@
   align-items: center;
   gap: 12px;
   flex: 1;
+}
+
+.retrospectMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .retrospectActions {
@@ -557,4 +575,38 @@
   align-items: center;
   width: 100%;
   text-align: center;
+}
+
+/* ========================================
+   Responsive: 767px 이하
+   ======================================== */
+@media (max-width: 767px) {
+  .retrospectItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .retrospectText {
+    width: 100%;
+    display: block;
+  }
+
+  /* retrospectMeta 안의 요소들을 일렬로 배치 */
+  .retrospectMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .retrospectDate,
+  .retrospectAuthor {
+    display: inline;
+  }
+
+  .retrospectActions {
+    display: inline-flex;
+    margin: 0;
+  }
 }
