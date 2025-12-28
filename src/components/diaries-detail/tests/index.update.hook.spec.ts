@@ -14,22 +14,23 @@ import { EmotionType } from "@/commons/constants/enum";
  *
  * 테스트 대상:
  * - useUpdateHook Hook
- * - 로컬스토리지 데이터 업데이트 (key: diaries)
+ * - API를 통한 데이터 업데이트
  * - 다이나믹 라우팅 [id] 추출
  *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
- * - 실제 데이터 사용 (Mock 데이터 미사용)
- * - 로컬스토리지 모킹 없음
+ * - API 모킹 사용
  * - EmotionType enum 타입 사용
  */
 
 test.describe("일기 수정 기능", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
+    // 로그인 상태 설정
+    await page.addInitScript(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+    });
 
     // 테스트용 일기 데이터 생성 (본인 일기)
     const testUserId = "test-user-123";
@@ -42,13 +43,26 @@ test.describe("일기 수정 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    // 로컬스토리지 데이터 설정
-    await page.evaluate(({ diary, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
-      localStorage.setItem("accessToken", "test-token");
-      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diary: testDiary, userId: testUserId });
+    let updatedDiary = { ...testDiary };
+
+    // API 모킹
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [updatedDiary] }),
+        });
+      } else if (route.request().method() === "PUT") {
+        const requestBody = await route.request().postDataJSON();
+        updatedDiary = { ...updatedDiary, ...requestBody };
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify(updatedDiary),
+        });
+      }
+    });
 
     // 상세 페이지로 이동
     await page.goto("/diaries/1");
@@ -158,15 +172,13 @@ test.describe("일기 수정 기능", () => {
       page.locator('[data-testid="diary-emotion-text"]')
     ).toHaveText("슬퍼요");
 
-    // And: 로컬스토리지의 데이터도 업데이트되어야 함
-    const updatedDiary = await page.evaluate(() => {
-      const diaries = JSON.parse(localStorage.getItem("diaries") || "[]");
-      return diaries.find((d: { id: number }) => d.id === 1);
-    });
-
-    expect(updatedDiary.title).toBe("수정된 제목");
-    expect(updatedDiary.content).toBe("수정된 내용");
-    expect(updatedDiary.emotion).toBe(EmotionType.Sad);
+    // And: 수정된 내용이 표시되어야 함 (API를 통해 업데이트됨)
+    await expect(page.locator('[data-testid="diary-title"]')).toHaveText(
+      "수정된 제목"
+    );
+    await expect(page.locator('[data-testid="diary-content"]')).toHaveText(
+      "수정된 내용"
+    );
   });
 
   test("수정 중 취소 버튼을 클릭하면 수정 모드가 종료되어야 한다", async ({

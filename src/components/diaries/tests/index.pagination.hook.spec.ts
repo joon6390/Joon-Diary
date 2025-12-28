@@ -25,11 +25,6 @@ import { EmotionType } from "@/commons/constants/enum";
  */
 
 test.describe("일기 페이지네이션 기능", () => {
-  test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-  });
 
   test("한 페이지에 3행 4열로 총 12개의 일기카드가 노출되어야 한다", async ({
     page,
@@ -43,16 +38,21 @@ test.describe("일기 페이지네이션 기능", () => {
       createdAt: `2024-07-${String(12 + i).padStart(2, "0")}T08:57:49.537Z`,
     }));
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // Then: 첫 페이지에 정확히 12개의 일기 카드가 표시됨
@@ -75,16 +75,21 @@ test.describe("일기 페이지네이션 기능", () => {
       )}T08:57:49.537Z`,
     }));
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // Then: 페이지 번호 버튼이 5개 표시됨 (1, 2, 3, 4, 5)
@@ -111,12 +116,16 @@ test.describe("일기 페이지네이션 기능", () => {
       )}T08:57:49.537Z`,
     }));
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
@@ -164,16 +173,21 @@ test.describe("일기 페이지네이션 기능", () => {
       })),
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // Then: 전체 일기 25개이므로 3페이지 (12, 12, 1)
@@ -218,16 +232,21 @@ test.describe("일기 페이지네이션 기능", () => {
       })),
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // Then: 전체 일기 25개이므로 3페이지

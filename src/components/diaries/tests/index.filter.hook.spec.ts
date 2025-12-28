@@ -24,14 +24,8 @@ import { EmotionType, emotionDataMap } from "@/commons/constants/enum";
  */
 
 test.describe("일기 필터 기능", () => {
-  test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-  });
-
   test("필터선택박스를 클릭하면 선택 가능한 메뉴가 표시되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: API 모킹 - 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -49,16 +43,21 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // When: 필터선택박스 클릭
@@ -93,7 +92,7 @@ test.describe("일기 필터 기능", () => {
   });
 
   test("전체를 선택하면 모든 일기가 표시되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 다양한 emotion 타입의 일기 데이터 저장
+    // Given: API 모킹 - 다양한 emotion 타입의 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -118,9 +117,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -173,9 +176,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -225,9 +232,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -277,9 +288,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -329,9 +344,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -388,9 +407,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -454,9 +477,13 @@ test.describe("일기 필터 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");

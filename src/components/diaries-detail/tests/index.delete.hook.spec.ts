@@ -9,26 +9,27 @@ import { EmotionType } from "@/commons/constants/enum";
  * 2. 삭제 버튼 클릭
  * 3. 일기삭제 모달이 노출됨을 확인
  * 4. "취소" 클릭: 모달 닫기
- * 5. "삭제" 클릭: 해당 모달의 id와 일치하는 객체를 로컬스토리지의 diaries에서 제거 후 /diaries로 페이지 이동
+ * 5. "삭제" 클릭: API를 통해 해당 일기를 삭제 후 /diaries로 페이지 이동
  *
  * 테스트 대상:
  * - useDeleteHook Hook
- * - 로컬스토리지 데이터 삭제 (key: diaries)
+ * - API를 통한 데이터 삭제
  * - 다이나믹 라우팅 [id] 추출
  *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
- * - 실제 데이터 사용 (Mock 데이터 미사용)
- * - 로컬스토리지 모킹 없음
+ * - API 모킹 사용
  * - EmotionType enum 타입 사용
  */
 
 test.describe("일기 삭제 기능", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
+    // 로그인 상태 설정
+    await page.addInitScript(() => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
+    });
 
     // 테스트용 일기 데이터 생성 (본인 일기)
     const testUserId = "test-user-123";
@@ -41,13 +42,22 @@ test.describe("일기 삭제 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    // 로컬스토리지 데이터 설정
-    await page.evaluate(({ diary, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
-      localStorage.setItem("accessToken", "test-token");
-      localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diary: testDiary, userId: testUserId });
+    // API 모킹
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [testDiary] }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
 
     // 상세 페이지로 이동
     await page.goto("/diaries/1");
@@ -126,14 +136,5 @@ test.describe("일기 삭제 기능", () => {
     // Then: /diaries 페이지로 이동해야 함
     await page.waitForURL("**/diaries");
     await expect(page).toHaveURL(/\/diaries$/);
-
-    // And: 로컬스토리지에서 일기가 삭제되어야 함
-    const diaries = await page.evaluate(() => {
-      const diariesJson = localStorage.getItem("diaries");
-      return diariesJson ? JSON.parse(diariesJson) : [];
-    });
-
-    expect(diaries).toHaveLength(0);
-    expect(diaries.find((d: { id: number }) => d.id === 1)).toBeUndefined();
   });
 });

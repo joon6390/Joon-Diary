@@ -9,32 +9,44 @@ import { EmotionType } from "@/commons/constants/enum";
  * 2. 로그인 유저: 일기카드 각각의 삭제아이콘(X) 노출 확인
  * 3. 로그인 유저: 삭제아이콘(X) 클릭 시 일기삭제 모달 노출 확인
  * 4. 로그인 유저: 모달에서 취소 클릭 시 모달 닫기 확인
- * 5. 로그인 유저: 모달에서 삭제 클릭 시 일기 삭제 및 페이지 새로고침 확인
+ * 5. 로그인 유저: 모달에서 삭제 클릭 시 API를 통해 일기 삭제 및 페이지 새로고침 확인
  *
  * 테스트 대상:
  * - useDeleteHook Hook
- * - 로컬스토리지에서 diaries 배열 삭제
+ * - API를 통한 일기 삭제
  * - emotion enum 타입 활용
  * - 권한 분기 (액션GUARD)
  *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
- * - 실제 데이터 사용 (Mock 데이터 미사용)
- * - 로컬스토리지 모킹 없음
+ * - API 모킹 사용
  */
 
 test.describe("일기 삭제 기능", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
+    // API 모킹 설정
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [] }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
   });
 
   test("비로그인 유저일 때 일기카드 각각의 삭제아이콘(X)이 미노출되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: API 모킹 - 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -52,9 +64,13 @@ test.describe("일기 삭제 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // And: 비로그인 유저 설정 (액션GUARD 활성화)
     await page.evaluate(() => {
@@ -86,7 +102,7 @@ test.describe("일기 삭제 기능", () => {
   test("로그인 유저일 때 본인이 작성한 일기카드에만 삭제아이콘(X)이 노출되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장 (본인 일기와 다른 사람 일기)
+    // Given: API 모킹 - 일기 데이터 반환 (본인 일기와 다른 사람 일기)
     const testUserId = "test-user-123";
     const testDiaries = [
       {
@@ -107,12 +123,19 @@ test.describe("일기 삭제 기능", () => {
       },
     ];
 
-    await page.evaluate(({ diaries, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // 로그인 유저 설정 - addInitScript 사용
+    await page.addInitScript((userId) => {
       localStorage.setItem("accessToken", "test-token");
       localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diaries: testDiaries, userId: testUserId });
+    }, testUserId);
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -138,7 +161,7 @@ test.describe("일기 삭제 기능", () => {
   test("로그인 유저가 삭제아이콘(X)을 클릭하면 일기삭제 모달이 노출되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 본인이 작성한 일기 데이터 저장
+    // Given: API 모킹 - 본인이 작성한 일기 데이터 반환
     const testUserId = "test-user-123";
     const testDiary = {
       id: 1,
@@ -149,12 +172,27 @@ test.describe("일기 삭제 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate(({ diary, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [testDiary] }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
+
+    // 로그인 유저 설정 - addInitScript 사용
+    await page.addInitScript((userId) => {
       localStorage.setItem("accessToken", "test-token");
       localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diary: testDiary, userId: testUserId });
+    }, testUserId);
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -191,7 +229,7 @@ test.describe("일기 삭제 기능", () => {
   test("로그인 유저가 모달에서 취소를 클릭하면 모달이 닫혀야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 본인이 작성한 일기 데이터 저장
+    // Given: API 모킹 - 본인이 작성한 일기 데이터 반환
     const testUserId = "test-user-123";
     const testDiary = {
       id: 1,
@@ -202,12 +240,21 @@ test.describe("일기 삭제 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate(({ diary, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [testDiary] }),
+        });
+      }
+    });
+
+    // 로그인 유저 설정 - addInitScript 사용
+    await page.addInitScript((userId) => {
       localStorage.setItem("accessToken", "test-token");
       localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diary: testDiary, userId: testUserId });
+    }, testUserId);
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -244,7 +291,7 @@ test.describe("일기 삭제 기능", () => {
   test("로그인 유저가 모달에서 삭제를 클릭하면 일기가 삭제되고 페이지가 새로고침되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 여러 일기 데이터 저장 (본인 일기만 포함)
+    // Given: API 모킹 - 여러 일기 데이터 반환 (본인 일기만 포함)
     const testUserId = "test-user-123";
     const testDiaries = [
       {
@@ -265,12 +312,33 @@ test.describe("일기 삭제 기능", () => {
       },
     ];
 
-    await page.evaluate(({ diaries, userId }) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-      // 로그인 유저 설정: accessToken 및 user 정보 설정
+    let deletedId: number | null = null;
+
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        // 삭제 후에는 첫 번째 일기를 제외한 목록 반환
+        const filtered = testDiaries.filter((d) => d.id !== deletedId);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: filtered }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        const url = new URL(route.request().url());
+        deletedId = parseInt(url.searchParams.get("id") || "0");
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
+
+    // 로그인 유저 설정 - addInitScript 사용
+    await page.addInitScript((userId) => {
       localStorage.setItem("accessToken", "test-token");
       localStorage.setItem("user", JSON.stringify({ _id: userId, name: "테스트 유저" }));
-    }, { diaries: testDiaries, userId: testUserId });
+    }, testUserId);
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -310,13 +378,7 @@ test.describe("일기 삭제 기능", () => {
     // And: 두 번째 일기 카드는 여전히 표시되어야 함
     await expect(page.locator('[data-testid="diary-card-2"]')).toBeVisible();
 
-    // And: 로컬스토리지에서 첫 번째 일기가 삭제되어야 함
-    const remainingDiaries = await page.evaluate(() => {
-      const diaries = JSON.parse(localStorage.getItem("diaries") || "[]");
-      return diaries;
-    });
-
-    expect(remainingDiaries).toHaveLength(1);
-    expect(remainingDiaries[0].id).toBe(2);
+    // And: 첫 번째 일기가 삭제되어야 함 (API를 통해 삭제됨)
+    expect(deletedId).toBe(1);
   });
 });

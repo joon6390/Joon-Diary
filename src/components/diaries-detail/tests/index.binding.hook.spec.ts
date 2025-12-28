@@ -5,20 +5,19 @@ import { EmotionType, getEmotionData } from "@/commons/constants/enum";
  * Diaries Detail Binding Hook 테스트
  *
  * 테스트 시나리오:
- * 1. 로컬스토리지에 저장된 일기 데이터를 [id]로 조회하여 바인딩
+ * 1. API에서 일기 데이터를 [id]로 조회하여 바인딩
  * 2. 제목, 감정아이콘/이미지, 감정텍스트, 작성일, 내용이 올바르게 표시되는지 확인
  * 3. 존재하지 않는 id로 접근 시 적절한 처리 확인
  *
  * 테스트 대상:
  * - useBindingHook Hook
- * - 로컬스토리지에서 diaries 배열 조회
+ * - API에서 diaries 배열 조회
  * - emotion enum 타입 활용
  *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
- * - 실제 데이터 사용 (Mock 데이터 미사용)
- * - 로컬스토리지 모킹 없음
+ * - API 모킹 사용
  */
 
 test.describe("일기 상세 페이지 데이터 바인딩", () => {
@@ -30,10 +29,10 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     });
   });
 
-  test("로컬스토리지에 저장된 일기 데이터가 올바르게 바인딩되어야 한다", async ({
+  test("API에서 가져온 일기 데이터가 올바르게 바인딩되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장 (ISO 날짜 형식 사용)
+    // Given: API 모킹 - 일기 데이터 반환
     const testDiary = {
       id: 1,
       title: "테스트 일기 제목",
@@ -43,9 +42,13 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       userId: "test-user-123",
     };
 
-    await page.addInitScript((diary) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: [testDiary] }),
+      });
+    });
 
     // When: 상세 페이지로 이동
     await page.goto("/diaries/1");
@@ -83,7 +86,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
   test("다양한 감정 타입의 일기가 올바르게 바인딩되어야 한다", async ({
     page,
   }) => {
-    // Given: 다양한 감정 타입의 일기 데이터 저장 (ISO 날짜 형식 사용)
+    // Given: 다양한 감정 타입의 일기 데이터
     const testDiaries = [
       {
         id: 1,
@@ -128,9 +131,14 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     ];
 
     for (const diary of testDiaries) {
-      await page.addInitScript((diaries) => {
-        localStorage.setItem("diaries", JSON.stringify(diaries));
-      }, testDiaries);
+      // API 모킹 - 각 일기별로 설정
+      await page.route("**/api/diaries", async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: testDiaries }),
+        });
+      });
 
       // When: 각 일기 상세 페이지로 이동
       await page.goto(`/diaries/${diary.id}`);
@@ -169,7 +177,7 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
   test("존재하지 않는 id로 접근 시 적절히 처리되어야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지에 다른 id의 일기만 저장
+    // Given: API 모킹 - 다른 id의 일기만 반환
     const testDiary = {
       id: 1,
       title: "첫 번째 일기",
@@ -179,9 +187,13 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
       userId: "test-user-123",
     };
 
-    await page.addInitScript((diary) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: [testDiary] }),
+      });
+    });
 
     // When: 존재하지 않는 id로 상세 페이지 접근
     await page.goto("/diaries/999");
@@ -195,12 +207,16 @@ test.describe("일기 상세 페이지 데이터 바인딩", () => {
     });
   });
 
-  test("로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다", async ({
+  test("API가 빈 배열을 반환할 때도 에러가 발생하지 않아야 한다", async ({
     page,
   }) => {
-    // Given: 로컬스토리지가 비어있음 (로그인 상태는 유지)
-    await page.addInitScript(() => {
-      localStorage.removeItem("diaries");
+    // Given: API 모킹 - 빈 배열 반환
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: [] }),
+      });
     });
 
     // When: 상세 페이지로 이동

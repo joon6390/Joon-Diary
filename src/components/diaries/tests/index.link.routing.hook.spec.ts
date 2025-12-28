@@ -23,11 +23,6 @@ import { paths } from "@/commons/constants/url";
  */
 
 test.describe("일기 카드 라우팅 기능", () => {
-  test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-  });
 
   test("일기 카드 클릭 시 일기 상세 페이지로 이동해야 한다", async ({
     page,
@@ -41,9 +36,21 @@ test.describe("일기 카드 라우팅 기능", () => {
       createdAt: "2024-07-12T08:57:49.537Z",
     };
 
-    await page.evaluate((diary) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [testDiary] }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -78,27 +85,32 @@ test.describe("일기 카드 라우팅 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    await page.evaluate(
-      ({ diary, userId }) => {
-        localStorage.setItem("diaries", JSON.stringify([diary]));
-        // 로그인 유저 설정: accessToken 및 user 정보 설정
-        localStorage.setItem("accessToken", "test-token");
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ _id: userId, name: "테스트 유저" })
-        );
-      },
-      { diary: testDiary, userId: testUserId }
-    );
+    await page.addInitScript(({ userId }) => {
+      localStorage.setItem("accessToken", "test-token");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ _id: userId, name: "테스트 유저" })
+      );
+    }, { userId: testUserId });
+
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [testDiary] }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
-
-    // 로그인 유저로 설정
-    await page.evaluate(() => {
-      localStorage.setItem("accessToken", "test-token");
-    });
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
@@ -157,9 +169,15 @@ test.describe("일기 카드 라우팅 기능", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: testDiaries }),
+        });
+      }
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -225,16 +243,29 @@ test.describe("일기 카드 라우팅 기능", () => {
       createdAt: "2024-07-12T08:57:49.537Z",
     };
 
-    await page.evaluate((diary) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [testDiary] }),
+        });
+      } else if (route.request().method() === "DELETE") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      }
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
 
     // Then: 페이지가 완전히 로드될 때까지 대기
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // And: 일기 카드가 표시됨

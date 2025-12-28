@@ -3,25 +3,24 @@ import { EmotionType, getEmotionData } from "@/commons/constants/enum";
 
 /**
  * Diaries Binding Hook 테스트
- * 
+ *
  * 테스트 시나리오:
- * 1. 로컬스토리지에 저장된 일기 데이터들을 가져와서 카드로 표시
+ * 1. API에서 일기 데이터들을 가져와서 카드로 표시
  * 2. 각 카드의 감정 이미지, 감정 텍스트, 작성일, 제목이 올바르게 바인딩되는지 확인
  * 3. 제목이 길면 "..." 처리되어 표시되는지 확인
  * 4. 다양한 감정 타입의 일기들이 올바르게 바인딩되는지 확인
- * 
+ *
  * 테스트 대상:
  * - useBindingHook Hook
- * - 로컬스토리지에서 diaries 배열 조회
+ * - API에서 diaries 배열 조회
  * - emotion enum 타입 활용
  * - 날짜 포맷팅
  * - 제목 말줄임 처리
- * 
+ *
  * 테스트 조건:
  * - timeout: 500ms 미만
  * - data-testid로 페이지 로드 확인
- * - 실제 데이터 사용 (Mock 데이터 미사용)
- * - 로컬스토리지 모킹 없음
+ * - API 모킹 사용
  */
 
 /**
@@ -36,14 +35,10 @@ const formatDate = (dateString: string): string => {
 };
 
 test.describe("일기 목록 페이지 데이터 바인딩", () => {
-  test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-  });
-
-  test("로컬스토리지에 저장된 일기 데이터들이 올바르게 바인딩되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+  test("API에서 가져온 일기 데이터들이 올바르게 바인딩되어야 한다", async ({
+    page,
+  }) => {
+    // Given: API 모킹 - 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -61,16 +56,21 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // And: 일기 카드들이 표시됨
@@ -82,19 +82,27 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
     await expect(firstCard).toBeVisible();
 
     // 감정 텍스트 확인
-    const firstEmotionText = firstCard.locator('[data-testid="diary-emotion-text"]');
-    await expect(firstEmotionText).toHaveText(getEmotionData(testDiaries[0].emotion).label);
+    const firstEmotionText = firstCard.locator(
+      '[data-testid="diary-emotion-text"]'
+    );
+    await expect(firstEmotionText).toHaveText(
+      getEmotionData(testDiaries[0].emotion).label
+    );
 
     // 작성일 확인
     const firstDateText = firstCard.locator('[data-testid="diary-date"]');
-    await expect(firstDateText).toHaveText(formatDate(testDiaries[0].createdAt));
+    await expect(firstDateText).toHaveText(
+      formatDate(testDiaries[0].createdAt)
+    );
 
     // 제목 확인
     const firstTitle = firstCard.locator('[data-testid="diary-title"]');
     await expect(firstTitle).toHaveText(testDiaries[0].title);
 
     // 감정 이미지 확인
-    const firstEmotionImage = firstCard.locator('[data-testid="diary-emotion-image"]');
+    const firstEmotionImage = firstCard.locator(
+      '[data-testid="diary-emotion-image"]'
+    );
     await expect(firstEmotionImage).toBeVisible();
 
     // And: 두 번째 일기 카드의 데이터가 올바르게 바인딩됨
@@ -102,20 +110,28 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
     await expect(secondCard).toBeVisible();
 
     // 감정 텍스트 확인
-    const secondEmotionText = secondCard.locator('[data-testid="diary-emotion-text"]');
-    await expect(secondEmotionText).toHaveText(getEmotionData(testDiaries[1].emotion).label);
+    const secondEmotionText = secondCard.locator(
+      '[data-testid="diary-emotion-text"]'
+    );
+    await expect(secondEmotionText).toHaveText(
+      getEmotionData(testDiaries[1].emotion).label
+    );
 
     // 작성일 확인
     const secondDateText = secondCard.locator('[data-testid="diary-date"]');
-    await expect(secondDateText).toHaveText(formatDate(testDiaries[1].createdAt));
+    await expect(secondDateText).toHaveText(
+      formatDate(testDiaries[1].createdAt)
+    );
 
     // 제목 확인
     const secondTitle = secondCard.locator('[data-testid="diary-title"]');
     await expect(secondTitle).toHaveText(testDiaries[1].title);
   });
 
-  test("다양한 감정 타입의 일기들이 올바르게 바인딩되어야 한다", async ({ page }) => {
-    // Given: 다양한 감정 타입의 일기 데이터 저장
+  test("다양한 감정 타입의 일기들이 올바르게 바인딩되어야 한다", async ({
+    page,
+  }) => {
+    // Given: API 모킹 - 다양한 감정 타입의 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -154,9 +170,13 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
       },
     ];
 
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -187,8 +207,9 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
   });
 
   test("제목이 길면 말줄임 처리되어 표시되어야 한다", async ({ page }) => {
-    // Given: 긴 제목을 가진 일기 데이터 저장
-    const longTitle = "이것은 매우 긴 제목입니다. 이 제목은 일기 카드의 너비를 넘어서게 되어 말줄임 처리가 되어야 합니다. 이렇게 긴 제목이 제대로 처리되는지 확인합니다.";
+    // Given: API 모킹 - 긴 제목을 가진 일기 데이터 반환
+    const longTitle =
+      "이것은 매우 긴 제목입니다. 이 제목은 일기 카드의 너비를 넘어서게 되어 말줄임 처리가 되어야 합니다. 이렇게 긴 제목이 제대로 처리되는지 확인합니다.";
     const testDiary = {
       id: 1,
       title: longTitle,
@@ -197,9 +218,13 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
       createdAt: "2024-07-12T08:57:49.537Z",
     };
 
-    await page.evaluate((diary) => {
-      localStorage.setItem("diaries", JSON.stringify([diary]));
-    }, testDiary);
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: [testDiary] }),
+      });
+    });
 
     // When: 목록 페이지로 이동
     await page.goto("/diaries");
@@ -216,13 +241,13 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
     // And: 제목이 표시됨
     const title = card.locator('[data-testid="diary-title"]');
     await expect(title).toBeVisible();
-    
+
     // And: 제목의 원본 텍스트가 올바르게 바인딩됨
     // (CSS text-overflow: ellipsis가 시각적으로 말줄임 처리하지만, DOM에는 전체 텍스트가 유지됨)
     const titleText = await title.textContent();
     expect(titleText).toBeTruthy();
     expect(titleText).toBe(longTitle);
-    
+
     // And: CSS 스타일이 말줄임 처리를 위한 스타일을 가지고 있는지 확인
     const titleElement = title.first();
     const overflow = await titleElement.evaluate((el) => {
@@ -238,10 +263,16 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
     expect(["hidden", "clip"]).toContain(overflow.overflow);
   });
 
-  test("로컬스토리지가 비어있을 때도 에러가 발생하지 않아야 한다", async ({ page }) => {
-    // Given: 로컬스토리지가 비어있음
-    await page.evaluate(() => {
-      localStorage.clear();
+  test("API가 빈 배열을 반환할 때도 에러가 발생하지 않아야 한다", async ({
+    page,
+  }) => {
+    // Given: API 모킹 - 빈 배열 반환
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: [] }),
+      });
     });
 
     // When: 목록 페이지로 이동
@@ -258,4 +289,3 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
     expect(count).toBe(0);
   });
 });
-

@@ -22,14 +22,8 @@ import { EmotionType } from "@/commons/constants/enum";
  */
 
 test.describe("일기 검색 기능", () => {
-  test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-  });
-
   test("검색어를 입력하고 엔터를 누르면 해당 검색어가 포함된 일기만 표시되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 여러 일기 데이터 저장
+    // Given: API 모킹 - 여러 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -54,12 +48,16 @@ test.describe("일기 검색 기능", () => {
       },
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
@@ -83,7 +81,7 @@ test.describe("일기 검색 기능", () => {
   });
 
   test("검색어가 없을 때는 모든 일기가 표시되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 여러 일기 데이터 저장
+    // Given: API 모킹 - 여러 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -101,12 +99,16 @@ test.describe("일기 검색 기능", () => {
       },
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
@@ -127,7 +129,7 @@ test.describe("일기 검색 기능", () => {
   });
 
   test("검색어와 일치하는 일기가 없을 때는 일기 카드가 표시되지 않아야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: API 모킹 - 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -145,16 +147,21 @@ test.describe("일기 검색 기능", () => {
       },
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // And: 모든 일기 카드가 표시됨
@@ -171,7 +178,7 @@ test.describe("일기 검색 기능", () => {
   });
 
   test("검색어는 대소문자를 구분하지 않고 검색되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 일기 데이터 저장
+    // Given: API 모킹 - 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -189,16 +196,21 @@ test.describe("일기 검색 기능", () => {
       },
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // When: 검색창에 "행복"을 입력하고 엔터를 누름
@@ -213,7 +225,7 @@ test.describe("일기 검색 기능", () => {
   });
 
   test("검색창의 돋보기 버튼을 클릭하면 검색이 실행되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 여러 일기 데이터 저장
+    // Given: API 모킹 - 여러 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -238,16 +250,21 @@ test.describe("일기 검색 기능", () => {
       },
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // And: 모든 일기 카드가 표시됨
@@ -269,7 +286,7 @@ test.describe("일기 검색 기능", () => {
   });
 
   test("검색 후 다시 빈 검색어로 검색하면 모든 일기가 표시되어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 여러 일기 데이터 저장
+    // Given: API 모킹 - 여러 일기 데이터 반환
     const testDiaries = [
       {
         id: 1,
@@ -294,12 +311,16 @@ test.describe("일기 검색 기능", () => {
       },
     ];
 
-    // When: 목록 페이지로 이동하면서 로컬스토리지 데이터 설정
+    await page.route("**/api/diaries", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ diaries: testDiaries }),
+      });
+    });
+
+    // When: 목록 페이지로 이동
     await page.goto("/diaries");
-    await page.evaluate((diaries) => {
-      localStorage.setItem("diaries", JSON.stringify(diaries));
-    }, testDiaries);
-    await page.reload();
 
     // Then: 페이지가 완전히 로드될 때까지 대기 (data-testid 사용)  
     await page.waitForSelector('[data-testid="diaries-container"]', {

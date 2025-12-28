@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { EmotionType } from "@/commons/constants/enum";
+import { useDiaries } from "@/commons/hooks/use-diaries";
 
 /**
  * 일기 데이터 타입
@@ -47,82 +47,25 @@ export const formatDate = (dateString: string): string => {
 /**
  * 일기 상세 페이지 데이터 바인딩 Hook
  * 
- * 다이나믹 라우팅된 [id]를 추출하여 로컬스토리지에서 일기 데이터를 조회합니다.
+ * 다이나믹 라우팅된 [id]를 추출하여 API에서 일기 데이터를 조회합니다.
  * 
  * @returns {DiaryDetailBindingHookReturn} 일기 데이터 및 로딩 상태
  * - diary: 조회된 일기 데이터 (없으면 null)
  * - isLoading: 데이터 로딩 중 여부
  */
-// 초기 데이터 로드 함수 (동기적 실행)
-const loadDiarySync = (diaryId: number): DiaryData | null => {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    // 로컬스토리지에서 diaries 배열 읽기
-    const diariesJson = localStorage.getItem("diaries");
-    if (!diariesJson) {
-      return null;
-    }
-
-    const diaries: DiaryData[] = JSON.parse(diariesJson);
-
-    // id와 일치하는 일기 찾기
-    const foundDiary = diaries.find((d) => d.id === diaryId);
-
-    return foundDiary || null;
-  } catch (error) {
-    console.error("일기 데이터 조회 중 오류 발생:", error);
-    return null;
-  }
-};
-
 export const useBindingHook = (): DiaryDetailBindingHookReturn => {
   const params = useParams();
-  
-  // 초기 diaryId 추출 및 데이터 로드
-  const getInitialDiary = (): DiaryData | null => {
-    if (typeof window === "undefined") {
-      return null;
-    }
+  const { data: diaries, isLoading } = useDiaries();
 
-    const id = params?.id;
-    if (!id) {
-      return null;
-    }
+  // diaryId 추출
+  const id = params?.id;
+  const idString = id ? (Array.isArray(id) ? id[0] : id) : null;
+  const diaryId = idString ? (typeof idString === "string" ? parseInt(idString, 10) : idString) : null;
 
-    const idString = Array.isArray(id) ? id[0] : id;
-    const diaryId = typeof idString === "string" ? parseInt(idString, 10) : idString;
-    if (isNaN(diaryId)) {
-      return null;
-    }
-
-    return loadDiarySync(diaryId);
-  };
-
-  // 초기 데이터를 동기적으로 로드하여 렌더링 지연 최소화
-  const [diary, setDiary] = useState<DiaryData | null>(() => getInitialDiary());
-  const [isLoading] = useState<boolean>(false);
-
-  // params.id 변경 시 데이터 다시 로드
-  useEffect(() => {
-    const id = params?.id;
-    if (!id) {
-      setDiary(null);
-      return;
-    }
-
-    const idString = Array.isArray(id) ? id[0] : id;
-    const diaryId = typeof idString === "string" ? parseInt(idString, 10) : idString;
-    if (isNaN(diaryId)) {
-      setDiary(null);
-      return;
-    }
-
-    const loadedDiary = loadDiarySync(diaryId);
-    setDiary(loadedDiary);
-  }, [params?.id]);
+  // 일기 찾기
+  const diary = diaryId && diaries
+    ? diaries.find((d) => d.id === diaryId) || null
+    : null;
 
   // 날짜 포맷팅
   const formattedDate = diary ? formatDate(diary.createdAt) : null;

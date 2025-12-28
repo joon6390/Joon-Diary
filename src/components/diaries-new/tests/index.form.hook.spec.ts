@@ -5,30 +5,50 @@ import { test, expect } from "@playwright/test";
  * 
  * 테스트 시나리오:
  * 1. 모든 인풋이 입력되면 등록하기 버튼 활성화
- * 2. 등록하기 버튼 클릭시 로컬스토리지에 저장 (신규/추가)
+ * 2. 등록하기 버튼 클릭시 API를 통해 저장
  * 3. 등록 완료시 등록완료모달 노출
  * 4. 등록완료모달의 확인 버튼 클릭시 상세페이지로 이동 및 모달 닫기
  * 
  * 테스트 대상:
  * - useFormHook Hook
  * - react-hook-form + zod 검증
- * - 로컬스토리지 저장
+ * - API를 통한 일기 생성
  * - Modal Provider 연동
  */
 
 test.describe("일기쓰기 폼 등록 기능", () => {
   test.beforeEach(async ({ page }) => {
-    // 각 테스트 전에 로컬스토리지 초기화
-    await page.goto("/diaries");
-    await page.evaluate(() => localStorage.clear());
-    
-    // 로그인 유저 설정 (일기쓰기 모달을 열기 위해 필요)
-    await page.evaluate(() => {
+    // 로그인 유저 설정 (일기쓰기 모달을 열기 위해 필요) - addInitScript 사용
+    await page.addInitScript(() => {
       localStorage.setItem("accessToken", "test-token");
       localStorage.setItem("user", JSON.stringify({ _id: "test-user-123", name: "테스트 유저" }));
     });
+
+    // API 모킹 설정
+    await page.route("**/api/diaries", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [] }),
+        });
+      } else if (route.request().method() === "POST") {
+        const requestBody = await route.request().postDataJSON();
+        const newDiary = {
+          id: Date.now(),
+          ...requestBody,
+          createdAt: new Date().toISOString(),
+        };
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify(newDiary),
+        });
+      }
+    });
     
     // 페이지 로드 대기
+    await page.goto("/diaries");
     await expect(page.locator('[data-testid="diaries-container"]')).toBeVisible();
     
     // 일기쓰기 버튼 클릭
@@ -80,7 +100,32 @@ test.describe("일기쓰기 폼 등록 기능", () => {
     await expect(submitButton).toBeEnabled();
   });
 
-  test("로컬스토리지가 비어있을 때 첫 일기를 등록하면 id는 1이어야 한다", async ({ page }) => {
+  test("첫 일기를 등록하면 API를 통해 저장되어야 한다", async ({ page }) => {
+    let capturedRequest: { emotion: string; title: string; content: string } | null = null;
+    
+    // API 요청 캡처
+    await page.route("**/api/diaries", async (route) => {
+      if (route.request().method() === "POST") {
+        capturedRequest = await route.request().postDataJSON();
+        const newDiary = {
+          id: 1,
+          ...capturedRequest,
+          createdAt: new Date().toISOString(),
+        };
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify(newDiary),
+        });
+      } else {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ diaries: [] }),
+        });
+      }
+    });
+
     // Given: 모든 필드 입력
     await page.click('input[name="emotion"][value="HAPPY"]');
     await page.fill('input[placeholder="제목을 입력합니다."]', "첫 번째 일기");
@@ -90,41 +135,55 @@ test.describe("일기쓰기 폼 등록 기능", () => {
     const submitButton = page.locator('[data-testid="diary-submit-button"]');
     await submitButton.click();
     
-    // Then: 로컬스토리지에 id가 1인 데이터가 저장됨
-    const diaries = await page.evaluate(() => {
-      const data = localStorage.getItem('diaries');
-      return data ? JSON.parse(data) : null;
-    });
-    
-    expect(diaries).not.toBeNull();
-    expect(diaries).toHaveLength(1);
-    expect(diaries[0].id).toBe(1);
-    expect(diaries[0].title).toBe("첫 번째 일기");
-    expect(diaries[0].content).toBe("첫 번째 내용");
-    expect(diaries[0].emotion).toBe("HAPPY");
-    expect(diaries[0].createdAt).toBeDefined();
+    // Then: API 요청이 올바르게 전송됨
+    await page.waitForTimeout(500); // API 요청 완료 대기
+    expect(capturedRequest).not.toBeNull();
+    expect(capturedRequest.title).toBe("첫 번째 일기");
+    expect(capturedRequest.content).toBe("첫 번째 내용");
+    expect(capturedRequest.emotion).toBe("HAPPY");
   });
 
-  test("로컬스토리지에 기존 일기가 있을 때 새 일기를 등록하면 id는 최대id+1이어야 한다", async ({ page }) => {
-    // Given: 로컬스토리지에 기존 데이터 설정
-    await page.evaluate(() => {
-      const existingDiaries = [
-        {
-          id: 1,
-          title: "기존 일기 1",
-          content: "기존 내용 1",
-          emotion: "HAPPY",
-          createdAt: new Date().toISOString()
-        },
-        {
-          id: 3,
-          title: "기존 일기 2",
-          content: "기존 내용 2",
-          emotion: "SAD",
-          createdAt: new Date().toISOString()
-        }
-      ];
-      localStorage.setItem('diaries', JSON.stringify(existingDiaries));
+  test("새 일기를 등록하면 API를 통해 저장되어야 한다", async ({ page }) => {
+    let capturedRequest: { emotion: string; title: string; content: string } | null = null;
+    
+    // API 모킹 - 기존 일기 목록 반환
+    await page.route("**/api/diaries", async (route) => {
+      if (route.request().method() === "GET") {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({
+            diaries: [
+              {
+                id: 1,
+                title: "기존 일기 1",
+                content: "기존 내용 1",
+                emotion: "HAPPY",
+                createdAt: new Date().toISOString(),
+              },
+              {
+                id: 3,
+                title: "기존 일기 2",
+                content: "기존 내용 2",
+                emotion: "SAD",
+                createdAt: new Date().toISOString(),
+              },
+            ],
+          }),
+        });
+      } else if (route.request().method() === "POST") {
+        capturedRequest = await route.request().postDataJSON();
+        const newDiary = {
+          id: 4,
+          ...capturedRequest,
+          createdAt: new Date().toISOString(),
+        };
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify(newDiary),
+        });
+      }
     });
     
     // 페이지 새로고침
@@ -141,17 +200,12 @@ test.describe("일기쓰기 폼 등록 기능", () => {
     const submitButton = page.locator('[data-testid="diary-submit-button"]');
     await submitButton.click();
     
-    // Then: 로컬스토리지에 id가 4(3+1)인 데이터가 추가됨
-    const diaries = await page.evaluate(() => {
-      const data = localStorage.getItem('diaries');
-      return data ? JSON.parse(data) : null;
-    });
-    
-    expect(diaries).toHaveLength(3);
-    expect(diaries[2].id).toBe(4);
-    expect(diaries[2].title).toBe("새 일기");
-    expect(diaries[2].content).toBe("새 내용");
-    expect(diaries[2].emotion).toBe("ANGRY");
+    // Then: API 요청이 올바르게 전송됨
+    await page.waitForTimeout(500);
+    expect(capturedRequest).not.toBeNull();
+    expect(capturedRequest.title).toBe("새 일기");
+    expect(capturedRequest.content).toBe("새 내용");
+    expect(capturedRequest.emotion).toBe("ANGRY");
   });
 
   test("등록 완료시 등록완료모달이 표시되어야 한다", async ({ page }) => {
@@ -197,7 +251,43 @@ test.describe("일기쓰기 폼 등록 기능", () => {
     await expect(page.locator('[data-testid="diary-modal"]')).not.toBeVisible();
   });
 
-  test("등록완료 후 상세페이지에서 등록된 일기 내용을 확인할 수 있어야 한다", async ({ page }) => {
+  test("등록완료 후 상세페이지로 이동해야 한다", async ({ page }) => {
+    let createdDiary: { id: number; title: string; content: string; emotion: string; createdAt: string } | null = null;
+    
+    // API 모킹
+    await page.route("**/api/diaries*", async (route) => {
+      if (route.request().method() === "POST") {
+        const requestBody = await route.request().postDataJSON();
+        createdDiary = {
+          id: 123,
+          ...requestBody,
+          createdAt: new Date().toISOString(),
+        };
+        await route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: JSON.stringify(createdDiary),
+        });
+      } else if (route.request().method() === "GET") {
+        // 상세 페이지나 목록 페이지 모두 처리
+        if (createdDiary) {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              diaries: [createdDiary],
+            }),
+          });
+        } else {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({ diaries: [] }),
+          });
+        }
+      }
+    });
+
     // Given: 특정 내용으로 일기 등록
     const testTitle = "상세 확인 테스트";
     const testContent = "이 내용이 상세페이지에 표시되어야 합니다.";
@@ -220,25 +310,11 @@ test.describe("일기쓰기 폼 등록 기능", () => {
     // When: 상세페이지로 이동됨
     await expect(page).toHaveURL(/\/diaries\/\d+/);
     
-    // Then: 등록한 일기 내용이 표시되어야 함 (상세페이지가 구현되어 있다고 가정)
-    // 실제로는 상세페이지 구현에 따라 테스트가 달라질 수 있음
-    // 현재는 URL 이동까지만 검증
+    // Then: URL에 일기 ID가 포함되어야 함
     const url = page.url();
     const diaryId = url.match(/\/diaries\/(\d+)/)?.[1];
     expect(diaryId).toBeDefined();
-    
-    // 로컬스토리지에 해당 ID의 일기가 있는지 확인
-    const diary = await page.evaluate((id) => {
-      const data = localStorage.getItem('diaries');
-      if (!data) return null;
-      const diaries = JSON.parse(data) as Array<{ id: number; title: string; content: string; emotion: string; createdAt: string }>;
-      return diaries.find((d) => d.id === parseInt(id));
-    }, diaryId);
-    
-    expect(diary).not.toBeNull();
-    expect(diary.title).toBe(testTitle);
-    expect(diary.content).toBe(testContent);
-    expect(diary.emotion).toBe(testEmotion);
+    expect(parseInt(diaryId!)).toBe(createdDiary?.id);
   });
 });
 
