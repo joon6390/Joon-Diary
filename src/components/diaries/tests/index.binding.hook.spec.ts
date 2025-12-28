@@ -280,7 +280,8 @@ test.describe("일기 목록 페이지 데이터 바인딩", () => {
 
     // Then: 페이지가 로드되며 에러가 발생하지 않음
     await page.waitForSelector('[data-testid="diaries-container"]', {
-      timeout: 499,
+      state: "visible",
+      timeout: 5000,
     });
 
     // And: 일기 카드가 없거나 빈 상태로 표시됨

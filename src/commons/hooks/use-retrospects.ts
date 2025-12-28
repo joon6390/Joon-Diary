@@ -57,3 +57,71 @@ export function useCreateRetrospect() {
   });
 }
 
+/**
+ * 회고 수정 Hook
+ */
+export function useUpdateRetrospect() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+      content,
+    }: {
+      id: number;
+      content: string;
+      diaryId: number;
+    }) => {
+      const res = await fetch("/api/retrospects", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, content }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "회고 수정에 실패했습니다.");
+      }
+
+      return (await res.json()) as RetrospectData;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["retrospects", variables.diaryId],
+      });
+    },
+  });
+}
+
+/**
+ * 회고 삭제 Hook
+ */
+export function useDeleteRetrospect() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      id,
+    }: {
+      id: number;
+      diaryId: number;
+    }) => {
+      const res = await fetch(`/api/retrospects?id=${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "회고 삭제에 실패했습니다.");
+      }
+
+      return await res.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["retrospects", variables.diaryId],
+      });
+    },
+  });
+}
+

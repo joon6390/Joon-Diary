@@ -15,7 +15,7 @@ import { useRetrospectFormHook } from "./hooks/index.retrospect.form.hook";
 import { useRetrospectBindingHook } from "./hooks/index.retrospect.binding.hook";
 import { useUpdateHook } from "./hooks/index.update.hook";
 import { useDeleteHook } from "./hooks/index.delete.hook";
-import { RetrospectData } from "./hooks/index.retrospect.form.hook";
+import { useUpdateRetrospect, useDeleteRetrospect } from "@/commons/hooks/use-retrospects";
 import { useAuth } from "@/commons/providers/auth/auth.provider";
 import styles from "./styles.module.css";
 
@@ -37,6 +37,8 @@ export default function DiariesDetail() {
   } = useUpdateHook(diary);
   const { handleDelete } = useDeleteHook(diary);
   const { openModal, closeModal } = useModal();
+  const updateRetrospect = useUpdateRetrospect();
+  const deleteRetrospect = useDeleteRetrospect();
   const [editingRetrospectId, setEditingRetrospectId] = useState<number | null>(null);
   const [editingRetrospectContent, setEditingRetrospectContent] = useState<string>("");
 
@@ -49,7 +51,7 @@ export default function DiariesDetail() {
     return (
       <div className={styles.container} data-testid="diaries-detail-container">
         <div className={styles.gap64}></div>
-        <div>로딩 중...</div>
+        <div className={styles.loadingText}>로딩 중...</div>
       </div>
     );
   }
@@ -162,30 +164,23 @@ export default function DiariesDetail() {
   };
 
   // 회고 수정 완료
-  const handleRetrospectEditSubmit = (retrospectId: number) => {
+  const handleRetrospectEditSubmit = async (retrospectId: number) => {
     if (!editingRetrospectContent.trim()) {
       alert("회고 내용을 입력해주세요.");
       return;
     }
 
+    if (!diary?.id) {
+      console.error("일기 ID를 찾을 수 없습니다.");
+      return;
+    }
+
     try {
-      const retrospectsJson = localStorage.getItem("retrospects");
-      if (!retrospectsJson) {
-        console.error("회고 데이터를 찾을 수 없습니다.");
-        return;
-      }
-
-      const allRetrospects: RetrospectData[] = JSON.parse(retrospectsJson);
-      const updatedRetrospects = allRetrospects.map((r) =>
-        r.id === retrospectId
-          ? { ...r, content: editingRetrospectContent.trim() }
-          : r
-      );
-
-      localStorage.setItem("retrospects", JSON.stringify(updatedRetrospects));
-      
-      // 커스텀 이벤트 발생 (같은 탭에서의 변경 감지)
-      window.dispatchEvent(new Event("localStorageChange"));
+      await updateRetrospect.mutateAsync({
+        id: retrospectId,
+        content: editingRetrospectContent.trim(),
+        diaryId: diary.id,
+      });
 
       setEditingRetrospectId(null);
       setEditingRetrospectContent("");
@@ -197,6 +192,11 @@ export default function DiariesDetail() {
 
   // 회고 삭제
   const handleRetrospectDelete = (retrospectId: number) => {
+    if (!diary?.id) {
+      console.error("일기 ID를 찾을 수 없습니다.");
+      return;
+    }
+
     const modalId = openModal(
       <Modal
         variant="danger"
@@ -206,23 +206,12 @@ export default function DiariesDetail() {
         description="회고를 삭제 하시겠어요?"
         primaryButtonText="삭제"
         secondaryButtonText="취소"
-        onPrimaryClick={() => {
+        onPrimaryClick={async () => {
           try {
-            const retrospectsJson = localStorage.getItem("retrospects");
-            if (!retrospectsJson) {
-              console.error("회고 데이터를 찾을 수 없습니다.");
-              return;
-            }
-
-            const allRetrospects: RetrospectData[] = JSON.parse(retrospectsJson);
-            const updatedRetrospects = allRetrospects.filter(
-              (r) => r.id !== retrospectId
-            );
-
-            localStorage.setItem("retrospects", JSON.stringify(updatedRetrospects));
-            
-            // 커스텀 이벤트 발생 (같은 탭에서의 변경 감지)
-            window.dispatchEvent(new Event("localStorageChange"));
+            await deleteRetrospect.mutateAsync({
+              id: retrospectId,
+              diaryId: diary.id,
+            });
 
             closeModal(modalId);
           } catch (error) {

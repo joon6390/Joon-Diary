@@ -23,7 +23,6 @@ import { paths } from "@/commons/constants/url";
  */
 
 test.describe("일기 카드 라우팅 기능", () => {
-
   test("일기 카드 클릭 시 일기 상세 페이지로 이동해야 한다", async ({
     page,
   }) => {
@@ -85,13 +84,16 @@ test.describe("일기 카드 라우팅 기능", () => {
       userId: testUserId, // 본인 일기
     };
 
-    await page.addInitScript(({ userId }) => {
-      localStorage.setItem("accessToken", "test-token");
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ _id: userId, name: "테스트 유저" })
-      );
-    }, { userId: testUserId });
+    await page.addInitScript(
+      ({ userId }) => {
+        localStorage.setItem("accessToken", "test-token");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ _id: userId, name: "테스트 유저" })
+        );
+      },
+      { userId: testUserId }
+    );
 
     await page.route("**/api/diaries*", async (route) => {
       if (route.request().method() === "GET") {

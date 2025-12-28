@@ -45,7 +45,7 @@ test.describe("일기 수정 기능", () => {
 
     let updatedDiary = { ...testDiary };
 
-    // API 모킹
+    // API 모킹 - 일기
     await page.route("**/api/diaries*", async (route) => {
       if (route.request().method() === "GET") {
         await route.fulfill({
@@ -62,6 +62,15 @@ test.describe("일기 수정 기능", () => {
           body: JSON.stringify(updatedDiary),
         });
       }
+    });
+
+    // API 모킹 - 회고
+    await page.route("**/api/retrospects*", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ retrospects: [] }),
+      });
     });
 
     // 상세 페이지로 이동
@@ -147,8 +156,8 @@ test.describe("일기 수정 기능", () => {
     await submitButton.click();
 
     // Then: 페이지가 리로드되고 완전히 로드될 때까지 대기
-    await page.waitForLoadState("networkidle");
     await page.waitForSelector('[data-testid="diaries-detail-container"]', {
+      state: "visible",
       timeout: 5000,
     });
 

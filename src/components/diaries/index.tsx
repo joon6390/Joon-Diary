@@ -267,7 +267,7 @@ export default function Diaries() {
       <div className={styles.gap2} />
       <div className={styles.main}>
         {isLoading ? (
-          <div>로딩 중...</div>
+          <div className={styles.loadingText}>로딩 중...</div>
         ) : paginatedDiaries.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyStateText}>등록된 일기가 없습니다.</div>
