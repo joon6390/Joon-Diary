@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/commons/providers/auth/auth.provider";
+import { useCreateRetrospect } from "@/commons/hooks/use-retrospects";
 
 /**
  * 회고 폼 스키마
@@ -52,6 +53,7 @@ export interface RetrospectFormHookReturn {
 export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
   const params = useParams();
   const { getUser } = useAuth();
+  const createRetrospect = useCreateRetrospect();
 
   const {
     control,
@@ -75,7 +77,7 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
   /**
    * 폼 제출 핸들러
    */
-  const onSubmit = (data: RetrospectFormData) => {
+  const onSubmit = async (data: RetrospectFormData) => {
     // diaryId 추출
     const id = params?.id;
     if (!id) {
@@ -92,41 +94,27 @@ export const useRetrospectFormHook = (): RetrospectFormHookReturn => {
       return;
     }
 
-    // 로컬스토리지에서 기존 회고 목록 가져오기
-    const existingRetrospectsStr = localStorage.getItem("retrospects");
-    const existingRetrospects: RetrospectData[] = existingRetrospectsStr
-      ? JSON.parse(existingRetrospectsStr)
-      : [];
-
-    // 새 회고의 ID 계산
-    const maxId =
-      existingRetrospects.length > 0
-        ? Math.max(...existingRetrospects.map((r) => r.id))
-        : 0;
-    const newId = maxId + 1;
-
     // 현재 로그인한 사용자 정보 가져오기
     const currentUser = getUser();
 
-    // 새 회고 데이터 생성
-    const newRetrospect: RetrospectData = {
-      id: newId,
-      content: data.content,
-      diaryId: diaryId,
-      createdAt: new Date().toISOString(),
-      userId: currentUser?._id, // 현재 사용자 ID 저장
-      userName: currentUser?.name, // 현재 사용자 이름 저장
-    };
+    try {
+      // API를 통해 회고 생성
+      await createRetrospect.mutateAsync({
+        content: data.content,
+        diaryId: diaryId,
+        userId: currentUser?._id,
+        userName: currentUser?.name,
+      });
 
-    // 로컬스토리지에 저장
-    const updatedRetrospects = [...existingRetrospects, newRetrospect];
-    localStorage.setItem("retrospects", JSON.stringify(updatedRetrospects));
+      // 폼 초기화
+      reset();
 
-    // 폼 초기화
-    reset();
-
-    // 페이지 새로고침
-    window.location.reload();
+      // 페이지 새로고침
+      window.location.reload();
+    } catch (error) {
+      console.error("회고 생성 중 오류:", error);
+      alert("회고 생성에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return {

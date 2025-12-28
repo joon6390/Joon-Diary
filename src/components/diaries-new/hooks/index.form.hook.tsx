@@ -9,6 +9,7 @@ import { Modal } from "@/commons/components/modal";
 import { EmotionType } from "@/commons/constants/enum";
 import { paths } from "@/commons/constants/url";
 import { useAuth } from "@/commons/providers/auth/auth.provider";
+import { useCreateDiary } from "@/commons/hooks/use-diaries";
 
 /**
  * 일기 폼 스키마
@@ -20,19 +21,6 @@ const diaryFormSchema = z.object({
 });
 
 type DiaryFormData = z.infer<typeof diaryFormSchema>;
-
-/**
- * 로컬스토리지에 저장되는 일기 데이터 타입
- */
-interface DiaryData {
-  id: number;
-  title: string;
-  content: string;
-  emotion: EmotionType;
-  createdAt: string;
-  userId?: string; // 작성자 ID
-  userName?: string; // 작성자 이름
-}
 
 /**
  * 일기 작성 폼 Hook 반환 타입
@@ -60,6 +48,7 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
   const router = useRouter();
   const { openModal, closeAllModals } = useModal();
   const { getUser } = useAuth();
+  const createDiary = useCreateDiary();
 
   const {
     register,
@@ -82,57 +71,58 @@ export const useFormHook = (): DiariesNewFormHookReturn => {
   /**
    * 폼 제출 핸들러
    */
-  const onSubmit = (data: DiaryFormData) => {
-    // 로컬스토리지에서 기존 일기 목록 가져오기
-    const existingDiariesStr = localStorage.getItem("diaries");
-    const existingDiaries: DiaryData[] = existingDiariesStr
-      ? JSON.parse(existingDiariesStr)
-      : [];
-
-    // 새 일기의 ID 계산
-    const maxId =
-      existingDiaries.length > 0
-        ? Math.max(...existingDiaries.map((d) => d.id))
-        : 0;
-    const newId = maxId + 1;
-
+  const onSubmit = async (data: DiaryFormData) => {
     // 현재 로그인한 사용자 정보 가져오기
     const currentUser = getUser();
 
-    // 새 일기 데이터 생성
-    const newDiary: DiaryData = {
-      id: newId,
-      title: data.title,
-      content: data.content,
-      emotion: data.emotion,
-      createdAt: new Date().toISOString(),
-      userId: currentUser?._id, // 현재 사용자 ID 저장
-      userName: currentUser?.name, // 현재 사용자 이름 저장
-    };
+    try {
+      // API를 통해 일기 생성
+      const newDiary = await createDiary.mutateAsync({
+        title: data.title,
+        content: data.content,
+        emotion: data.emotion,
+        userId: currentUser?._id,
+        userName: currentUser?.name,
+      });
 
-    // 로컬스토리지에 저장
-    const updatedDiaries = [...existingDiaries, newDiary];
-    localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
-
-    // 등록완료모달 열기
-    openModal(
-      <div data-testid="success-modal">
-        <Modal
-          variant="info"
-          actions="single"
-          theme="light"
-          title="일기 등록 완료"
-          description="일기가 성공적으로 등록되었습니다."
-          primaryButtonText="확인"
-          onPrimaryClick={() => {
-            // 모든 모달 닫기
-            closeAllModals();
-            // 상세페이지로 이동
-            router.push(paths.diaries.detail(newId));
-          }}
-        />
-      </div>
-    );
+      // 등록완료모달 열기
+      openModal(
+        <div data-testid="success-modal">
+          <Modal
+            variant="info"
+            actions="single"
+            theme="light"
+            title="일기 등록 완료"
+            description="일기가 성공적으로 등록되었습니다."
+            primaryButtonText="확인"
+            onPrimaryClick={() => {
+              // 모든 모달 닫기
+              closeAllModals();
+              // 상세페이지로 이동
+              router.push(paths.diaries.detail(newDiary.id));
+            }}
+          />
+        </div>
+      );
+    } catch (error) {
+      console.error("일기 생성 중 오류:", error);
+      // 에러 모달 표시
+      openModal(
+        <div data-testid="error-modal">
+          <Modal
+            variant="info"
+            actions="single"
+            theme="light"
+            title="일기 등록 실패"
+            description="일기 등록에 실패했습니다. 다시 시도해주세요."
+            primaryButtonText="확인"
+            onPrimaryClick={() => {
+              closeAllModals();
+            }}
+          />
+        </div>
+      );
+    }
   };
 
   return {

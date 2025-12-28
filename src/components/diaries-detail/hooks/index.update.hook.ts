@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useParams } from "next/navigation";
 import { DiaryData } from "./index.binding.hook";
 import { EmotionType } from "@/commons/constants/enum";
+import { useUpdateDiary } from "@/commons/hooks/use-diaries";
 
 /**
  * 일기 수정 폼 스키마
@@ -53,8 +53,8 @@ export interface DiaryUpdateHookReturn {
 export const useUpdateHook = (
   diary: DiaryData | null
 ): DiaryUpdateHookReturn => {
-  const params = useParams();
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const updateDiary = useUpdateDiary();
 
   const {
     control,
@@ -100,53 +100,30 @@ export const useUpdateHook = (
   /**
    * 폼 제출 핸들러
    */
-  const onSubmit = (data: DiaryUpdateFormData) => {
-    // diaryId 추출
-    const id = params?.id;
-    if (!id) {
-      console.error("diaryId를 찾을 수 없습니다.");
+  const onSubmit = async (data: DiaryUpdateFormData) => {
+    if (!diary) {
+      console.error("일기 데이터가 없습니다.");
       return;
     }
 
-    // id를 number로 변환 (string[]인 경우 첫 번째 요소 사용)
-    const idString = Array.isArray(id) ? id[0] : id;
-    const diaryId =
-      typeof idString === "string" ? parseInt(idString, 10) : idString;
-    if (isNaN(diaryId)) {
-      console.error("유효하지 않은 diaryId입니다.");
-      return;
+    try {
+      // API를 통해 일기 수정
+      await updateDiary.mutateAsync({
+        ...diary,
+        title: data.title,
+        content: data.content,
+        emotion: data.emotion,
+      });
+
+      // 수정 모드 종료
+      setIsEditMode(false);
+
+      // 페이지 새로고침
+      window.location.reload();
+    } catch (error) {
+      console.error("일기 수정 중 오류:", error);
+      alert("일기 수정에 실패했습니다. 다시 시도해주세요.");
     }
-
-    // 로컬스토리지에서 기존 일기 목록 가져오기
-    const existingDiariesStr = localStorage.getItem("diaries");
-    const existingDiaries: DiaryData[] = existingDiariesStr
-      ? JSON.parse(existingDiariesStr)
-      : [];
-
-    // 일기 찾기 및 업데이트
-    const updatedDiaries = existingDiaries.map((d) => {
-      if (d.id === diaryId) {
-        return {
-          ...d,
-          title: data.title,
-          content: data.content,
-          emotion: data.emotion,
-          // userName과 userId는 기존 값 보존
-          userName: d.userName,
-          userId: d.userId,
-        };
-      }
-      return d;
-    });
-
-    // 로컬스토리지에 저장
-    localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
-
-    // 수정 모드 종료
-    setIsEditMode(false);
-
-    // 페이지 새로고침
-    window.location.reload();
   };
 
   /**

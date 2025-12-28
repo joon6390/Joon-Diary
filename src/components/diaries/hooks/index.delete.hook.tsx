@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useModal } from "@/commons/providers/modal/modal.provider";
 import { useAuthGuard } from "@/commons/providers/auth/auth.guard.hook";
 import { Modal } from "@/commons/components/modal";
+import { useDeleteDiary } from "@/commons/hooks/use-diaries";
 
 /**
  * Diaries Delete Hook 반환 타입
@@ -29,6 +30,7 @@ export interface DiariesDeleteHookReturn {
 export const useDeleteHook = (): DiariesDeleteHookReturn => {
   const { openModal, closeAllModals } = useModal();
   const { guard } = useAuthGuard();
+  const deleteDiary = useDeleteDiary();
 
   /**
    * 일기 삭제 핸들러
@@ -51,26 +53,20 @@ export const useDeleteHook = (): DiariesDeleteHookReturn => {
           description="일기를 삭제 하시겠어요?"
           primaryButtonText="삭제"
           secondaryButtonText="취소"
-          onPrimaryClick={() => {
-            // 로컬스토리지에서 해당 일기 삭제
+          onPrimaryClick={async () => {
             try {
-              const diariesJson = localStorage.getItem("diaries");
-              if (diariesJson) {
-                const allDiaries = JSON.parse(diariesJson);
-                const updatedDiaries = allDiaries.filter(
-                  (diary: { id: number }) => diary.id !== id
-                );
-                localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
-              }
+              // API를 통해 일기 삭제
+              await deleteDiary.mutateAsync(id);
+
+              // 모든 모달 닫기
+              closeAllModals();
+
+              // 현재 페이지 새로고침
+              window.location.reload();
             } catch (error) {
               console.error("일기 삭제 중 오류 발생:", error);
+              alert("일기 삭제에 실패했습니다. 다시 시도해주세요.");
             }
-
-            // 모든 모달 닫기
-            closeAllModals();
-
-            // 현재 페이지 새로고침
-            window.location.reload();
           }}
           onSecondaryClick={() => {
             // 모든 모달 닫기
@@ -80,7 +76,7 @@ export const useDeleteHook = (): DiariesDeleteHookReturn => {
       </div>,
       { preventBackdropClose: true }
     );
-  }, [guard, openModal, closeAllModals]);
+  }, [guard, openModal, closeAllModals, deleteDiary]);
 
   return {
     handleDeleteDiary,

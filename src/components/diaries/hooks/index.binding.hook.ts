@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { EmotionType, getEmotionData } from "@/commons/constants/enum";
+import { useDiaries } from "@/commons/hooks/use-diaries";
 
 /**
  * 일기 데이터 타입
@@ -78,77 +78,40 @@ export const truncateTitle = (title: string, maxLength?: number): string => {
 /**
  * 일기 목록 페이지 데이터 바인딩 Hook
  *
- * 로컬스토리지에서 diaries 배열을 읽어와서 카드 표시에 필요한 형태로 변환합니다.
+ * API에서 diaries 배열을 읽어와서 카드 표시에 필요한 형태로 변환합니다.
  *
  * @returns {DiariesBindingHookReturn} 일기 목록 데이터 및 로딩 상태
  * - diaries: 바인딩된 일기 카드 데이터 배열
  * - isLoading: 데이터 로딩 중 여부
- * - refreshDiaries: 로컬스토리지에서 데이터를 다시 읽어오는 함수
+ * - refreshDiaries: 데이터를 다시 읽어오는 함수 (react-query가 자동으로 처리)
  */
-// 초기 데이터 로드 함수 (동기적 실행)
-const loadDiariesSync = (): DiaryCardData[] => {
-  if (typeof window === "undefined") {
-    return [];
-  }
-
-  try {
-    // 로컬스토리지에서 diaries 배열 읽기
-    const diariesJson = localStorage.getItem("diaries");
-    if (!diariesJson) {
-      return [];
-    }
-
-    const rawDiaries: DiaryData[] = JSON.parse(diariesJson);
-
-    // 각 일기 데이터를 카드 표시용 형태로 변환
-    const cardData: DiaryCardData[] = rawDiaries.map((diary) => {
-      const emotionData = getEmotionData(diary.emotion);
-
-      return {
-        id: diary.id,
-        title: diary.title,
-        content: diary.content,
-        emotion: diary.emotion,
-        createdAt: diary.createdAt,
-        formattedDate: formatDate(diary.createdAt),
-        emotionLabel: emotionData.label,
-        emotionColor: emotionData.color,
-        emotionImage: emotionData.images.medium,
-        userId: diary.userId, // 작성자 ID 전달
-        userName: diary.userName, // 작성자 이름 전달
-      };
-    });
-
-    return cardData;
-  } catch (error) {
-    console.error("일기 데이터 조회 중 오류 발생:", error);
-    return [];
-  }
-};
-
 export const useBindingHook = (): DiariesBindingHookReturn => {
-  // 초기 데이터를 동기적으로 로드하여 렌더링 지연 최소화
-  const [diaries, setDiaries] = useState<DiaryCardData[]>(() =>
-    loadDiariesSync()
-  );
-  const [isLoading] = useState<boolean>(false);
-  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+  const { data: rawDiaries = [], isLoading, refetch } = useDiaries();
 
-  // refreshTrigger 변경 시 데이터 다시 로드
-  useEffect(() => {
-    if (refreshTrigger > 0) {
-      const loadedDiaries = loadDiariesSync();
-      setDiaries(loadedDiaries);
-    }
-  }, [refreshTrigger]);
+  // 각 일기 데이터를 카드 표시용 형태로 변환
+  const diaries: DiaryCardData[] = rawDiaries.map((diary) => {
+    const emotionData = getEmotionData(diary.emotion);
 
-  const refreshDiaries = () => {
-    setRefreshTrigger((prev) => prev + 1);
-  };
+    return {
+      id: diary.id,
+      title: diary.title,
+      content: diary.content,
+      emotion: diary.emotion,
+      createdAt: diary.createdAt,
+      formattedDate: formatDate(diary.createdAt),
+      emotionLabel: emotionData.label,
+      emotionColor: emotionData.color,
+      emotionImage: emotionData.images.medium,
+      userId: diary.userId, // 작성자 ID 전달
+      userName: diary.userName, // 작성자 이름 전달
+    };
+  });
 
   return {
     diaries,
     isLoading,
-    refreshDiaries,
+    refreshDiaries: () => {
+      refetch();
+    },
   };
 };
