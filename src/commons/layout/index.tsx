@@ -35,7 +35,7 @@ export default function Layout({ children }: LayoutProps) {
                 onClick={navigateToDiaries}
                 data-testid="layout-logo"
               >
-                해준의 다이어리
+                Joon's Diary
               </div>
             )}
             <div className={styles.authStatus} data-testid="layout-auth-status">
@@ -108,7 +108,7 @@ export default function Layout({ children }: LayoutProps) {
       {showFooter && (
         <footer className={styles.footer} data-testid="layout-footer">
           <div className={styles.footerContent}>
-            <div className={styles.footerTitle}>해준의 다이어리</div>
+            <div className={styles.footerTitle}>Joon's Diary</div>
             <div className={styles.footerInfo}>대표 : {"{joon}"}</div>
             <div className={styles.footerCopyright}>
               Copyright © 2025. {"{joon}"} Co., Ltd.
