@@ -578,6 +578,126 @@
 }
 
 /* ========================================
+   Responsive: 600px 이하
+   ======================================== */
+@media (max-width: 600px) {
+  .updateRadioInput {
+    width: 20px;
+    height: 20px;
+  }
+
+  .updateRadioInput:checked {
+    background-image: radial-gradient(
+      circle,
+      var(--color-gray-black) 5px,
+      transparent 5px
+    );
+  }
+
+  .updateRadioText {
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -0.14px;
+  }
+}
+
+/* ========================================
+   Responsive: 500px 이하
+   ======================================== */
+@media (max-width: 500px) {
+  .updateRadioInput {
+    width: 18px;
+    height: 18px;
+  }
+
+  .updateRadioInput:checked {
+    background-image: radial-gradient(
+      circle,
+      var(--color-gray-black) 4px,
+      transparent 4px
+    );
+  }
+
+  .updateRadioText {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.12px;
+  }
+}
+
+/* ========================================
+   Responsive: 456px 이하
+   ======================================== */
+@media (max-width: 456px) {
+  .updateRadioInput {
+    width: 16px;
+    height: 16px;
+  }
+
+  .updateRadioInput:checked {
+    background-image: radial-gradient(
+      circle,
+      var(--color-gray-black) 3.5px,
+      transparent 3.5px
+    );
+  }
+
+  .updateRadioText {
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: -0.11px;
+  }
+}
+
+/* ========================================
+   Responsive: 429px 이하
+   ======================================== */
+@media (max-width: 429px) {
+  .updateRadioInput {
+    width: 14px;
+    height: 14px;
+  }
+
+  .updateRadioInput:checked {
+    background-image: radial-gradient(
+      circle,
+      var(--color-gray-black) 3px,
+      transparent 3px
+    );
+  }
+
+  .updateRadioText {
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: -0.1px;
+  }
+}
+
+/* ========================================
+   Responsive: 405px 이하
+   ======================================== */
+@media (max-width: 405px) {
+  .updateRadioInput {
+    width: 12px;
+    height: 12px;
+  }
+
+  .updateRadioInput:checked {
+    background-image: radial-gradient(
+      circle,
+      var(--color-gray-black) 2.5px,
+      transparent 2.5px
+    );
+  }
+
+  .updateRadioText {
+    font-size: 9px;
+    line-height: 11px;
+    letter-spacing: -0.09px;
+  }
+}
+
+/* ========================================
    Responsive: 767px 이하
    ======================================== */
 @media (max-width: 767px) {
